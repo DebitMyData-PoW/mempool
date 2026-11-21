@@ -33,59 +33,57 @@ const ADDRESS_CHARS: {
   };
 } = {
   mainnet: {
-    base58: `[13]` // Starts with a single 1 or 3
+    base58: `D` // DebitMyData: P2PKH (version 30) and P2SH (version 31) both start with D
       + BASE58_CHARS
-      + `{26,33}`, // Repeat the previous char 26-33 times.
-      // Version byte 0x00 (P2PKH) can be as short as 27 characters, up to 34 length
-      // P2SH must be 34 length
+      + `{33}`, // Both are always 34 characters long
     bech32: `(?:`
-        + `bc1` // Starts with bc1
+        + `dm1` // Starts with dm1
         + BECH32_CHARS_LW
         + `{6,100}` // As per bech32, 6 char checksum is minimum
       + `|`
-        + `BC1` // All upper case version
+        + `DM1` // All upper case version
         + BECH32_CHARS_UP
         + `{6,100}`
       + `)`,
   },
   testnet: {
-    base58: `[mn2]` // Starts with a single m, n, or 2 (P2PKH is m or n, 2 is P2SH)
+    base58: `T` // DebitMyData: P2PKH (version 65) and P2SH (version 66) both start with T
       + BASE58_CHARS
-      + `{33,34}`, // m|n is 34 length, 2 is 35 length (We match the first letter separately)
+      + `{33}`, // Both are always 34 characters long
     bech32: `(?:`
-        + `tb1` // Starts with tb1
+        + `td1` // Starts with td1
         + BECH32_CHARS_LW
         + `{6,100}` // As per bech32, 6 char checksum is minimum
       + `|`
-        + `TB1` // All upper case version
+        + `TD1` // All upper case version
         + BECH32_CHARS_UP
         + `{6,100}`
       + `)`,
   },
   testnet4: {
-    base58: `[mn2]` // Starts with a single m, n, or 2 (P2PKH is m or n, 2 is P2SH)
+    base58: `T` // DebitMyData: P2PKH (version 65) and P2SH (version 66) both start with T
       + BASE58_CHARS
-      + `{33,34}`, // m|n is 34 length, 2 is 35 length (We match the first letter separately)
+      + `{33}`, // Both are always 34 characters long
     bech32: `(?:`
-        + `tb1` // Starts with tb1
+        + `td1` // Starts with td1
         + BECH32_CHARS_LW
         + `{6,100}` // As per bech32, 6 char checksum is minimum
       + `|`
-        + `TB1` // All upper case version
+        + `TD1` // All upper case version
         + BECH32_CHARS_UP
         + `{6,100}`
       + `)`,
   },
   signet: {
-    base58: `[mn2]`
+    base58: `T` // DebitMyData: P2PKH (version 65) and P2SH (version 66) both start with T
       + BASE58_CHARS
-      + `{33,34}`,
+      + `{33}`,
     bech32: `(?:`
-        + `tb1` // Starts with tb1
+        + `td1` // Starts with td1
         + BECH32_CHARS_LW
         + `{6,100}`
       + `|`
-        + `TB1` // All upper case version
+        + `TD1` // All upper case version
         + BECH32_CHARS_UP
         + `{6,100}`
       + `)`,

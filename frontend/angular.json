@@ -176,6 +176,11 @@
                 "glob": "*.css",
                 "input": ".theme-build",
                 "output": "/"
+              },
+              {
+                "input": "src/.well-known",
+                "output": "/.well-known",
+                "glob": "**/*"
               }
             ],
             "styles": [
@@ -196,7 +201,12 @@
             "production": {
               "assets": [
                 "src/favicon.ico",
-                "src/robots.txt"
+                "src/robots.txt",
+                {
+                  "input": "src/.well-known",
+                  "output": "/.well-known",
+                  "glob": "**/*"
+                }
               ],
               "fileReplacements": [
                 {

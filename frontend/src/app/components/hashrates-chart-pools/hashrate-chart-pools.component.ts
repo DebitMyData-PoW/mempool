@@ -11,6 +11,7 @@ import { MiningService } from '@app/services/mining.service';
 import { download } from '@app/shared/graphs.utils';
 import { ActivatedRoute } from '@angular/router';
 import { StateService } from '@app/services/state.service';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 interface Hashrate {
   timestamp: number;
@@ -283,7 +284,7 @@ export class HashrateChartPoolsComponent implements OnInit {
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

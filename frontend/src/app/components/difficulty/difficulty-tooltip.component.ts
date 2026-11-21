@@ -14,6 +14,7 @@ interface EpochProgress {
   previousRetarget: number;
   blocksUntilHalving: number;
   timeUntilHalving: number;
+  difficulty_adjustment?: string;
 }
 
 const EPOCH_BLOCK_LENGTH = 2016; // Bitcoin mainnet
@@ -37,6 +38,7 @@ export class DifficultyTooltipComponent implements OnChanges {
   isAhead: boolean;
   isBehind: boolean;
   isMobile: boolean;
+  isLWMA = false;
 
   tooltipPosition = { x: 0, y: 0 };
 
@@ -47,6 +49,7 @@ export class DifficultyTooltipComponent implements OnChanges {
   }
 
   ngOnChanges(changes): void {
+    //console.log('expected:', this.expected, 'mined:', this.mined, 'behind:', this.behind);
     if (changes.cursorPosition && changes.cursorPosition.currentValue) {
       let x = changes.cursorPosition.currentValue.x;
       const y = changes.cursorPosition.currentValue.y - 50;
@@ -57,15 +60,38 @@ export class DifficultyTooltipComponent implements OnChanges {
       }
       this.tooltipPosition = { x, y };
     }
+
     if ((changes.progress || changes.status) && this.progress && this.status) {
-      this.remaining = this.progress.remainingBlocks;
-      this.expected = this.progress.expectedBlocks;
-      this.mined = this.progress.minedBlocks;
+
+      // ✅ Detect LWMA safely
+      this.isLWMA =
+        (this.progress as any).difficulty_adjustment === 'lwma';
+
+      if (this.isLWMA) {
+        // 🔷 LWMA mode: no epoch / no retarget math
+        this.mined = this.progress.minedBlocks ?? 0;
+        this.remaining = 0;
+        this.expected = 0;
+        this.ahead = 0;
+        this.behind = 0;
+        this.isAhead = false;
+        this.isBehind = false;
+        return;
+      }
+
+      // Directly use the API's remainingBlocks for tooltip display
+      this.remaining = this.progress.remainingBlocks ?? 0;
+      // Keep mined and expected just for internal display or future use
+      this.expected = this.progress.expectedBlocks ?? 0;
+      this.mined = this.progress.minedBlocks ?? 0;
+      // The "behind" value now reflects the API instead of recalculation
+      this.behind = Math.round(this.remaining);
       this.ahead = Math.max(0, this.mined - this.expected);
-      this.behind = Math.max(0, this.expected - this.mined);
       this.isAhead = this.ahead > 0;
       this.isBehind = this.behind > 0;
+      //console.log('Tooltip using API remainingBlocks =', this.remaining);
     }
+
   }
 
   @HostListener('window:resize', ['$event'])

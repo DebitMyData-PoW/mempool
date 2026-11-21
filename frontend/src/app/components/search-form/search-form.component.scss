@@ -57,6 +57,17 @@ form {
 }
 
 input:focus {
-  box-shadow: none;
-  border-color: #1b1f2c;
+  box-shadow: 0 0 0 0.2rem rgba(200, 8, 21, 0.12);
+  border-color: var(--dmd-red);
+}
+
+input.form-control {
+  height: 40px;
+  border-radius: 12px;
+}
+
+.btn-purple {
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(200, 8, 21, 0.22);
 }

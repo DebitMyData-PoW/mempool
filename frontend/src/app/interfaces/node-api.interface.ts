@@ -508,3 +508,23 @@ export interface StaleTip extends ChainTip {
   stale: BlockExtended;
   canonical: BlockExtended;
 }
+/**
+ * Rich List component
+ */
+export interface RichListEntry {
+  rank: number;
+  address: string;
+  balance: number;
+}
+
+export interface RichListSummary {
+  totalSupply: number;
+  top10: number;
+  top100: number;
+  top250: number;
+  top500: number;
+  top10Percent: number;
+  top100Percent: number;
+  top250Percent: number;
+  top500Percent: number;
+}

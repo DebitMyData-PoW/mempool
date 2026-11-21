@@ -1,18 +1,12 @@
+/* Top bar in the DebitMyData look: white, the coin and name on the left, red menu, search on the
+   right. On small screens the menu becomes a bar fixed at the bottom of the screen. */
 .sticky-header {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
   width: 100%;
-  background-color: var(--bg);
+  background-color: var(--nav-bg);
   z-index: 100;
-}
-
-li.nav-item.active {
-  background-color: var(--tertiary);
-}
-
-fa-icon {
-  font-size: 1.66em;
 }
 
 .navbar {
@@ -20,91 +14,140 @@ fa-icon {
   min-height: 64px;
   width: 100%;
   background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--dmd-line);
+  box-shadow: var(--dmd-bar-shadow);
+  padding: 0.5rem 1rem;
+  @media (min-width: 992px) {
+    padding: 0.5rem 2rem;
+  }
 }
 
+/* Brand */
+.navbar-brand {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-right: 1.5rem;
+  color: var(--fg);
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-decoration: none;
+  img {
+    width: 40px;
+    height: 40px;
+  }
+  &:hover {
+    color: var(--dmd-red);
+    text-decoration: none;
+  }
+}
+.dmd-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dmd-red-brand);
+  background: var(--dmd-pink);
+  border: 1px solid var(--dmd-pink-line);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+@media (max-width: 767.98px) {
+  .navbar-brand {
+    margin: 0 auto 4px;
+  }
+}
+
+.connection-badge {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+}
+.badge {
+  margin: 0 auto;
+  display: table;
+}
+
+/* Menu */
 li.nav-item {
-  margin: auto 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  align-content: center;
-  .svg-wrapper {
-    height: 19.2px;
-    width: auto;
-    margin-bottom: 8px;
+  margin: auto 2px;
+  border-radius: 999px;
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    color: var(--dmd-red-text);
+    font-weight: 600;
+    font-size: 0.95rem;
   }
-  @media (max-width: 991px) {
-    margin: 0;
-    padding-left: 8px;
-    padding-right: 8px;
-    .svg-wrapper {
-      height: 25.6px;
-      width: auto;
-      margin-bottom: 0;
-    }
-    .nav-link {
-      padding: 12px 0;
-    }
-
-  }
-  @media (max-width: 429px) {
-    margin: 0;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-  @media (max-width: 369px) {
-    margin: 0;
-    padding-left: 4px;
-    padding-right: 4px;
+  &:hover .nav-link {
+    background: var(--dmd-pink);
   }
 }
-
-@media (min-width: 992px) {
-  .navbar {
-    padding: 0rem 2rem;
-  }
-  fa-icon {
-    font-size: 1.2em;
-  }
-  .dropdown-container {
-    margin-right: 16px;
-  }
-  li.nav-item {
-    margin: auto 0px;
-    padding: 10px;
-  }
+li.nav-item.active .nav-link,
+li.nav-item.active:hover .nav-link {
+  background: var(--dmd-red);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(200, 8, 21, 0.22);
+}
+fa-icon {
+  font-size: 1.05em;
+}
+.navbar-light .navbar-nav .nav-link {
+  color: var(--dmd-red-text);
+}
+.navbar-light .navbar-nav .active > .nav-link {
+  color: #fff;
 }
 
 .navbar-nav {
   background: var(--nav-bg);
   bottom: 0;
-  box-shadow: 0px 0px 15px 0px #000;
+  border-top: 1px solid var(--dmd-line);
+  box-shadow: var(--dmd-bar-shadow-up);
   flex-direction: row;
   left: 0;
-  justify-content: space-between;
+  justify-content: space-around;
   position: fixed;
   width: 100%;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+  li {
+    flex-grow: 1;
+    text-align: center;
+  }
+  /* Phones: icon above a small word */
+  @media (max-width: 991.98px) {
+    li.nav-item .nav-link {
+      flex-direction: column;
+      gap: 2px;
+      padding: 6px 4px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+    }
+    li.nav-item {
+      border-radius: 12px;
+      margin: auto 3px;
+    }
+    fa-icon {
+      font-size: 1.3em;
+    }
+  }
   @media (min-width: 992px) {
-    background: transparent;
+    border-top: 0;
     box-shadow: none;
     position: relative;
     width: auto;
-  }
-  a {
-    font-size: 0.8em;
-    @media (min-width: 370px) {
-      font-size: 0.9em;
+    padding: 0;
+    li {
+      flex-grow: 0;
     }
-    @media (min-width: 430px) {
-      font-size: 1em;
-    }
-  }
-
-  li {
-    flex-grow: 1; /* Allows items to grow */
-    text-align: center; /* For text alignment */
   }
 }
-
 
 .navbar-collapse {
   justify-content: flex-end;
@@ -112,13 +155,50 @@ li.nav-item {
     flex-basis: auto;
   }
 }
-
 @media (min-width: 992px) {
   .navbar-collapse {
     justify-content: space-between;
+    gap: 16px;
   }
 }
 
+/* Light / dark switch: right of the search box; on phones, top right corner */
+.dmd-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  margin-left: 12px;
+  padding: 0;
+  border: 1px solid var(--dmd-line);
+  border-radius: 999px;
+  background: var(--box-bg);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  &:hover {
+    background: var(--dmd-pink);
+    border-color: var(--dmd-pink-line);
+    color: var(--dmd-red-text);
+  }
+}
+@media (max-width: 767.98px) {
+  .dmd-theme-toggle {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    margin-left: 0;
+  }
+}
+@media (max-width: 379.98px) {
+  .navbar-brand {
+    margin-left: 0;
+  }
+}
+
+/* Network menu (only when more than one network is on) */
 .navbar {
   .dropdown {
     .dropdown-toggle {
@@ -128,49 +208,21 @@ li.nav-item {
     }
   }
 }
-
-.navbar-brand {
-  position: relative;
+.dropdown-container {
+  margin-right: 16px;
 }
-
-.navbar-brand.dual-logos {
-  justify-content: space-between;
-  @media (max-width: 767.98px) {
-    width: 100%;
-  }
-}
-
-nav {
-  box-shadow: 0px 0px 15px 0px #000;
-}
-
-.connection-badge {
-  position: absolute;
-  top: 12px;
-  width: 100%;
-}
-
-.badge {
-  margin: 0 auto;
-  display: table;
-}
-
 .mainnet.active {
-  background-color: var(--tertiary);
+  background-color: var(--dmd-pink);
 }
-
 .liquid.active {
   background-color: var(--liquid);
 }
-
 .liquidtestnet.active {
   background-color: var(--liquidtestnet);
 }
-
 .testnet.active {
   background-color: var(--testnet);
 }
-
 .signet.active {
   background-color: var(--signet);
 }
@@ -180,13 +232,11 @@ nav {
 }
 
 .dropdown-divider {
-  border-top: 1px solid #121420;
+  border-top: 1px solid var(--dmd-line);
 }
-
 .dropdown-toggle::after {
   vertical-align: 0.1em;
 }
-
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -195,89 +245,9 @@ nav {
 @media (min-width: 991px) {
   .search-form-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 460px;
     padding-left: 15px;
   }
-}
-.navbar-dark .navbar-nav .nav-link {
-  color: var(--icon);
-}
-
-.subdomain_logo {
-  max-height: 35px;
-  overflow: clip;
-  max-width: 100%;
-  margin: auto;
-  align-self: center;
-  .rounded {
-    border-radius: 5px;
-  }
-
-  &.custom_logo {
-    max-height: 48px;
-    margin-right: 1em;
-  }
- 
-  &.mobile_logo {
-    margin-right: 0;
-  }
-
-  &.custom_logo.mobile_logo {
-    max-height: 42px;
-  }
-}
-
-.subdomain_container {
-  max-width: 140px;
-  text-align: center;
-  align-self: center;
-}
-
-.vertical-line {
-  border-left: 1px solid #444;
-  height: 30px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 3px;
-}
-
-.logo-holder {
-  display: flex;
-  flex-direction: row;
-}
-
-.navbar-brand {
-  flex-direction: row;
-  display: flex;
-}
-
-.mempool-logo, app-svg-images {
-  align-self: center;
-  width: 140px;
-  height: 35px;
-}
-
-.beta {
-  display: inline;
-  position: absolute;
-  margin: 24px 0px 0px -15px;
-  font-size: 8px;
-  @media (max-width: 767.98px) {
-    margin: 30px 0px 0px -19px;
-    font-size: 7px;
-  }
-  @media (max-width: 3429px) {
-    margin: 25px 0px 0px -19px;
-    font-size: 7px;
-  }
-  @media (max-width: 369px) {
-    margin: 20px 0px 0px -19px;
-    font-size: 7px;
-  }
-}
-
-.beta-network {
-  font-size: 8px;
 }
 
 .current-network-svg {

@@ -211,7 +211,7 @@ h3 {
 }
 
 .endpoint-container .section-header span {
-  color: var(--fg);
+  color: #fff;
   background-color: var(--tertiary);
   font-size: 12px;
   text-transform: uppercase;
@@ -254,7 +254,7 @@ h3 {
 #doc-nav-mobile button {
   width: 100%;
   background-color: var(--primary);
-  color: var(--fg);
+  color: #fff;
   border-color: var(--primary);
   border-radius: 0.5rem 0.5rem 0 0;
 }
@@ -479,8 +479,8 @@ code {
 pre {
   display: block;
   font-size: 87.5%;
-  color: #f18920;
-  background-color: var(--bg);
+  color: var(--dmd-code-fg);
+  background-color: var(--dmd-code-bg);
   padding: 30px;
   code{
     background-color: transparent;

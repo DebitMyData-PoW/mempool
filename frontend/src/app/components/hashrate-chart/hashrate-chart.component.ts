@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StateService } from '@app/services/state.service';
 import { seoDescriptionNetwork } from '@app/shared/common.utils';
 import { AmountShortenerPipe } from '@app/shared/pipes/amount-shortener.pipe';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-hashrate-chart',
@@ -292,7 +293,7 @@ export class HashrateChartComponent implements OnInit {
             name: $localize`:@@79a9dc5b1caca3cbeb1733a19515edacc5fc7920:Hashrate`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
             itemStyle: {
@@ -303,7 +304,7 @@ export class HashrateChartComponent implements OnInit {
             name: $localize`:@@25148835d92465353fc5fe8897c27d5369978e5a:Difficulty`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
           },
@@ -311,7 +312,7 @@ export class HashrateChartComponent implements OnInit {
             name: $localize`Hashrate (MA)`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
             itemStyle: {
@@ -440,7 +441,7 @@ export class HashrateChartComponent implements OnInit {
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

@@ -1,58 +1,77 @@
 @use "sass:color";
 
-/* Theme */
-$bg: #11131f;
-$active-bg: #000000;
-$hover-bg: #12131e;
-$fg: #fff;
-$nav-bg: $bg;
-$title-fg: #2055e3;
+/* Theme: the DebitMyData look (debitmydata.io, pool.debitmydata.io, id.debitmydata.io):
+   light page, white cards, dark text, DebitMyData red. */
+$bg: #ffffff;
+$active-bg: #ffffff;
+$hover-bg: #fff0f1;
+$fg: #211f1f;
+$nav-bg: #ffffff;
+$title-fg: #211f1f;
 
-$taproot: #eba814;
-$taproot-light: #d5a90a;
-$taproot-dark: #9d7c05;
+$taproot: #c99a2e;
+$taproot-light: #e0b44a;
+$taproot-dark: #9a7420;
 
 /* Bootstrap */
-$body-bg: $bg;
+$font-family-sans-serif: Mada, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$body-bg: $active-bg;
 $body-color: $fg;
-$gray-800: $bg;
-$gray-700: $fg;
+$gray-800: #e7e9ee;
+$gray-700: #55606e;
+$border-color: #ececf0;
+$table-border-color: #ececf0;
+$card-bg: $bg;
+$card-border-color: #ececf0;
+$card-border-radius: 18px;
+$input-bg: #ffffff;
+$input-color: $fg;
+$input-border-color: #d9dce2;
+$input-placeholder-color: #9aa2ae;
+$text-muted: #7d8797;
 
-$nav-tabs-link-active-bg: $active-bg;
+$nav-tabs-link-active-bg: $bg;
 
-$primary: #007cfa;
-$secondary: #272f4e;
-$tertiary: #6225b2;
-$success: #0aab2f;
-$info: #00ddff;
+$primary: #c80815;
+$secondary: #eef0f3;
+$tertiary: #c80815;
+$success: #098551;
+$info: #c80815;
+$warning: #c99a2e;
+$danger: #c80815;
 
 $h5-font-size: 1.15rem !default;
 
-$pagination-bg: $body-bg;
-$pagination-border-color: $gray-800;
-$pagination-disabled-bg:           $fg;
-$pagination-disabled-border-color: $bg;
-$pagination-active-color:          $fg;
-$pagination-active-bg:             $tertiary;
-$pagination-hover-bg:              $hover-bg;
-$pagination-hover-border-color:     $bg;
-$pagination-disabled-bg:          $bg;
+$pagination-bg: $bg;
+$pagination-border-color: #ececf0;
+$pagination-color: $fg;
+$pagination-active-color: #fff;
+$pagination-active-bg: $tertiary;
+$pagination-active-border-color: $tertiary;
+$pagination-hover-bg: $hover-bg;
+$pagination-hover-border-color: #f5c9cc;
+$pagination-disabled-bg: $bg;
+$pagination-disabled-border-color: #ececf0;
 
 $custom-select-indicator-color: $fg;
+$custom-select-bg: #ffffff;
+$custom-select-color: $fg;
+$custom-select-border-color: #d9dce2;
 
-$link-color:                $info;
+$link-color:                #c80815;
 $link-decoration:           none !default;
-$link-hover-color:          color.adjust($link-color, $lightness: -15%) !default;
+$link-hover-color:          #e12330 !default;
 $link-hover-decoration:     underline !default;
 
 $dropdown-bg: $bg;
+$dropdown-border-color: #ececf0;
 $dropdown-link-color: $fg;
 
 $dropdown-link-hover-color: $fg;
-$dropdown-link-hover-bg: $active-bg;
+$dropdown-link-hover-bg: $hover-bg;
 
 $dropdown-link-active-color: $fg;
-$dropdown-link-active-bg: $active-bg;
+$dropdown-link-active-bg: $hover-bg;
 
 @use "bootstrap/scss/bootstrap" with (
   $body-bg: $body-bg,
@@ -83,12 +102,33 @@ $dropdown-link-active-bg: $active-bg;
   $dropdown-link-hover-color: $dropdown-link-hover-color,
   $dropdown-link-hover-bg: $dropdown-link-hover-bg,
   $dropdown-link-active-color: $dropdown-link-active-color,
-  $dropdown-link-active-bg: $dropdown-link-active-bg
+  $dropdown-link-active-bg: $dropdown-link-active-bg,
+  // DebitMyData look
+  $font-family-sans-serif: $font-family-sans-serif,
+  $border-color: $border-color,
+  $table-border-color: $table-border-color,
+  $card-bg: $card-bg,
+  $card-border-color: $card-border-color,
+  $card-border-radius: $card-border-radius,
+  $input-bg: $input-bg,
+  $input-color: $input-color,
+  $input-border-color: $input-border-color,
+  $input-placeholder-color: $input-placeholder-color,
+  $text-muted: $text-muted,
+  $warning: $warning,
+  $danger: $danger,
+  $pagination-color: $pagination-color,
+  $pagination-active-border-color: $pagination-active-border-color,
+  $custom-select-bg: $custom-select-bg,
+  $custom-select-color: $custom-select-color,
+  $custom-select-border-color: $custom-select-border-color,
+  $dropdown-border-color: $dropdown-border-color
 );
 
 .input-group-text {
-  background-color: #1c2031 !important;
-  border: 1px solid #20263e !important;
+  background-color: var(--dmd-code-bg) !important;
+  border: 1px solid var(--dmd-input-line) !important;
+  color: var(--dmd-body);
 }
 
 :root {
@@ -106,18 +146,18 @@ $dropdown-link-active-bg: $active-bg;
   --info: #{$info};
   --link-color: #{$link-color};
   --link-hover-color: #{$link-hover-color};
-  --icon: #f1f1f1;
-  --skeleton-bg: #2e324e;
-  --skeleton-bg-light: #5d6182;
+  --icon: #c80815;
+  --skeleton-bg: #eceef2;
+  --skeleton-bg-light: #f8f9fb;
 
-  --box-bg: #171c2a;
-  --stat-box-bg: #0b1018;
-  --alert-bg: #3a1c61;
-  --navbar-bg: #212121;
-  --transparent-fg: #ffffffbb;
-  --fade-out-box-bg-start: rgba(23, 28, 42, 0);
-  --fade-out-box-bg-end: rgba(23, 28, 42, 1);
-  --opacity: 0.57;
+  --box-bg: #ffffff;
+  --stat-box-bg: #f6f6f8;
+  --alert-bg: #fff0f1;
+  --navbar-bg: #ffffff;
+  --transparent-fg: rgba(33, 31, 31, 0.55);
+  --fade-out-box-bg-start: rgba(255, 255, 255, 0);
+  --fade-out-box-bg-end: rgba(255, 255, 255, 1);
+  --opacity: 0.6;
 
   --testnet: #1d486f;
   --signet: #6f1d5d;
@@ -125,27 +165,72 @@ $dropdown-link-active-bg: $active-bg;
   --liquid: #116761;
   --liquidtestnet: #494a4a;
 
-  --mainnet-alt: #9339f4;
+  /* Mined blocks: DebitMyData red. */
+  --mainnet-alt: #8f0610;
+  --mainnet-alt2: #c80815;
+  --mainnet-alt3: #e12330;
+  --mainnet-altGreen: #640000;
   --testnet-alt: #183550;
   --signet-alt: #471850;
   --regtest-alt: #4a4a4a;
   --liquidtestnet-alt: #272e46;
 
-  --taproot: #eba814;
-  --taproot-light: #d5a90a;
-  --taproot-dark: #9d7c05;
+  --taproot: #{$taproot};
+  --taproot-light: #{$taproot-light};
+  --taproot-dark: #{$taproot-dark};
 
-  --green: #83fd00;
-  --red: #ff3d00;
-  --yellow: #fff000;
-  --grey: #7e7e7e;
-  --tooltip-grey: #b1b1b1;
-  --orange: #ff9f00;
+  --green: #098551;
+  --red: #c80815;
+  --yellow: #a87a12;
+  --grey: #7d8797;
+  --tooltip-grey: #55606e;
+  --orange: #c80815;
 
-  --search-button: #4d2d77;
-  --search-button-border: #472a6e;
-  --search-button-focus: #533180;
-  --search-button-shadow: #7c58ab80;
+  --search-button: #c80815;
+  --search-button-border: #c80815;
+  --search-button-focus: #e12330;
+  --search-button-shadow: rgba(200, 8, 21, 0.25);
+
+  /* Block cubes: charcoal, filled in red (mined) or gold (pending); white text on them */
+  --block-empty: #3a3238;
+  --block-top: #4b4249;
+  --block-side: #2a2428;
+
+  /* DebitMyData */
+  --dmd-red: #c80815;
+  --dmd-red-hover: #e12330;
+  --dmd-red-deep: #640000;
+  --dmd-red-brand: #bf030c;
+  --dmd-pink: #fff0f1;
+  --dmd-pink-line: #f5c9cc;
+  --dmd-line: #ececf0;
+  --dmd-muted: #7d8797;
+  --dmd-body: #55606e;
+  --dmd-gold: #c99a2e;
+  --dmd-shadow: 0 10px 30px rgba(17, 17, 26, 0.06);
+  --dmd-red-text: #c80815;
+  --dmd-bar-shadow: 0 4px 18px rgba(17, 17, 26, 0.06);
+  --dmd-bar-shadow-up: 0 -6px 18px rgba(17, 17, 26, 0.08);
+  --dmd-input-bg: #ffffff;
+  --dmd-input-line: #d9dce2;
+  --dmd-row-line: #f1f1f4;
+  --dmd-stripe: #fafafb;
+  --dmd-card-head: #fafafb;
+  --dmd-tooltip-bg: rgba(255, 255, 255, 0.98);
+  --dmd-tooltip-shadow: 0 12px 30px rgba(17, 17, 26, 0.12);
+  --dmd-progress-bg: #eef0f3;
+  --dmd-overlay: rgba(255, 255, 255, 0.6);
+  --dmd-code-fg: #3a1d1f;
+  --dmd-code-bg: #f6f6f8;
+  --dmd-fee-stripe-a: #e7e9ee;
+  --dmd-fee-stripe-b: #f6f6f8;
+  --dmd-divider: #b9bec8;
+  --dmd-fee-grey-text: #2f3640;
+  --dmd-op-constants: #9a7420;
+  --dmd-op-control: #1f6fb2;
+  --dmd-op-stack: #b35c00;
+  --dmd-op-splice: #13799e;
+  --dmd-op-arithmetic: #2e7d32;
 }
 
 html, body {
@@ -849,15 +934,15 @@ th {
 
 // ASM opcode colors
 
-.constants { color: #ff8c00 }
+.constants { color: #ffd700 }
 .control { color: #87ceeb }
 .stack { color: #ffa500 }
 .splice { color: #46b5e2 }
 .logic { color: #46b5e2 }
 .arithmetic { color: #cae8d0 }
 .crypto { color: #fa3d3d }
-.locktime { color: #ff8c00 }
-.reserved { color: #ff8c00 }
+.locktime { color: #ffd700 }
+.reserved { color: #ffd700 }
 
 .shortable-address {
   font-family: monospace;
@@ -1451,3 +1536,4 @@ a {
 button {
   touch-action: manipulation;
 }
+@import 'dmd-theme';

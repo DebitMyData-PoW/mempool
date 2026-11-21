@@ -3,12 +3,12 @@
     <h2 i18n="shared.calculator">Calculator</h2>
   </div>
 
-  <ng-container *ngIf="price$ | async; else loading">
+  <ng-container *ngIf="!showFiat || (price$ | async); else loading">
 
     <div class="row justify-content-center">
 
       <form [formGroup]="form">
-        <div class="input-group input-group-lg mb-1">
+        <div class="input-group input-group-lg mb-1" *ngIf="showFiat">
           <div class="input-group-prepend">
             <span class="input-group-text">{{ currency$ | async }}</span>
           </div>
@@ -18,7 +18,7 @@
 
         <div class="input-group input-group-lg mb-1">
           <div class="input-group-prepend">
-            <span class="input-group-text">BTC</span>
+            <span class="input-group-text">DMD</span>
           </div>
           <input type="text" inputmode="decimal" class="form-control" formControlName="bitcoin" (input)="transformInput('bitcoin')" (click)="selectAll($event)">
           <app-clipboard [button]="true" [text]="form.get('bitcoin').value" [class]="'btn btn-lg btn-secondary ml-1'"></app-clipboard>
@@ -26,7 +26,7 @@
 
         <div class="input-group input-group-lg mb-1">
           <div class="input-group-prepend">
-            <span class="input-group-text" i18n="shared.sats">sats</span>
+            <span class="input-group-text" i18n="shared.sats">data</span>
           </div>
           <input type="text" inputmode="numeric" class="form-control" formControlName="satoshis" (input)="transformInput('satoshis')" (click)="selectAll($event)">
           <app-clipboard [button]="true" [text]="form.get('satoshis').value" [class]="'btn btn-lg btn-secondary ml-1'"></app-clipboard>
@@ -45,19 +45,19 @@
 
     <div class="row justify-content-center">
       <div class="bitcoin-satoshis-text">
-        ₿
+        <img style="vertical-align:baseline; margin-right:15px" src="/resources/bitcoin-logo.png" width="32px">
          <span [innerHTML]="form.get('bitcoin').value | bitcoinsatoshis"></span> 
-        <span class="sats" i18n="shared.sats">sats</span>
+        <span class="sats" i18n="shared.sats">data</span>
       </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" *ngIf="showFiat">
       <div class="fiat-text">
         <app-fiat [value]="form.get('satoshis').value" digitsInfo="1.2-2"></app-fiat>
       </div>
     </div>
 
-    <div class="row justify-content-center mt-3">
+    <div class="row justify-content-center mt-3" *ngIf="showFiat">
       <div class="symbol">
         Fiat price last updated <app-time kind="since" [time]="lastFiatPrice$ | async" [fastRender]="true"></app-time>: {{ price$ | async | fiatCurrency : '1.0-0' : (currency$ | async) }}
       </div>

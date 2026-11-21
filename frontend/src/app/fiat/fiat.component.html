@@ -1,3 +1,4 @@
+<ng-container *ngIf="showFiat">
 <span [class]="colorClass" *ngIf="blockConversion; else noblockconversion">
   {{
     (
@@ -15,3 +16,4 @@
     <span>&nbsp;</span>
   </ng-template>
 </ng-template>
+</ng-container>

@@ -67,7 +67,7 @@ export class BlockchainBlocksComponent implements OnInit, OnChanges, OnDestroy {
   blockPadding: number = 30;
 
   gradientColors = {
-    '': ['var(--mainnet-alt)', 'var(--primary)'],
+    '': ['var(--mainnet-altGreen)', 'var(--mainnet-alt2)'],
     liquid: ['var(--liquid)', 'var(--testnet-alt)'],
     'liquidtestnet': ['var(--liquidtestnet)', 'var(--liquidtestnet-alt)'],
     testnet: ['var(--testnet)', 'var(--testnet-alt)'],
@@ -352,8 +352,8 @@ export class BlockchainBlocksComponent implements OnInit, OnChanges, OnDestroy {
     return {
       left: addLeft + this.blockOffset * index + 'px',
       background: `repeating-linear-gradient(
-        var(--secondary),
-        var(--secondary) ${greenBackgroundHeight}%,
+        var(--block-empty),
+        var(--block-empty) ${greenBackgroundHeight}%,
         ${this.gradientColors[this.network][0]} ${Math.max(greenBackgroundHeight, 0)}%,
         ${this.gradientColors[this.network][1]} 100%
       )`,
@@ -364,7 +364,7 @@ export class BlockchainBlocksComponent implements OnInit, OnChanges, OnDestroy {
   convertStyleForLoadingBlock(style) {
     return {
       ...style,
-      background: 'var(--secondary)',
+      background: "var(--block-empty)",
     };
   }
 
@@ -373,7 +373,7 @@ export class BlockchainBlocksComponent implements OnInit, OnChanges, OnDestroy {
 
     return {
       left: addLeft + (this.blockOffset * index) + 'px',
-      background: 'var(--secondary)',
+      background: "var(--block-empty)",
     };
   }
 
@@ -389,7 +389,7 @@ export class BlockchainBlocksComponent implements OnInit, OnChanges, OnDestroy {
 
     return {
       left: addLeft + this.blockOffset * this.emptyBlocks.indexOf(block) + 'px',
-      background: 'var(--secondary)',
+      background: "var(--block-empty)",
     };
   }
 

@@ -11,6 +11,7 @@ import { BlockExtended } from '@interfaces/node-api.interface';
 import { ApiService } from '@app/services/api.service';
 import { PriceService } from '@app/services/price.service';
 import { StorageService } from '@app/services/storage.service';
+import { SHOW_FIAT } from '@app/app.constants';
 import { OrdApiService } from '@app/services/ord-api.service';
 import { Inscription } from '@app/shared/ord/inscription.utils';
 import { Etching, Runestone } from '@app/shared/ord/rune.utils';
@@ -490,7 +491,7 @@ export class TransactionsListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.network === 'liquid' || this.network === 'liquidtestnet') {
       return;
     }
-    const modes = ['btc', 'sats', 'fiat'];
+    const modes = SHOW_FIAT ? ['btc', 'sats', 'fiat'] : ['btc', 'sats'];
     const oldIndex = modes.indexOf(this.stateService.viewAmountMode$.value);
     const newIndex = (oldIndex + 1) % modes.length;
     this.stateService.viewAmountMode$.next(modes[newIndex] as 'btc' | 'sats' | 'fiat');

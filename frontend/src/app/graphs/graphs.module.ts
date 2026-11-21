@@ -26,6 +26,7 @@ import { GraphsComponent } from '@components/graphs/graphs.component';
 import { StatisticsComponent } from '@components/statistics/statistics.component';
 import { MempoolBlockComponent } from '@components/mempool-block/mempool-block.component';
 import { PoolRankingComponent } from '@components/pool-ranking/pool-ranking.component';
+import { RichListComponent } from '@components/rich-list/rich-list.component';
 import { PoolComponent } from '@components/pool/pool.component';
 import { DashboardComponent } from '@app/dashboard/dashboard.component';
 import { CustomDashboardComponent } from '@components/custom-dashboard/custom-dashboard.component';
@@ -64,6 +65,8 @@ import { AsmStylerPipe } from '@app/shared/pipes/asm-styler/asm-styler.pipe';
     PoolComponent,
     PoolRankingComponent,
     TreasuriesComponent,
+    RichListComponent,
+
     StatisticsComponent,
     GraphsComponent,
     AccelerationFeesGraphComponent,

@@ -21,34 +21,41 @@ export type AddressType = 'fee'
   | 'anchor'
   | 'unknown'
 
+// DebitMyData (src/kernel/chainparams.cpp): a network's normal (P2PKH) and script (P2SH) addresses
+// start with the same letter (D on mainnet, T on the test networks), so `versions` gives the
+// version byte that tells them apart.
 const ADDRESS_PREFIXES = {
   mainnet: {
     base58: {
-      pubkey: ['1'],
-      script: ['3'],
+      pubkey: ['D'],
+      script: ['D'],
+      versions: { pubkey: 30, script: 31 },
     },
-    bech32: 'bc1',
+    bech32: 'dm1',
   },
   testnet: {
     base58: {
-      pubkey: ['m', 'n'],
-      script: '2',
+      pubkey: ['T'],
+      script: ['T'],
+      versions: { pubkey: 65, script: 66 },
     },
-    bech32: 'tb1',
+    bech32: 'td1',
   },
   testnet4: {
     base58: {
-      pubkey: ['m', 'n'],
-      script: '2',
+      pubkey: ['T'],
+      script: ['T'],
+      versions: { pubkey: 65, script: 66 },
     },
-    bech32: 'tb1',
+    bech32: 'td1',
   },
   signet: {
     base58: {
-      pubkey: ['m', 'n'],
-      script: '2',
+      pubkey: ['T'],
+      script: ['T'],
+      versions: { pubkey: 65, script: 66 },
     },
-    bech32: 'tb1',
+    bech32: 'td1',
   },
   regtest: {
     base58: {
@@ -77,6 +84,8 @@ const ADDRESS_PREFIXES = {
   },
 };
 
+const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
 // precompiled regexes for common address types (excluding prefixes)
 const base58Regex = RegExp('^' + BASE58_CHARS + '{26,34}$');
 const confidentialb58Regex = RegExp('^[TJ]' + BASE58_CHARS + '{78}$');
@@ -85,15 +94,48 @@ const p2wshRegex = RegExp('^q' + BECH32_CHARS_LW + '{58}$');
 const p2trRegex = RegExp('^p' + BECH32_CHARS_LW + '{58}$');
 const pubkeyRegex = RegExp('^' + `(04${HEX_CHARS}{128})|(0[23]${HEX_CHARS}{64})$`);
 
+// The version byte of a base58 address: the first of the 25 bytes it decodes to (null if it isn't 25 bytes)
+function base58VersionByte(address: string): number | null {
+  const bytes: number[] = []; // little-endian
+  for (const char of address) {
+    let carry = BASE58_ALPHABET.indexOf(char);
+    if (carry < 0) {
+      return null;
+    }
+    for (let i = 0; i < bytes.length; i++) {
+      carry += bytes[i] * 58;
+      bytes[i] = carry & 0xff;
+      carry >>= 8;
+    }
+    while (carry > 0) {
+      bytes.push(carry & 0xff);
+      carry >>= 8;
+    }
+  }
+  return bytes.length === 25 ? bytes[24] : null;
+}
+
 export function detectAddressType(address: string, network: string): AddressType {
   network = network || 'mainnet';
   // normal address types
   const firstChar = address.substring(0, 1);
-  if (ADDRESS_PREFIXES[network].base58.pubkey.includes(firstChar) && base58Regex.test(address.slice(1))) {
+  const versions = ADDRESS_PREFIXES[network].base58.versions;
+  if (versions) {
+    if ((ADDRESS_PREFIXES[network].base58.pubkey.includes(firstChar) || ADDRESS_PREFIXES[network].base58.script.includes(firstChar))
+      && base58Regex.test(address.slice(1))) {
+      const version = base58VersionByte(address);
+      if (version === versions.pubkey) {
+        return 'p2pkh';
+      } else if (version === versions.script) {
+        return 'p2sh';
+      }
+    }
+  } else if (ADDRESS_PREFIXES[network].base58.pubkey.includes(firstChar) && base58Regex.test(address.slice(1))) {
     return 'p2pkh';
   } else if (ADDRESS_PREFIXES[network].base58.script.includes(firstChar) && base58Regex.test(address.slice(1))) {
     return 'p2sh';
-  } else if (address.startsWith(ADDRESS_PREFIXES[network].bech32)) {
+  }
+  if (address.startsWith(ADDRESS_PREFIXES[network].bech32)) {
     const suffix = address.slice(ADDRESS_PREFIXES[network].bech32.length);
     if (p2wpkhRegex.test(suffix)) {
       return 'v0_p2wpkh';

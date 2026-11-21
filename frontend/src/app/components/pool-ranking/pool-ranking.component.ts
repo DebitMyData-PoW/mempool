@@ -12,6 +12,7 @@ import { originalChartColors as chartColors, poolsColor } from '@app/app.constan
 import { RelativeUrlPipe } from '@app/shared/pipes/relative-url/relative-url.pipe';
 import { download } from '@app/shared/graphs.utils';
 import { isMobile } from '@app/shared/common.utils';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-pool-ranking',
@@ -159,7 +160,7 @@ export class PoolRankingComponent implements OnInit {
           textStyle: {
             color: 'var(--tooltip-grey)',
           },
-          borderColor: '#000',
+          borderColor: dmdChartColors().border,
           formatter: () => {
             const i = pool.blockCount.toString();
             if (['24h', '3d', '1w'].includes(this.miningWindowPreference)) {
@@ -201,7 +202,7 @@ export class PoolRankingComponent implements OnInit {
         textStyle: {
           color: 'var(--tooltip-grey)',
         },
-        borderColor: '#000',
+        borderColor: dmdChartColors().border,
         formatter: () => {
           const i = totalBlockOther.toString();
           if (['24h', '3d', '1w'].includes(this.miningWindowPreference)) {
@@ -252,7 +253,7 @@ export class PoolRankingComponent implements OnInit {
           itemStyle: {
             borderRadius: 1,
             borderWidth: 1,
-            borderColor: '#000',
+            borderColor: dmdChartColors().border,
           },
           emphasis: {
             itemStyle: {

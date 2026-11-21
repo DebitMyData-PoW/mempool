@@ -22,7 +22,7 @@ if (parseInt(process.env.SKIP_SYNC) === 1) {
 
 // Log configuration
 if (config.verbose) console.log(`${LOG_TAG} VERBOSE is set, logs will be more verbose`);
-if (config.mempoolCDN) console.log(`${LOG_TAG} MEMPOOL_CDN is set, assets will be downloaded from mempool.space`);
+if (config.mempoolCDN) console.log(`${LOG_TAG} MEMPOOL_CDN is set, assets will be downloaded from mempool.debitmydata.io`);
 if (config.dryRun) console.log(`${LOG_TAG} DRY_RUN is set, not downloading any assets`);
 
 // Setup assets path
@@ -227,7 +227,7 @@ const downloadMiningPoolLogos = async () => {
   console.log(`${LOG_TAG} \tChecking if mining pool logos needs downloading or updating...`);
 
   try {
-    const poolLogos = await fetchGitHubContents('/repos/mempool/mining-pool-logos/contents/', !!config.githubToken);
+    const poolLogos = await fetchGitHubContents('/repos/DebitMyData-PoW/mining-pool-logos/contents/', !!config.githubToken);
 
     let downloadedCount = 0;
     const validFiles = poolLogos.filter(item => item.type === 'file' && item.download_url);
@@ -242,8 +242,8 @@ const downloadMiningPoolLogos = async () => {
         remoteHash: poolLogo.sha,
         downloadUrl: poolLogo.download_url,
         cdnPattern: {
-          from: "raw.githubusercontent.com/mempool/mining-pool-logos/master",
-          to: "mempool.space/resources/mining-pools"
+          from: "raw.githubusercontent.com/DebitMyData-PoW/mining-pool-logos/master",
+          to: "mempool.debitmydata.io/resources/mining-pools"
         },
         itemName: poolLogo.name,
         downloadDir: `${ASSETS_PATH}/mining-pools/`
@@ -350,8 +350,12 @@ const downloadLiquidAssets = () => {
 // Main execution
 (async () => {
   try {
-    // Download Liquid assets (non-blocking)
-    downloadLiquidAssets();
+    // DebitMyData: Liquid assets and the mempool promo video are only needed with SYNC_EXTRAS=1
+    const syncExtras = parseInt(process.env.SYNC_EXTRAS) === 1;
+    if (syncExtras) {
+      // Download Liquid assets (non-blocking)
+      downloadLiquidAssets();
+    }
 
     // Download GitHub assets sequentially
     if (config.verbose) {
@@ -359,15 +363,17 @@ const downloadLiquidAssets = () => {
     }
     await downloadMiningPoolLogos();
 
-    if (config.verbose) {
-      console.log(`${LOG_TAG} Downloading promo video subtitles`);
-    }
-    await downloadPromoVideoSubtitles();
+    if (syncExtras) {
+      if (config.verbose) {
+        console.log(`${LOG_TAG} Downloading promo video subtitles`);
+      }
+      await downloadPromoVideoSubtitles();
 
-    if (config.verbose) {
-      console.log(`${LOG_TAG} Downloading promo video`);
+      if (config.verbose) {
+        console.log(`${LOG_TAG} Downloading promo video`);
+      }
+      await downloadPromoVideo();
     }
-    await downloadPromoVideo();
 
     console.log(`${LOG_TAG} Asset synchronization complete`);
   } catch (error) {

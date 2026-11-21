@@ -7,6 +7,7 @@ import { EnterpriseService } from '@app/services/enterprise.service';
 import { NavigationService } from '@app/services/navigation.service';
 import { MenuComponent } from '@components/menu/menu.component';
 import { StorageService } from '@app/services/storage.service';
+import { ThemeService } from '@app/services/theme.service';
 
 @Component({
   selector: 'app-master-page',
@@ -48,6 +49,7 @@ export class MasterPageComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService,
     private storageService: StorageService,
     private router: Router,
+    public themeService: ThemeService,
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +94,11 @@ export class MasterPageComponent implements OnInit, OnDestroy {
     ];
     const enabledNetworksCount = networks.filter((networkEnabled) => networkEnabled).length;
     this.isDropdownVisible = enabledNetworksCount > 1;
+  }
+
+  // Light / dark switch in the top bar
+  toggleTheme(): void {
+    this.themeService.toggleDark();
   }
 
   collapse(): void {

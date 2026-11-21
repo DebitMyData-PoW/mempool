@@ -13,6 +13,7 @@ import { selectPowerOfTen } from '@app/bitcoin.utils';
 import { RelativeUrlPipe } from '@app/shared/pipes/relative-url/relative-url.pipe';
 import { StateService } from '@app/services/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-block-fee-rates-graph',
@@ -246,9 +247,9 @@ export class BlockFeeRatesGraphComponent implements OnInit {
 
           for (const rate of data.reverse()) {
             if (weightMode) {
-              tooltip += `${rate.marker} ${rate.seriesName}: ${(rate.data[1] / 4).toFixed(2)} sats/WU<br>`;
+              tooltip += `${rate.marker} ${rate.seriesName}: ${(rate.data[1] / 4).toFixed(2)} data/WU<br>`;
             } else {
-              tooltip += `${rate.marker} ${rate.seriesName}: ${rate.data[1].toFixed(2)} sats/vByte<br>`;
+              tooltip += `${rate.marker} ${rate.seriesName}: ${rate.data[1].toFixed(2)} data/vByte<br>`;
             }
           }
 
@@ -335,7 +336,7 @@ export class BlockFeeRatesGraphComponent implements OnInit {
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

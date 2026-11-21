@@ -61,7 +61,8 @@ export class FeesBoxComponent implements OnInit, OnDestroy {
     feeLevelIndex = feeLevelIndex >= 0 ? feeLevels.length - feeLevelIndex : feeLevelIndex;
     const endColor = '#' + (this.themeService.mempoolFeeColors[feeLevelIndex - 1] || this.themeService.mempoolFeeColors[this.themeService.mempoolFeeColors.length - 1]);
 
-    this.gradient = `linear-gradient(to right, ${startColor}, ${endColor})`;
+    //this.gradient = `linear-gradient(to right, ${startColor}, ${endColor})`;
+    this.gradient = `linear-gradient(to right,var(--mainnet-alt),var(--mainnet-alt2))`;
     this.noPriority = startColor;
 
     this.cd.markForCheck();

@@ -3,13 +3,13 @@
   "version": "3.3.2",
   "description": "Bitcoin mempool visualizer and blockchain explorer backend",
   "license": "GNU Affero General Public License v3.0",
-  "homepage": "https://mempool.space",
+  "homepage": "https://mempool.debitmydata.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mempool/mempool"
+    "url": "git+https://github.com/DebitMyData-PoW/mempool"
   },
   "bugs": {
-    "url": "https://github.com/mempool/mempool/issues"
+    "url": "https://github.com/DebitMyData-PoW/mempool/issues"
   },
   "keywords": [
     "bitcoin",

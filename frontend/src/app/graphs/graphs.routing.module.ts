@@ -14,6 +14,7 @@ import { MempoolBlockComponent } from '@components/mempool-block/mempool-block.c
 import { MiningDashboardComponent } from '@components/mining-dashboard/mining-dashboard.component';
 import { AcceleratorDashboardComponent } from '@components/acceleration/accelerator-dashboard/accelerator-dashboard.component';
 import { PoolRankingComponent } from '@components/pool-ranking/pool-ranking.component';
+import { RichListComponent } from '@components/rich-list/rich-list.component';
 import { PoolComponent } from '@components/pool/pool.component';
 import { StartComponent } from '@components/start/start.component';
 import { StatisticsComponent } from '@components/statistics/statistics.component';
@@ -125,6 +126,11 @@ const routes: Routes = [
             component: PoolRankingComponent,
           },
           {
+            path: 'mining/rich-list',
+            data: { networks: ['bitcoin'] },
+            component: RichListComponent,
+          },
+          {
             path: 'mining/block-fees',
             data: { networks: ['bitcoin'] },
             component: BlockFeesGraphComponent,
@@ -162,7 +168,7 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'mempool',
+            redirectTo: 'mining/rich-list',
           },
           {
             path: 'mining/block-health',

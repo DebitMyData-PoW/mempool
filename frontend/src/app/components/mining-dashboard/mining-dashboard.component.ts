@@ -15,6 +15,7 @@ import { EventType, NavigationStart, Router } from '@angular/router';
 export class MiningDashboardComponent implements OnInit, AfterViewInit {
   hashrateGraphHeight = 335;
   poolGraphHeight = 375;
+  richListGraphHeight = 375;
 
   constructor(
     private seoService: SeoService,

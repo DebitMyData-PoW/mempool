@@ -1,0 +1,128 @@
+<app-indexing-progress *ngIf="!widget"></app-indexing-progress>
+
+<div [class]="widget === false ? 'full-container' : ''">
+
+  <!-- Header with title + download button -->
+  <div class="card-header" *ngIf="!widget">
+    <div class="d-flex d-md-table-cell align-items-baseline">
+      <span i18n="richlist.title">Rich List</span>
+      <button
+        class="btn p-0 pl-2"
+        style="margin: 0 0 4px 0px"
+        (click)="onSaveList(richList)"
+        *ngIf="richListObservable$ | async as richList"
+      >
+        <fa-icon [icon]="['fas', 'download']" [fixedWidth]="true"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Button group (Top N) -->
+  <form class="formRadioGroup" *ngIf="!widget" style="text-align:center;margin:20px 0px 35px 0px ">
+    <div class="btn-group btn-group-toggle" name="radioBasic" style="display:inline-flex; width:50%">
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 10">
+        <input type="radio" (click)="changeLimit(10)"> 10
+      </label>
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 25">
+        <input type="radio" (click)="changeLimit(25)"> 25
+      </label>
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 50">
+        <input type="radio" (click)="changeLimit(50)"> 50
+      </label>
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 100">
+        <input type="radio" (click)="changeLimit(100)"> 100
+      </label>
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 250">
+        <input type="radio" (click)="changeLimit(250)"> 250
+      </label>
+      <label class="btn btn-primary btn-sm" [class.active]="currentLimit === 500">
+        <input type="radio" (click)="changeLimit(500)"> 500
+      </label>
+    </div>
+  </form>
+
+  <!-- Chart Toggle Buttons -->
+  <div class="text-center mb-3" *ngIf="!widget">
+    <div class="btn-group">
+      <button
+        class="btn btn-outline-danger btn-sm"
+        [class.active]="viewMode === 'wealth'"
+        (click)="viewMode = 'wealth'">
+        Wealth Distribution
+      </button>
+      <button
+        class="btn btn-outline-danger btn-sm"
+        [class.active]="viewMode === 'wallets'"
+        (click)="viewMode = 'wallets'">
+        Wallets Distribution
+      </button>
+    </div>
+  </div>
+
+  <!-- Charts container -->
+  <div class="container pb-lg-0">
+
+    <!-- Wallets Distribution Chart -->
+  <ng-container *browserOnly>
+    <div *ngIf="viewMode === 'wallets'" class="chart text-center mb-4"
+         [style]="{ height: '400px', opacity: isLoading ? 0.5 : 1 }"
+         echarts
+         [initOpts]="chartInitOptions"
+         [options]="chartOptions"
+         (chartInit)="onChartInit($event)">
+    </div>
+  </ng-container>
+
+
+    <!-- Wealth Distribution Chart -->
+  <ng-container *browserOnly>
+    <div *ngIf="viewMode === 'wealth'" class="chart text-center mb-4"
+         [style]="{ height: '400px', opacity: isLoading ? 0.5 : 1 }"
+         echarts
+         [initOpts]="chartInitOptions"
+         [options]="wealthChartOptions"
+         (chartInit)="onChartInit($event)">
+    </div>
+  </ng-container>
+
+    <!-- Spinner -->
+    <div class="text-center loadingGraphs" *ngIf="isLoading">
+      <div class="spinner-border text-light"></div>
+    </div>
+
+    <!-- Rich List Table -->
+    <table *ngIf="(richListObservable$ | async) as richList"
+           class="table table-borderless text-center pools-table"
+           style="table-layout: fixed; width: 100%;">
+      <thead>
+        <tr>
+          <th i18n="richlist.rank">Rank</th>
+          <th i18n="richlist.address">Address</th>
+          <th i18n="richlist.owner" class="owner-cell">Owner</th>
+          <th i18n="richlist.balance">Balance</th>
+          <th class="percent-cell">% of Supply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of richList">
+          <td class="col-lg-2 col-2 text-center">{{ entry.rank }}</td>
+          <td class="address-cell col-lg-4 col-4 text-center">
+            <a [href]="'https://mempool.debitmydata.io/address/' + entry.address" target="_blank" rel="noopener" class="text-break">
+              {{ shortAddress(entry.address) }}
+            </a>
+          </td>
+          <td class="col-lg-3 col-3 text-center owner-cell">
+            {{ getAddressOwner(entry.address) }}
+          </td>
+          <td class="col-lg-3 col-3 text-end">
+            {{ isMobileView() ? (entry.balance | number:'1.2-2') : (entry.balance | number:'1.8-8') }}
+          </td>
+          <td class="col-lg-2 col-2 percent-cell text-success fw-bold text-center">
+            {{ getFormattedPercent(entry.percent) }}%
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

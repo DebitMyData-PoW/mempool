@@ -35,7 +35,7 @@ if (browserWindowEnv.BASE_MODULE && browserWindowEnv.BASE_MODULE === 'liquid') {
     {
       path: '',
       pathMatch: 'full',
-      redirectTo: 'faq'
+      redirectTo: 'api/rest'
     },
     {
       path: 'api/:type',

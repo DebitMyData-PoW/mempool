@@ -86,8 +86,8 @@ li.nav-item {
 pre {
   display: block;
   font-size: 87.5%;
-  color: #f18920;
-  background-color: var(--bg);
+  color: var(--dmd-code-fg);
+  background-color: var(--dmd-code-bg);
   padding: 30px;
   code{
     background-color: transparent;

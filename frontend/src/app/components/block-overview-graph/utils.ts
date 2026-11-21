@@ -1,4 +1,4 @@
-import { feeLevels, defaultMempoolFeeColors, contrastMempoolFeeColors } from '@app/app.constants';
+import { feeLevels, defaultMempoolFeeColors, contrastMempoolFeeColors, dmdDarkMempoolFeeColors } from '@app/app.constants';
 import { Color } from '@components/block-overview-graph/sprite-types';
 import TxView from '@components/block-overview-graph/tx-view';
 
@@ -81,6 +81,29 @@ for (const key in defaultColors) {
 }
 
 export { defaultColors as defaultColors };
+
+// DebitMyData dark theme: the same squares in the dark palette.
+const dmdDarkColors: { [key: string]: ColorPalette } = {
+  fee: {
+    base: dmdDarkMempoolFeeColors.map(hexToColor),
+    audit: [],
+    marginal: [],
+    baseLevel: defaultColors.fee.baseLevel,
+  },
+};
+for (const key in dmdDarkColors) {
+  const base = dmdDarkColors[key].base;
+  dmdDarkColors[key].audit = base.map((color) => darken(desaturate(color, 0.3), 0.9));
+  dmdDarkColors[key].marginal = base.map((color) => darken(desaturate(color, 0.8), 1.1));
+  dmdDarkColors['unmatched' + key] = {
+    base: dmdDarkColors[key].base.map(c => setOpacity(c, 0.2)),
+    audit: dmdDarkColors[key].audit.map(c => setOpacity(c, 0.2)),
+    marginal: dmdDarkColors[key].marginal.map(c => setOpacity(c, 0.2)),
+    baseLevel: dmdDarkColors[key].baseLevel,
+  };
+}
+
+export { dmdDarkColors as dmdDarkColors };
 
 export const defaultAuditColors = {
   censored: hexToColor('f344df'),
@@ -208,11 +231,7 @@ export function ageColorFunction(
 
   const color = theme !== 'contrast' && theme !== 'bukele' ? defaultColorFunction(tx, colors, auditColors, relativeTime) : contrastColorFunction(tx, colors, auditColors, relativeTime);
 
-  const ageLevel = (!tx.time ? 0 : (0.8 * Math.tanh((1 / 15) * Math.log2((Math.max(1, 0.6 * ((relativeTime - tx.time) - 60)))))));
-  return {
-    r: color.r,
-    g: color.g,
-    b: color.b,
-    a: color.a * (1 - ageLevel)
-  };
+  // DebitMyData: squares keep their grey or dark red whatever their age (fading them on the
+  // light background turned them pink).
+  return color;
 }

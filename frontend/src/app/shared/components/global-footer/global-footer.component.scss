@@ -1,362 +1,142 @@
-footer {
-  background-color: var(--bg);
-  margin-top: 30px;
-  &.services {
-    @media (min-width: 768px) {
-      padding-left: 240px;
-    }
-  }
+/* Footer in the DebitMyData look: dark red, five columns of links, the page settings on top. */
+.dmd-footer {
+  background: var(--dmd-red-deep);
+  color: #f5ced0;
+  font-size: 0.95rem;
+  text-align: left;
+  margin-top: 40px;
 }
-
-footer a {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-footer p {
-  margin-bottom: 0.25rem;
-}
-
-footer .row.main {
-  padding: 40px 0 24px 0;
+.dmd-in {
   max-width: 1140px;
   margin: 0 auto;
-  &.services {
-    @media (min-width: 1201px) {
-      padding-left: 50px;
-      padding-right: 50px;
-    }
-  }
+  padding: 32px 16px 22px;
 }
 
-footer .row.main .branding > p {
-  margin-top: 10px;
-}
-
-footer .row.main .branding .btn {
-  display: inline-block;
-  color: var(--fg) !important;
-}
-
-footer .row.main .branding button.account {
-  background-color: var(--secondary);
-}
-
-footer .row.main .branding .cta {
-  margin: 25px auto 25px auto;
-}
-
-footer .link-tree .links:nth-child(1), footer .link-tree .links:nth-child(4) {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-footer .link-tree .links p {
-  padding-right: 5px;
-}
-
-footer .row.main .links > div:first-child {
-  margin-bottom: 20px;
-}
-
-footer .links .category {
-  color: var(--title-fg);
-  font-weight: 700;
-}
-
-footer .row.main .links .category:not(:first-child) {
-  margin-top: 1rem;
-}
-
-footer .site-options {
-  margin-top: -20px;
-}
-
-footer .selector {
-  margin: 20px 5px;
-  display: inline-block;
-}
-
-footer .add-margin {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-footer .row.link-tree {
-  max-width: 1140px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  &.services {
-    @media (min-width: 1201px) {
-      padding-left: 65px;
-      padding-right: 65px;
-    }
-  }
-}
-
-footer .row.social-links {
-  text-align: center;
+.dmd-top {
   display: flex;
   flex-wrap: wrap;
-  width: fit-content;
-  margin: 0 auto; 
-
-  @media (max-width: 450px){
-    width: 250px;
-  }
-}
-
-footer .row.social-links a {
-  margin: 0 14px;
-}
-
-footer .row.social-links svg {
-  width: 20px;
-  margin: 10px 0 10px 0;
-}
-
-footer .row.version {
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
-  background-color: var(--bg);
-}
-
-footer .row.version p {
-  margin-bottom: 0;
-  text-align: center;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-footer .row.version p a {
-  color: #09a3ba;
-}
-
-.main-logo {
-  width: 220px;
-  margin: 0;
-  display: inline-block;
-}
-
-footer .sponsor {
-  height: 31px;
   align-items: center;
-  margin-right: 5px;
-  margin-left: 5px;
-  max-width: 160px;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 22px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.dmd-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f5ced0;
+    margin-left: 4px;
+  }
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+.site-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  .selector {
+    min-width: 0;
+  }
+}
+:host ::ng-deep .site-options {
+  select, .custom-select, .form-control {
+    background-color: var(--dmd-input-bg);
+    color: var(--fg);
+    border: 0;
+    border-radius: 10px;
+    height: 36px;
+    font-size: 0.9rem;
+    max-width: 210px;
+  }
 }
 
-footer .nowrap {
-  white-space: nowrap;
+.dmd-cols {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px 20px;
 }
-
-.explore-tagline-desktop {
-  display: none;
+.dmd-head {
+  margin: 0 0 10px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.3;
 }
-
-.explore-tagline-mobile {
+.dmd-col a {
   display: block;
-}
-
-@media (min-width: 1020px) {
-  :host-context(.ltr-layout) .language-selector {
-    float: right !important;
-  }
-  :host-context(.rtl-layout) .language-selector {
-    float: left !important;
-  }
-
-  .explore-tagline-desktop {
-    display: block;
-  }
-
-  .explore-tagline-mobile {
-    display: none;
+  margin: 0 0 7px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  &:hover {
+    color: #f5ced0;
+    text-decoration: underline;
   }
 }
-
-.services {
-  @media (min-width: 1300px) {
-    :host-context(.ltr-layout) .language-selector {
-      float: right !important;
-    }
-    :host-context(.rtl-layout) .language-selector {
-      float: left !important;
-    }
-  
-    .explore-tagline-desktop {
-      display: block;
-    }
-  
-    .explore-tagline-mobile {
-      display: none;
-    }
-  }
-
-  @media (max-width: 1300px) {
-    :host-context(.ltr-layout) .services .language-selector {
-      float: none !important;
-    }
-    :host-context(.rtl-layout) .services .language-selector {
-      float: none !important;
-    }
-
-    .explore-tagline-desktop {
-      display: none;
-    }
-
-    .explore-tagline-mobile {
-      display: block;
-    }
-
-    .main-logo {
-      width: 220px;
-    }
-
-    footer .row.link-tree {
-      font-size: 16px;
-    }
-
-    footer .row.social-links svg {
-      width: 20px;
-    }
-
-    footer .row.link-tree {
-      display: block;
-      text-align: center;
-    }
-
-    footer .link-tree .links {
-      margin-bottom: 20px;
-    }
-
-    footer .row.main .branding {
-      text-align: center;
-      padding: 0px;
-    }
-
-    .main-logo {
-      display: block;
-      margin: 0 auto;
-    }
-
-    footer .site-options {
-      float: none;
-      margin-top: 15px;
-    }
+.dmd-col a.dmd-get-app {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--dmd-red-deep);
+  font-weight: 700;
+  &:hover {
+    background: #f5ced0;
+    text-decoration: none;
   }
 }
 
-@media (max-width: 1200px) {
-
-  .main-logo {
-    width: 200px;
-  }
-
-  footer .row.main {
-    max-width: 90%;
-  }
-
-  footer .row.link-tree {
-    max-width: 90%;
-    font-size: 13px;
-    gap: 20px;
-  }
-
-  footer .row.social-links svg {
-    width: 18px;
-  }
-
-}
-
-@media (max-width: 1019px) {
-
-  .main-logo {
-    width: 220px;
-  }
-
-  footer .row.link-tree {
-    font-size: 16px;
-  }
-
-  footer .row.social-links svg {
-    width: 20px;
-  }
-
-  footer .row.link-tree {
-    display: block;
-    text-align: center;
-  }
-
-  footer .link-tree .links {
-    margin-bottom: 20px;
-  }
-
-  footer .row.main .branding {
-    text-align: center;
-    padding: 0px;
-  }
-
-  .main-logo {
-    display: block;
-    margin: 0 auto;
-  }
-
-  .enterprise-logo {
-    max-width: 100%;
-  }
-
-  footer .site-options {
-    float: none;
-    margin-top: 15px;
+.dmd-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 26px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  a {
+    color: #f5ced0;
+    text-decoration: underline;
+    &:hover {
+      color: #fff;
+    }
   }
 }
-
-@media (max-width: 1300px) {
-
-  .services.main-logo {
-    width: 220px;
-  }
-
-  footer .services.row.link-tree {
-    font-size: 16px;
-  }
-
-  footer .services.row.social-links svg {
-    width: 20px;
-  }
-
-  footer .services.row.link-tree {
-    display: block;
-    text-align: center;
-  }
-
-  footer .services.link-tree .links {
-    margin-bottom: 20px;
-  }
-
-  footer .services.row.main .branding {
-    text-align: center;
-    padding: 0px;
-  }
-
-  .services.main-logo {
-    display: block;
-    margin: 0 auto;
-  }
-
-  footer .services.site-options {
-    float: none;
-    margin-top: 15px;
-  }
-
-  footer .services.selector:not(:last-child) {
-    margin-right: 10px;
-  }
+.dmd-footer a:focus-visible {
+  outline-color: #fff !important;
 }
 
-.beta-network {
-  font-size: 8px;
-  margin-left: 1em;
+@media (max-width: 991.98px) {
+  .dmd-cols {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 575.98px) {
+  .dmd-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dmd-col:last-child {
+    grid-column: 1 / -1;
+  }
+  .dmd-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

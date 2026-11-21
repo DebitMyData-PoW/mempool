@@ -237,7 +237,7 @@ export class ElectrsApiService {
   }
 
   getAddressesByPrefix$(prefix: string): Observable<string[]> {
-    if (prefix.toLowerCase().indexOf('bc1') === 0) {
+    if (prefix.toLowerCase().indexOf('dm1') === 0) {
       prefix = prefix.toLowerCase();
     }
     return this.httpClient.get<string[]>(this.apiBaseUrl + this.apiBasePath + '/api/address-prefix/' + prefix);

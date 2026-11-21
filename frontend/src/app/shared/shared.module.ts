@@ -1,3 +1,4 @@
+import { NgxEchartsModule } from 'ngx-echarts';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbCollapseModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
@@ -8,7 +9,8 @@ import { faFilter, faAngleDown, faAngleUp, faAngleRight, faAngleLeft, faBolt, fa
   faFastForward, faWallet, faUserClock, faWrench, faUserFriends, faQuestionCircle, faHistory, faSignOutAlt, faKey, faSuitcase, faIdCardAlt, faNetworkWired, faUserCheck,
   faCircleCheck, faUserCircle, faCheck, faRocket, faScaleBalanced, faHourglassStart, faHourglassHalf, faHourglassEnd, faWandMagicSparkles, faTimeline,
   faCircleXmark, faCalendarCheck, faMoneyBillTrendUp, faRobot, faShareNodes, faCreditCard, faMicroscope, faExclamationTriangle, faLockOpen, faPaperclip, faAddressCard,
-  faMedal, faBug, faFilePdf, faPiggyBank, faLayerGroup, faHeart, faCashRegister, faCodeFork, faCode } from '@fortawesome/free-solid-svg-icons';
+  faMedal, faBug, faFilePdf, faPiggyBank, faLayerGroup, faHeart, faCashRegister, faCodeFork, faCode,
+  faHammer, faCubes, faChartArea, faBook } from '@fortawesome/free-solid-svg-icons';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MenuComponent } from '@components/menu/menu.component';
 import { PreviewTitleComponent } from '@components/master-page-preview/preview-title.component';
@@ -269,6 +271,9 @@ import { GithubLogin } from '@components/github-login.component/github-login.com
     NgbCollapseModule,
     InfiniteScrollModule,
     FontAwesomeModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
   ],
   providers: [
     BytesPipe,
@@ -405,6 +410,8 @@ import { GithubLogin } from '@components/github-login.component/github-login.com
 
     OnlyVsizeDirective,
     OnlyWeightDirective,
+
+    NgxEchartsModule,
   ]
 })
 export class SharedModule {
@@ -412,6 +419,7 @@ export class SharedModule {
     library.addIcons(faInfoCircle);
     library.addIcons(faClock);
     library.addIcons(faTachometerAlt);
+    library.addIcons(faHammer, faCubes, faChartArea, faBook); // DebitMyData top bar
     library.addIcons(faCogs);
     library.addIcons(faThList);
     library.addIcons(faList);

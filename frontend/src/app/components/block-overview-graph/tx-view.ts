@@ -7,7 +7,7 @@ import { TransactionStripped } from '@interfaces/node-api.interface';
 import { TransactionFlags } from '@app/shared/filters.utils';
 
 const hoverTransitionTime = 300;
-const defaultHoverColor = hexToColor('1bd8f4');
+const defaultHoverColor = hexToColor('ffd700');
 const defaultHighlightColor = hexToColor('800080');
 
 // convert from this class's update format to TxSprite's update format

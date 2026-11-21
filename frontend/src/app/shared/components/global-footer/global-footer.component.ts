@@ -9,6 +9,7 @@ import { NavigationService } from '@app/services/navigation.service';
 import { StorageService } from '@app/services/storage.service';
 import { WebsocketService } from '@app/services/websocket.service';
 import { EnterpriseService } from '@app/services/enterprise.service';
+import { SHOW_FIAT } from '@app/app.constants';
 
 @Component({
   selector: 'app-global-footer',
@@ -22,6 +23,7 @@ export class GlobalFooterComponent implements OnInit, OnDestroy, OnChanges {
 
   private destroy$: Subject<any> = new Subject<any>();
   env: Env;
+  showFiat = SHOW_FIAT;
   officialMempoolSpace = this.stateService.env.OFFICIAL_MEMPOOL_SPACE;
   mempoolSpaceBuild = window['isMempoolSpaceBuild'];
   backendInfo$: Observable<IBackendInfo>;
@@ -29,6 +31,7 @@ export class GlobalFooterComponent implements OnInit, OnDestroy, OnChanges {
   frontendGitCommitHash = this.stateService.env.GIT_COMMIT_HASH;
   packetJsonVersion = this.stateService.env.PACKAGE_JSON_VERSION;
   urlLanguage: string;
+  year = new Date().getFullYear();
   network$: Observable<string>;
   networkPaths: { [network: string]: string };
   currentNetwork = '';

@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.debitmydata.mempool",
+    "sha256_cert_fingerprints": [
+      "60:3F:13:45:5A:DE:B6:FB:62:C7:19:85:7F:9D:2D:85:DF:83:A5:EF:8A:F8:98:15:F9:03:FC:F0:D4:EA:68:D2"
+    ]
+  }
+}]

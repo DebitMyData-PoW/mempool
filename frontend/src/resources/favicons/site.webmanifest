@@ -1,6 +1,6 @@
 {
-    "name": "mempool",
-    "short_name": "mempool",
+    "name": "DMD Mempool Explorer",
+    "short_name": "DMD Mempool",
     "icons": [
         {
             "src": "/resources/favicons/android-chrome-192x192.png",

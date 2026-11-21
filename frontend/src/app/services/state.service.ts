@@ -181,6 +181,7 @@ export class StateService {
   rbfLatestSummary$ = new Subject<ReplacementInfo[]>();
   utxoSpent$ = new Subject<object>();
   difficultyAdjustment$ = new ReplaySubject<DifficultyAdjustment>(1);
+  nextBlockTime$ = new BehaviorSubject<number | null>(null);
   mempoolTransactions$ = new Subject<Transaction>();
   mempoolTxPosition$ = new BehaviorSubject<{ txid: string, position: MempoolPosition, cpfp: CpfpInfo | null, accelerationPositions?: AccelerationPosition[] }>(null);
   mempoolRemovedTransactions$ = new Subject<Transaction>();
@@ -517,9 +518,15 @@ export class StateService {
     this.blocksSubject$.next(blocks);
   }
 
+  //addBlock(block: BlockExtended): void {
+  //  this.blocks.unshift(block);
+  //  this.blocks = this.blocks.slice(0, this.env.KEEP_BLOCKS_AMOUNT);
+  //  this.blocksSubject$.next(this.blocks);
+  //}
   addBlock(block: BlockExtended): void {
     this.blocks.unshift(block);
-    this.blocks = this.blocks.slice(0, this.env.KEEP_BLOCKS_AMOUNT);
+    // Keep one extra block as a visual buffer (needed for LWMA / fast chains)
+    this.blocks = this.blocks.slice(0, this.env.KEEP_BLOCKS_AMOUNT + 1);
     this.blocksSubject$.next(this.blocks);
   }
 

@@ -6,6 +6,7 @@ import { download, formatterXAxis, formatterXAxisLabel } from '@app/shared/graph
 import { formatNumber } from '@angular/common';
 import { StateService } from '@app/services/state.service';
 import { Subscription } from 'rxjs';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 const OUTLIERS_MEDIAN_MULTIPLIER = 4;
 
@@ -137,7 +138,7 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
         silent: true,
         symbol: 'none',
         lineStyle: {
-          color: '#fff',
+          color: dmdChartColors().line,
           opacity: 1,
           width: 2,
         },
@@ -145,7 +146,7 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
           yAxis: 1667,
           label: {
             show: false,
-            color: '#ffffff',
+            color: dmdChartColors().text,
           }
         }],
       }
@@ -161,7 +162,7 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
         symbol: 'none',
         lineStyle: {
           width: 2,
-          color: 'white',
+          color: dmdChartColors().muted,
         }
       });
     }
@@ -191,7 +192,7 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
         bottom: 0,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {
@@ -256,7 +257,8 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
             cappedMax = Math.round(this.medianVbytesPerSecond * OUTLIERS_MEDIAN_MULTIPLIER);
           }
           // always show the clearing rate line, plus a small margin
-          return Math.max(1800, cappedMax);
+          //return Math.max(30, cappedMax);
+          return Math.max(8, cappedMax);
         },
         type: 'value',
         axisLabel: {
@@ -281,7 +283,7 @@ export class IncomingTransactionsGraphComponent implements OnInit, OnChanges, On
         pieces: [{
           gt: 0,
           lte: 1667,
-          color: '#7CB342'
+          color: '#C80815'
         },
         {
           gt: 1667,

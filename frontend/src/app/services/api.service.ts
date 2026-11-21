@@ -9,6 +9,7 @@ import { Conversion } from '@app/services/price.service';
 import { StorageService } from '@app/services/storage.service';
 import { WebsocketResponse } from '@interfaces/websocket.interface';
 import { TxAuditStatus } from '@components/transaction/transaction.component';
+import { RichListEntry, RichListSummary } from '@app/interfaces/node-api.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -603,4 +604,19 @@ export class ApiService {
   getBlockSummaryLoaded(hash) {
     return this.blockSummaryLoaded[hash];
   }
+
+  getCirculatingSupply$(): Observable<string> {
+    return this.httpClient.get(this.apiBaseUrl + this.apiBasePath + '/api/v1/circulating-supply', {
+      responseType: 'text',
+    });
+  }
+
+  getRichList(limit: number) {
+    return this.httpClient.get<RichListEntry[]>(`${this.apiBaseUrl}/api/v1/richlist?limit=${limit}`);
+  }
+
+  getRichListSummary() {
+    return this.httpClient.get<RichListSummary>(`${this.apiBaseUrl}/api/v1/richlist/summary`);
+  }
+
 }

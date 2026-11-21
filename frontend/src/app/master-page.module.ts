@@ -164,7 +164,8 @@ if (window['__env']?.customize?.dashboard?.widgets?.some(w => w.component ==='si
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   exports: [
     RouterModule

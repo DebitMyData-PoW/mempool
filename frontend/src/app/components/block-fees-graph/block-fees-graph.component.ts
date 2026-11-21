@@ -13,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FiatShortenerPipe } from '@app/shared/pipes/fiat-shortener.pipe';
 import { FiatCurrencyPipe } from '@app/shared/pipes/fiat-currency.pipe';
 import { StateService } from '@app/services/state.service';
+import { SHOW_FIAT } from '@app/app.constants';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-block-fees-graph',
@@ -48,6 +50,7 @@ export class BlockFeesGraphComponent implements OnInit {
   chartInstance: any = undefined;
 
   currency: string;
+  showFiat = SHOW_FIAT;
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -68,7 +71,7 @@ export class BlockFeesGraphComponent implements OnInit {
 
   ngOnInit(): void {
     this.seoService.setTitle($localize`:@@6c453b11fd7bd159ae30bc381f367bc736d86909:Block Fees`);
-    this.seoService.setDescription($localize`:@@meta.description.bitcoin.graphs.block-fees:See the average mining fees earned per Bitcoin block visualized in BTC and USD over time.`);
+    this.seoService.setDescription($localize`:@@meta.description.bitcoin.graphs.block-fees:See the average mining fees earned per Bitcoin block visualized in DMD and USD over time.`);
     this.miningWindowPreference = this.miningService.getDefaultTimespan('1m');
     this.radioGroupForm = this.formBuilder.group({ dateSpan: this.miningWindowPreference });
     this.radioGroupForm.controls.dateSpan.setValue(this.miningWindowPreference);
@@ -165,7 +168,7 @@ export class BlockFeesGraphComponent implements OnInit {
 
           for (const tick of data) {
             if (tick.seriesIndex === 0) {
-              tooltip += `${tick.marker} ${tick.seriesName}: ${formatNumber(tick.data[1], this.locale, '1.3-3')} BTC<br>`;
+              tooltip += `${tick.marker} ${tick.seriesName}: ${formatNumber(tick.data[1], this.locale, '1.3-3')} DMD<br>`;
             } else if (tick.seriesIndex === 1) {
               tooltip += `${tick.marker} ${tick.seriesName}: ${this.fiatCurrencyPipe.transform(tick.data[1], null, this.currency) }<br>`;
             }
@@ -186,21 +189,21 @@ export class BlockFeesGraphComponent implements OnInit {
       legend: data.blockFees.length === 0 ? undefined : {
         data: [
           {
-            name: 'Fees BTC',
+            name: 'Fees DMD',
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
           },
-          {
+          ...(this.showFiat ? [{
             name: 'Fees ' + this.currency,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
-          },
+          }] : []),
         ],
       },
       yAxis: data.blockFees.length === 0 ? undefined : [
@@ -209,7 +212,7 @@ export class BlockFeesGraphComponent implements OnInit {
           axisLabel: {
             color: 'rgb(110, 112, 121)',
             formatter: (val) => {
-              return `${val} BTC`;
+              return `${val} DMD`;
             }
           },
           splitLine: {
@@ -220,9 +223,9 @@ export class BlockFeesGraphComponent implements OnInit {
             }
           },
         },
-        {
-          type: 'value',
-          position: 'right',
+        ...(this.showFiat ? [{
+          type: 'value' as const,
+          position: 'right' as const,
           axisLabel: {
             color: 'rgb(110, 112, 121)',
             formatter: function(val) {
@@ -232,14 +235,14 @@ export class BlockFeesGraphComponent implements OnInit {
           splitLine: {
             show: false,
           },
-        },
+        }] : []),
       ],
       series: data.blockFees.length === 0 ? undefined : [
         {
           legendHoverLink: false,
           zlevel: 0,
           yAxisIndex: 0,
-          name: 'Fees BTC',
+          name: 'Fees DMD',
           data: data.blockFees,
           type: 'line',
           smooth: 0.25,
@@ -249,20 +252,20 @@ export class BlockFeesGraphComponent implements OnInit {
             opacity: 1,
           }
         },
-        {
+        ...(this.showFiat ? [{
           legendHoverLink: false,
           zlevel: 1,
           yAxisIndex: 1,
           name: 'Fees ' + this.currency,
           data: data.blockFeesFiat,
-          type: 'line',
+          type: 'line' as const,
           smooth: 0.25,
           symbol: 'none',
           lineStyle: {
             width: 2,
             opacity: 1,
           }
-        },
+        }] : []),
       ],
       dataZoom: data.blockFees.length === 0 ? undefined : [{
         type: 'inside',
@@ -281,7 +284,7 @@ export class BlockFeesGraphComponent implements OnInit {
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

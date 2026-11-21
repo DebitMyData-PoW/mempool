@@ -11,6 +11,7 @@ import { MiningService } from '@app/services/mining.service';
 import { ActivatedRoute } from '@angular/router';
 import { download, formatterXAxis } from '@app/shared/graphs.utils';
 import { StateService } from '@app/services/state.service';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-block-sizes-weights-graph',
@@ -188,7 +189,7 @@ export class BlockSizesWeightsGraphComponent implements OnInit {
             name: $localize`:@@7faaaa08f56427999f3be41df1093ce4089bbd75:Size`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
           },
@@ -196,7 +197,7 @@ export class BlockSizesWeightsGraphComponent implements OnInit {
             name: $localize`:@@919f2fd60a898850c24b1584362bbf18a4628bcb:Weight`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
           },
@@ -204,7 +205,7 @@ export class BlockSizesWeightsGraphComponent implements OnInit {
             name: $localize`Size per weight`,
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             icon: 'roundRect',
           },
@@ -310,7 +311,7 @@ export class BlockSizesWeightsGraphComponent implements OnInit {
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

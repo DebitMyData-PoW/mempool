@@ -12,8 +12,8 @@ import { WebsocketService } from '@app/services/websocket.service';
 import { Acceleration } from '@interfaces/node-api.interface';
 import { defaultAuditColors } from '@components/block-overview-graph/utils';
 
-const newColorHex = '1BF4AF';
-const oldColorHex = '3C39F4';
+const newColorHex = 'ffd700';
+const oldColorHex = '9339f4';
 const pendingColorHex = 'eba814';
 const newColor = hexToColor(newColorHex);
 const oldColor = hexToColor(oldColorHex);

@@ -5,6 +5,7 @@ import { StateService } from '@app/services/state.service';
 import { map, Subscription, switchMap } from 'rxjs';
 import { PriceService } from '@app/services/price.service';
 import { AmountShortenerPipe } from '@app/shared/pipes/amount-shortener.pipe';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-lbtc-pegs-graph',
@@ -118,7 +119,7 @@ export class LbtcPegsGraphComponent implements OnInit, OnChanges {
         realtime: true,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

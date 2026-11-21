@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { StateService } from '@app/services/state.service';
 import { WebsocketService } from '@app/services/websocket.service';
+import { SHOW_FIAT } from '@app/app.constants';
 
 const MAX_BTC_SUPPLY = 21000000;
 const MAX_SATOSHI_SUPPLY = MAX_BTC_SUPPLY * 100_000_000;
@@ -20,6 +21,7 @@ export class CalculatorComponent implements OnInit {
   form: FormGroup;
   currentPrice = 0;
   isMaxSupply = false;
+  showFiat = SHOW_FIAT;
 
   currency$ = this.stateService.fiatCurrency$;
   price$: Observable<number>;
@@ -53,6 +55,11 @@ export class CalculatorComponent implements OnInit {
         return conversions[currency];
       })
     );
+    if (!this.showFiat) {
+      // Without dollar values (SHOW_FIAT), the calculator converts between DMD and its
+      // smallest unit only, with no price feed needed.
+      this.price$ = of(0);
+    }
 
     combineLatest([
       this.price$,

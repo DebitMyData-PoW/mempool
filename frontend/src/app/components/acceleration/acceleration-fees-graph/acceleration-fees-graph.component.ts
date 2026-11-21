@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Acceleration } from '@interfaces/node-api.interface';
 import { ServicesApiServices } from '@app/services/services-api.service';
 import { StateService } from '@app/services/state.service';
+import { dmdChartColors } from '@app/shared/dmd-chart-colors';
 
 @Component({
   selector: 'app-acceleration-fees-graph',
@@ -181,7 +182,7 @@ export class AccelerationFeesGraphComponent implements OnInit, OnChanges, OnDest
           for (const tick of ticks) {
             if (tick.seriesName === 'Total bid boost') {
               if (tick.data[1] > 10_000_000) {
-                tooltip += `${tick.marker} ${tick.seriesName}: ${formatNumber(tick.data[1] / 100_000_000, this.locale, '1.0-8')} BTC<br>`;
+                tooltip += `${tick.marker} ${tick.seriesName}: ${formatNumber(tick.data[1] / 100_000_000, this.locale, '1.0-8')} DMD<br>`;
               } else {
                 tooltip += `${tick.marker} ${tick.seriesName}: ${formatNumber(tick.data[1], this.locale, '1.0-0')} sats<br>`;
               }
@@ -219,7 +220,7 @@ export class AccelerationFeesGraphComponent implements OnInit, OnChanges, OnDest
             name: 'Total bid boost',
             inactiveColor: 'rgb(110, 112, 121)',
             textStyle: {
-              color: 'white',
+              color: dmdChartColors().text,
             },
             itemStyle: {
               color: '#FFB300',
@@ -254,7 +255,7 @@ export class AccelerationFeesGraphComponent implements OnInit, OnChanges, OnDest
             color: 'rgb(110, 112, 121)',
             formatter: (val) => {
               if (val >= 100_000) {
-                return `${(val / 100_000_000).toFixed(3)} BTC`;
+                return `${(val / 100_000_000).toFixed(3)} DMD`;
               } else {
                 return `${val} sats`;
               }
@@ -323,7 +324,7 @@ export class AccelerationFeesGraphComponent implements OnInit, OnChanges, OnDest
         right: 15,
         selectedDataBackground: {
           lineStyle: {
-            color: '#fff',
+            color: dmdChartColors().muted,
             opacity: 0.45,
           },
           areaStyle: {

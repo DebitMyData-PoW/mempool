@@ -1,0 +1,445 @@
+/* DebitMyData look for the explorer, on top of the light variables in styles.scss: Mada font,
+   white rounded cards, red accents, and fixes for the places mempool wrote light-on-dark colours
+   straight into its styles. */
+
+@font-face { font-family: Mada; font-style: normal; font-weight: 400; font-display: swap; src: url(/resources/fonts/mada-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: Mada; font-style: normal; font-weight: 600; font-display: swap; src: url(/resources/fonts/mada-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: Mada; font-style: normal; font-weight: 700; font-display: swap; src: url(/resources/fonts/mada-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: Mada; font-style: normal; font-weight: 800; font-display: swap; src: url(/resources/fonts/mada-latin-800-normal.woff2) format("woff2"); }
+
+body {
+  background-color: var(--active-bg);
+  color: var(--fg);
+  font-family: $font-family-sans-serif;
+  padding-bottom: 72px;
+  @media (min-width: 992px) {
+    padding-bottom: 0;
+  }
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--dmd-pink);
+  color: var(--fg);
+}
+
+/* Cards */
+.card, .box {
+  background-color: var(--box-bg);
+  border: 1px solid var(--dmd-line) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--dmd-shadow) !important;
+}
+.card .card-body {
+  border-radius: 18px;
+}
+.card-title, .main-title {
+  color: var(--fg) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.card-title {
+  font-size: 0.95rem !important;
+}
+.main-title {
+  color: var(--dmd-muted) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.14em !important;
+}
+.title-link, .title-link:hover {
+  text-decoration: none;
+}
+.title-link fa-icon {
+  color: var(--dmd-red-text) !important;
+}
+
+/* Tables */
+.table {
+  color: var(--fg);
+  th {
+    color: var(--dmd-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-top: 0;
+  }
+  td, th {
+    border-color: var(--dmd-row-line);
+  }
+}
+.table-striped tbody tr:nth-of-type(odd), .dual-col-striped tbody tr:nth-of-type(odd) td:not(.spacer) {
+  background-color: var(--dmd-stripe);
+}
+.bordertop {
+  border-top: 1px solid var(--dmd-line);
+}
+hr {
+  border-top-color: var(--dmd-line);
+}
+
+/* Buttons, badges, pills */
+.btn-primary, .btn-purple, .badge-primary, .badge-info, .alert-mempool {
+  color: #fff !important;
+  background-color: var(--dmd-red);
+  border-color: var(--dmd-red);
+}
+.btn-primary:hover, .btn-purple:hover {
+  background-color: var(--dmd-red-hover);
+  border-color: var(--dmd-red-hover);
+}
+.btn-secondary {
+  color: var(--fg);
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+.btn-group-toggle .btn.btn-primary {
+  background-color: var(--box-bg);
+  border-color: var(--dmd-line);
+  color: var(--dmd-red-text) !important;
+  font-weight: 700;
+}
+.btn-group-toggle .btn.btn-primary.active {
+  background-color: var(--dmd-red) !important;
+  border-color: var(--dmd-red) !important;
+  color: #fff !important;
+}
+.badge-success {
+  background-color: var(--success);
+}
+.badge-warning {
+  background-color: var(--dmd-gold);
+  color: #fff;
+}
+
+/* Forms */
+.form-control, .form-control:focus, .form-control.form-control-secondary, .custom-select {
+  color: var(--fg);
+  background-color: var(--dmd-input-bg);
+  border: 1px solid var(--dmd-input-line);
+}
+.form-control:focus {
+  border-color: var(--dmd-red);
+  box-shadow: 0 0 0 0.2rem rgba(200, 8, 21, 0.15);
+}
+
+/* Text colours mempool wrote for a dark background */
+.white-color, .clear-link {
+  color: var(--fg) !important;
+}
+.info-link fa-icon {
+  color: var(--dmd-muted);
+}
+.symbol {
+  color: var(--dmd-muted);
+}
+.progress {
+  background-color: var(--dmd-progress-bg);
+}
+.progress-text span, .progress-text {
+  color: var(--fg) !important;
+}
+.progress-mempool {
+  background: repeating-linear-gradient(to right, var(--dmd-progress-bg), var(--dmd-progress-bg) 0%, var(--dmd-red) 0%, var(--mainnet-alt3) 100%);
+}
+.progress-bar {
+  background-color: var(--dmd-red);
+}
+.bg-warning {
+  background-color: var(--dmd-gold) !important;
+}
+.tab-pane {
+  color: var(--fg);
+}
+.close, .close:hover {
+  color: var(--fg);
+  text-shadow: none;
+}
+
+/* Script opcode colours, readable on white */
+.constants, .locktime, .reserved { color: var(--dmd-op-constants); }
+.control { color: var(--dmd-op-control); }
+.stack { color: var(--dmd-op-stack); }
+.splice, .logic { color: var(--dmd-op-splice); }
+.arithmetic { color: var(--dmd-op-arithmetic); }
+.crypto { color: var(--dmd-red-text); }
+
+/* The dashed line between the pending and the mined blocks */
+#divider {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='104%25' height='100%25' fill='none' stroke='%23b9bec8' stroke-width='4' stroke-dasharray='10%2c17' stroke-dashoffset='18' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+/* Chart tooltips: white cards */
+.tx-wrapper-tooltip-chart, .fees-wrapper-tooltip-chart, .tx-wrapper-tooltip-chart-advanced {
+  background: var(--dmd-tooltip-bg) !important;
+  border: 1px solid var(--dmd-line);
+  border-radius: 12px !important;
+  box-shadow: var(--dmd-tooltip-shadow) !important;
+  color: var(--dmd-body) !important;
+  .title, .total-label {
+    color: var(--fg) !important;
+  }
+  .active, .active .value, .active .total-partial, .active .symbol {
+    color: var(--dmd-red-text) !important;
+  }
+}
+.echarts .tooltip, .echarts-tooltip, div[style*="z-index: 9999999"] {
+  border-color: var(--dmd-line) !important;
+}
+
+/* Dropdowns and pagination */
+.dropdown-menu {
+  border: 1px solid var(--dmd-line);
+  border-radius: 12px;
+  box-shadow: var(--dmd-tooltip-shadow);
+}
+.pagination-container .page-item.active .page-link {
+  background-color: var(--dmd-red);
+  border-color: var(--dmd-red);
+  color: #fff;
+}
+
+/* Skeleton loaders */
+.skeleton-loader {
+  background-color: var(--skeleton-bg);
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+}
+a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Focus ring for keyboard users (mempool turned focus outlines off) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--dmd-red) !important;
+  outline-offset: 2px;
+}
+
+/* Text on the block cubes stays white */
+.bitcoin-block .block-body, .mempool-block .block-body {
+  color: #fff;
+}
+.bitcoin-block .fee-span, .mempool-block .fee-span {
+  color: #ffd98a !important;
+}
+input:focus-visible {
+  outline: none !important;
+}
+
+/* Pool and miner names written in white */
+a.badge[style*="#fff" i] {
+  color: var(--fg) !important;
+}
+.btn .symbol, .badge .symbol {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+/* The line under the blocks and the arrow to the open block: red */
+.title-block {
+  border-top-color: var(--dmd-red) !important;
+}
+#arrow-up {
+  border-bottom-color: var(--dmd-red) !important;
+}
+/* Graph pages: white cards */
+.full-container .card, .full-container .card-body {
+  background-color: var(--box-bg);
+}
+.card-header {
+  background-color: var(--dmd-card-head);
+  border-bottom: 1px solid var(--dmd-line);
+  border-radius: 18px 18px 0 0 !important;
+}
+.btn-outline-danger {
+  color: var(--dmd-red-text);
+  border-color: var(--dmd-pink-line);
+}
+.btn-outline-danger.active, .btn-outline-danger:hover {
+  color: #fff;
+  background-color: var(--dmd-red);
+  border-color: var(--dmd-red);
+}
+
+/* Phone transaction tracker: the same brand as the top bar */
+.dmd-tracker-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg);
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-decoration: none;
+  &:hover {
+    color: var(--dmd-red-text);
+    text-decoration: none;
+  }
+}
+.dmd-tracker-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dmd-red-brand);
+  background: var(--dmd-pink);
+  border: 1px solid var(--dmd-pink-line);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+/* ------------------------------------------------------------------------------------------
+   Dark theme: the same design on a #18181d page with slightly lighter cards, light text and
+   the same DebitMyData red (a lighter red where red is used for text, so it stays readable).
+   Turned on by data-theme="dark" on <html> (see index.html and ThemeService).
+   ------------------------------------------------------------------------------------------ */
+html[data-theme="dark"] {
+  --bg: #202027;
+  --active-bg: #18181d;
+  --hover-bg: #2e1a1e;
+  --fg: #ececf1;
+  --nav-bg: #1d1d23;
+  --title-fg: #ececf1;
+  --secondary: #2a2a33;
+  --link-color: #ff5a64;
+  --link-hover-color: #ff858c;
+  --icon: #ff5a64;
+  --skeleton-bg: #2a2a33;
+  --skeleton-bg-light: #34343e;
+
+  --box-bg: #202027;
+  --stat-box-bg: #1c1c22;
+  --alert-bg: #2e1a1e;
+  --navbar-bg: #1d1d23;
+  --transparent-fg: rgba(236, 236, 241, 0.6);
+  --fade-out-box-bg-start: rgba(32, 32, 39, 0);
+  --fade-out-box-bg-end: rgba(32, 32, 39, 1);
+
+  --green: #3ccf87;
+  --red: #ff5a64;
+  --yellow: #e0b44a;
+  --grey: #9a9ba6;
+  --tooltip-grey: #b9bac4;
+  --orange: #ff5a64;
+
+  --block-empty: #33333d;
+  --block-top: #40404b;
+  --block-side: #2a2a33;
+
+  --dmd-red-brand: #ff5a64;
+  --dmd-pink: #33161b;
+  --dmd-pink-line: #5c1f27;
+  --dmd-line: #303039;
+  --dmd-muted: #9a9ba6;
+  --dmd-body: #b9bac4;
+  --dmd-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --dmd-red-text: #ff5a64;
+  --dmd-bar-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  --dmd-bar-shadow-up: 0 -6px 18px rgba(0, 0, 0, 0.45);
+  --dmd-input-bg: #26262e;
+  --dmd-input-line: #3a3a44;
+  --dmd-row-line: #2a2a32;
+  --dmd-stripe: #24242b;
+  --dmd-card-head: #24242b;
+  --dmd-tooltip-bg: rgba(36, 36, 43, 0.98);
+  --dmd-tooltip-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  --dmd-progress-bg: #2a2a33;
+  --dmd-overlay: rgba(24, 24, 29, 0.6);
+  --dmd-code-fg: #ffb3b8;
+  --dmd-code-bg: #26262e;
+  --dmd-fee-stripe-a: #2a2a33;
+  --dmd-fee-stripe-b: #222229;
+  --dmd-divider: #5c5c68;
+  --dmd-fee-grey-text: #ececf1;
+  --dmd-op-constants: #e0b44a;
+  --dmd-op-control: #6cb4f0;
+  --dmd-op-stack: #f0a050;
+  --dmd-op-splice: #4fc3dc;
+  --dmd-op-arithmetic: #6fcf75;
+
+  color-scheme: dark;
+
+  /* Bootstrap parts that were built with the light colours */
+  .dropdown-menu {
+    background-color: var(--box-bg);
+  }
+  .dropdown-item {
+    color: var(--fg);
+    &:hover, &:focus, &.active, &:active {
+      background-color: var(--hover-bg);
+      color: var(--fg);
+    }
+  }
+  .page-link, .page-item.disabled .page-link {
+    background-color: var(--box-bg);
+    border-color: var(--dmd-line);
+    color: var(--fg);
+  }
+  .page-item.disabled .page-link {
+    color: var(--dmd-muted);
+  }
+  .page-link:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--dmd-pink-line);
+    color: var(--fg);
+  }
+  .modal-content, .list-group-item, .popover, .toast {
+    background-color: var(--box-bg);
+    border-color: var(--dmd-line);
+    color: var(--fg);
+  }
+  .modal-header, .modal-footer {
+    border-color: var(--dmd-line);
+  }
+  .table-hover tbody tr:hover {
+    background-color: var(--hover-bg);
+    color: var(--fg);
+  }
+  .text-muted {
+    color: var(--dmd-muted) !important;
+  }
+  .text-success {
+    color: var(--green) !important;
+  }
+  .text-danger {
+    color: var(--dmd-red-text) !important;
+  }
+  .text-dark {
+    color: var(--fg) !important;
+  }
+  .badge-secondary, .btn-light {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--fg);
+  }
+  .btn-outline-secondary {
+    color: var(--fg);
+    border-color: var(--dmd-line);
+  }
+  .nav-tabs {
+    border-color: var(--dmd-line);
+    .nav-link {
+      color: var(--dmd-muted);
+    }
+    .nav-link.active, .nav-item.show .nav-link {
+      background-color: var(--box-bg);
+      border-color: var(--dmd-line) var(--dmd-line) var(--box-bg);
+      color: var(--fg);
+    }
+  }
+  .form-control::placeholder {
+    color: #7a7b86;
+  }
+  .custom-select {
+    background: var(--dmd-input-bg) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23b9bac4' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right 0.75rem center / 8px 10px no-repeat;
+    color: var(--fg);
+  }
+  #divider {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='104%25' height='100%25' fill='none' stroke='%235c5c68' stroke-width='4' stroke-dasharray='10%2c17' stroke-dashoffset='18' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+}

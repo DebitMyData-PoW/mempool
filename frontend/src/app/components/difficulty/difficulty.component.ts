@@ -2,6 +2,22 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, El
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StateService } from '@app/services/state.service';
+import { HttpClient } from '@angular/common/http';
+
+interface ApiDifficultyData {
+  difficultyChange: number;
+  previousRetarget: number;
+  estimatedRetargetDate: number;
+  remainingBlocks: number;
+  remainingTime: number;
+  nextRetargetHeight: number;
+  timeAvg: number;
+  adjustedTimeAvg: number;
+  timeOffset: number;
+  expectedBlocks: number;
+  progressPercent: number;
+  nextBlockTime?: number;
+}
 
 interface EpochProgress {
   base: string;
@@ -20,6 +36,7 @@ interface EpochProgress {
   timeUntilHalving: number;
   timeAvg: number;
   adjustedTimeAvg: number;
+  nextSubsidy: number;
 }
 
 type BlockStatus = 'mined' | 'behind' | 'ahead' | 'next' | 'remaining';
@@ -34,6 +51,8 @@ interface DiffShape {
 }
 
 const EPOCH_BLOCK_LENGTH = 2016; // Bitcoin mainnet
+const HALVING_INTERVAL = 300_000; // DebitMyData
+const BLOCK_TIME_SECONDS = 150;   // DebitMyData
 
 @Component({
   selector: 'app-difficulty',
@@ -42,17 +61,20 @@ const EPOCH_BLOCK_LENGTH = 2016; // Bitcoin mainnet
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class DifficultyComponent implements OnInit {
   @Input() showProgress = true;
   @Input() showHalving = false;
   @Input() showTitle = true;
+  isLWMA = false;
+  halvingInterval = HALVING_INTERVAL; // ✅ expose to template
 
   @ViewChild('epochSvg') epochSvgElement: ElementRef<SVGElement>;
 
   isLoadingWebSocket$: Observable<boolean>;
   difficultyEpoch$: Observable<EpochProgress>;
 
-  mode: 'difficulty' | 'halving' = 'difficulty';
+  mode: 'difficulty' | 'halving' = 'halving';
   userSelectedMode: boolean = false;
 
   now: number = Date.now();
@@ -71,18 +93,74 @@ export class DifficultyComponent implements OnInit {
   constructor(
     public stateService: StateService,
     private cd: ChangeDetectorRef,
+    private http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
   ) { }
 
   ngOnInit(): void {
     this.isLoadingWebSocket$ = this.stateService.isLoadingWebSocket$;
-    this.difficultyEpoch$ = combineLatest([
-      this.stateService.blocks$,
-      this.stateService.difficultyAdjustment$,
-    ])
+    this.difficultyEpoch$ = this.http.get<ApiDifficultyData>('/api/v1/difficulty-adjustment')
     .pipe(
-      map(([blocks, da]) => {
-        const maxHeight = blocks.reduce((max, block) => Math.max(max, block.height), 0);
+      map((da) => {
+
+	const maxHeight = this.stateService.latestBlockHeight;
+	const nextSubsidy = getNextBlockSubsidy(maxHeight);
+
+        //const nextEventTime =
+          //(da as any).difficulty_adjustment === 'lwma' && da.nextBlockTime
+            //? da.nextBlockTime
+            //: da.estimatedRetargetDate;
+        const nextEventTime =
+          (da as any).difficulty_adjustment === 'lwma' && (da as any).nextBlockTime
+            ? (da as any).nextBlockTime
+            : da.estimatedRetargetDate;
+
+        // LWMA chains: no epoch-based difficulty UI
+        if ((da as any).difficulty_adjustment === 'lwma') {
+          this.isLWMA = true;
+
+
+          //const maxHeight = this.stateService.latestBlockHeight;
+          const blocksUntilHalving =
+            HALVING_INTERVAL - (maxHeight % HALVING_INTERVAL);
+
+          const timeUntilHalving =
+            Date.now() + blocksUntilHalving * BLOCK_TIME_SECONDS * 1000;
+
+          return {
+            base: '',
+            change: 0,
+            progress: 0,
+            minedBlocks: 0,
+            remainingBlocks: 0,
+            expectedBlocks: 0,
+            colorAdjustments: 'var(--transparent-fg)',
+            colorPreviousAdjustments: 'var(--transparent-fg)',
+            newDifficultyHeight: this.stateService.latestBlockHeight,
+	    //newDifficultyHeight: maxHeight,
+
+  	    nextSubsidy,
+
+            //estimatedRetargetDate: 0,
+            //retargetDateString: 'Difficulty adjusts every block (LWMA)',
+            estimatedRetargetDate: nextEventTime,
+            retargetDateString: new Date(nextEventTime).toLocaleTimeString(),
+
+            previousRetarget: 0,
+
+   	    blocksUntilHalving,
+    	    timeUntilHalving,
+
+            //timeAvg: da.timeAvg,
+            //adjustedTimeAvg: da.adjustedTimeAvg,
+            timeAvg: BLOCK_TIME_SECONDS * 1000,
+            adjustedTimeAvg: BLOCK_TIME_SECONDS * 1000,
+          };
+        }
+
+
+        //console.log('🔍 API /api/v1/difficulty-adjustment response:', da);
+        //const maxHeight = this.stateService.latestBlockHeight;
         let colorAdjustments = 'var(--transparent-fg)';
         if (da.difficultyChange > 0) {
           colorAdjustments = 'var(--green)';
@@ -103,12 +181,20 @@ export class DifficultyComponent implements OnInit {
           colorPreviousAdjustments = 'var(--transparent-fg)';
         }
 
-        const blocksUntilHalving = 210000 - (maxHeight % 210000);
-        const timeUntilHalving = new Date().getTime() + (blocksUntilHalving * 600000);
+        //const blocksUntilHalving = 210000 - (maxHeight % 210000);
+        //const timeUntilHalving = new Date().getTime() + (blocksUntilHalving * 600000);
+        const blocksUntilHalving =
+          HALVING_INTERVAL - (maxHeight % HALVING_INTERVAL);
+        const timeUntilHalving =
+          Date.now() + (blocksUntilHalving * BLOCK_TIME_SECONDS * 1000);
+
+
         const newEpochStart = Math.floor(this.stateService.latestBlockHeight / EPOCH_BLOCK_LENGTH) * EPOCH_BLOCK_LENGTH;
-        const newExpectedHeight = Math.floor(newEpochStart + da.expectedBlocks);
+        //const newExpectedHeight = Math.floor(newEpochStart + da.expectedBlocks);
+        const newExpectedHeight = newEpochStart + Math.floor(da.expectedBlocks);
         this.now = new Date().getTime();
-        this.nextSubsidy = getNextBlockSubsidy(maxHeight);
+        //this.nextSubsidy = getNextBlockSubsidy(maxHeight);
+	//const nextSubsidy = getNextBlockSubsidy(maxHeight);
 
         if (blocksUntilHalving < da.remainingBlocks && !this.userSelectedMode) {
           this.mode = 'halving';
@@ -155,8 +241,8 @@ export class DifficultyComponent implements OnInit {
           change: da.difficultyChange,
           progress: da.progressPercent,
           minedBlocks: this.currentIndex,
-          remainingBlocks: da.remainingBlocks,
-          expectedBlocks: Math.floor(da.expectedBlocks),
+          remainingBlocks: 2016 - (this.currentHeight % 2016),
+          expectedBlocks: da.expectedBlocks,
           colorAdjustments,
           colorPreviousAdjustments,
           newDifficultyHeight: da.nextRetargetHeight,
@@ -167,6 +253,7 @@ export class DifficultyComponent implements OnInit {
           timeUntilHalving,
           timeAvg: da.timeAvg,
           adjustedTimeAvg: da.adjustedTimeAvg,
+  	  nextSubsidy,
         };
         return data;
       })
@@ -237,15 +324,57 @@ export class DifficultyComponent implements OnInit {
   }
 }
 
+
 function getNextBlockSubsidy(height: number): number {
-  const halvings = Math.floor(height / 210_000) + 1;
+  //const halvings = Math.floor(height / 210_000) + 1;
+  const halvings = Math.floor(height / HALVING_INTERVAL) + 1;
+
   // Force block reward to zero when right shift is undefined.
   if (halvings >= 64) {
     return 0;
   }
 
-  let subsidy = BigInt(50 * 100_000_000);
-  // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+  let subsidy = BigInt(35 * 100_000_000);
+  // Subsidy is cut in half every 300,000 blocks which will occur approximately every 1 years.
   subsidy >>= BigInt(halvings);
   return Number(subsidy);
 }
+
+/***
+function getNextBlockSubsidy(height: number): number {
+  const halvings = Math.floor(height / HALVING_INTERVAL);
+
+  if (halvings >= 64) {
+    return 0;
+  }
+
+  const initialSubsidySats = BigInt(35 * 100_000_000); // 35 DMD in base units
+  const nextSubsidySats = initialSubsidySats >> BigInt(halvings + 1);
+
+  return Number(nextSubsidySats); // 🔴 NO division here
+}
+***/
+/***
+function getNextBlockSubsidy(height: number): number {
+  const halvings = Math.floor(height / HALVING_INTERVAL);
+
+  // Force block reward to zero when right shift is undefined.
+  if (halvings >= 64) {
+    return 0;
+  }
+
+  const initialSubsidy = BigInt(35 * 100_000_000); // DMD base units
+  const nextSubsidy = initialSubsidy >> BigInt(halvings + 1);
+
+  return Number(nextSubsidy) / 100_000_000;
+}
+***/
+
+/***
+function getNextBlockSubsidy(height: number): number {
+  const halvings = Math.floor(height / HALVING_INTERVAL);
+  const initialSubsidy = 35; // DMD
+  const nextSubsidy = initialSubsidy / Math.pow(2, halvings + 1);
+  return nextSubsidy;
+}
+***/

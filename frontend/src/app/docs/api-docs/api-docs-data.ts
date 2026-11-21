@@ -2462,6 +2462,34 @@ export const restApiDocsData = [
     type: 'endpoint',
     category: 'general',
     httpRequestMethod: 'GET',
+    fragment: 'get-circulation-supply',
+    title: 'GET Circulating Supply',
+    description: {
+      default: 'Returns the total number of coins currently in circulation as plain text from the UTXO set.'
+    },
+    urlString: '/v1/circulating-supply',
+    showConditions: bitcoinNetworks,
+    showJsExamples: showJsExamplesDefaultFalse,
+    codeExample: {
+      default: {
+        codeTemplate: {
+          commonJS: ``,
+          esModule: ``,
+          curl: `/api/v1/circulating-supply`,
+        },
+        codeSampleMainnet: {
+            esModule: [],
+            commonJS: [],
+            curl: [],
+          response: `2320650.00000000`
+        }
+      }
+    }
+  },
+  {
+    type: 'endpoint',
+    category: 'general',
+    httpRequestMethod: 'GET',
     fragment: 'get-difficulty-adjustment',
     title: 'GET Difficulty Adjustment',
     description: {
@@ -2600,55 +2628,91 @@ export const restApiDocsData = [
       }
     }
   },
+
+
+
+
+
   {
     type: 'endpoint',
     category: 'general',
     httpRequestMethod: 'GET',
-    fragment: 'get-historical-price',
-    title: 'GET Historical Price',
+    fragment: 'get-rich-list',
+    title: 'GET Rich List',
     description: {
-      default: 'Returns bitcoin historical price denominated in main currencies. Available query parameters: <code>currency</code>, <code>timestamp</code>. If no parameter is provided, the full price history for all currencies is returned.'
+      default: 'Returns the richest addresses with their balances. Supports optional limit parameter (100 by default, max 500).'
     },
-    urlString: '/v1/historical-price?currency=EUR&timestamp=1500000000',
-    showConditions: [''],
+    urlString: '/v1/richlist?limit=250',
+    showConditions: bitcoinNetworks,
+    showJsExamples: showJsExamplesDefaultFalse,
+    codeExample: {
+      default: {
+          codeTemplate: {
+          commonJS: ``,
+          esModule: ``,
+          curl: `/api/v1/richlist?limit=250`,
+        },
+        codeSampleMainnet: {
+          esModule: [],
+          commonJS: [],
+          curl: [
+            `https://mempool.debitmydata.io/api/v1/richlist?limit=250`,
+          ],
+          response: `[
+    { "rank": 1, "address": "Fabc123...", "balance": 150000.0 },
+    { "rank": 2, "address": "Fxyz789...", "balance": 120000.0 }
+  ]`
+        }
+      }
+    }
+  },
+
+  {
+    type: 'endpoint',
+    category: 'general',
+    httpRequestMethod: 'GET',
+    fragment: 'get-rich-list-summary',
+    title: 'GET Rich List Summary',
+    description: {
+      default: 'Returns circulation supply and the share held by the top 10, 100, 250, and 500 richest addresses.'
+    },
+    urlString: '/v1/richlist/summary',
+    showConditions: bitcoinNetworks,
     showJsExamples: showJsExamplesDefaultFalse,
     codeExample: {
       default: {
         codeTemplate: {
           commonJS: ``,
           esModule: ``,
-          curl: `/api/v1/historical-price?currency=EUR&timestamp=1500000000`,
+          curl: `/api/v1/richlist/summary`,
         },
         codeSampleMainnet: {
           esModule: [],
           commonJS: [],
-          curl: [],
+          curl: [
+            `https://mempool.debitmydata.io/api/v1/richlist/summary`
+          ],
           response: `{
-  prices: [
-    {
-      "time": 1499904000,
-      "EUR": 1964,
-      "USD": 2254.9
-    }
-  ],
-  exchangeRates: {
-    "USDEUR": 0.92,
-    "USDGBP": 0.78,
-    "USDCAD": 1.36,
-    "USDCHF": 0.89,
-    "USDAUD": 1.53,
-    "USDJPY": 149.48
-  }
-}
-`
-        },
-        codeSampleTestnet: emptyCodeSample,
-        codeSampleSignet: emptyCodeSample,
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
+    "totalSupply": 2382500,
+    "top10": 560000,
+    "top100": 1250000,
+    "top250": 1800000,
+    "top500": 2100000,
+    "rest": 282500,
+    "top10Percent": 23.5,
+    "top100Percent": 52.4,
+    "top250Percent": 75.6,
+    "top500Percent": 88.2,
+    "restPercent": 11.8
+  }`
+        }
       }
     }
   },
+
+
+
+
   {
     type: 'category',
     category: 'addresses',
@@ -2689,11 +2753,11 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `{
-  address: "1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv",
+  address: "dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv",
   chain_stats: {
     funded_txo_count: 5,
     funded_txo_sum: 15007599040,
@@ -2733,11 +2797,11 @@ export const restApiDocsData = [
 }`
         },
         codeSampleSignet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `{
-  address: "1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv",
+  address: "dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv",
   chain_stats: {
     funded_txo_count: 5,
     funded_txo_sum: 15007599040,
@@ -2826,9 +2890,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `[
   {
     txid: "dba43fd04b7ae3df8e5b596f2e7fab247c58629d622e3a5213f03a5a09684430",
@@ -2874,11 +2938,11 @@ export const restApiDocsData = [
 ]`
         },
         codeSampleSignet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `{
-  address: "1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv",
+  address: "dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv",
   chain_stats: {
     funded_txo_count: 5,
     funded_txo_sum: 15007599040,
@@ -2979,9 +3043,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `[
   {
     txid: "c4e53c2e37f4fac759fdb0d8380e4d49e6c7211233ae276a44ce7074a1d6d168",
@@ -3027,11 +3091,11 @@ export const restApiDocsData = [
 ],`
         },
         codeSampleSignet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `{
-  address: "1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv",
+  address: "dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv",
   chain_stats: {
     funded_txo_count: 765,
     funded_txo_sum: 87749875807,
@@ -3132,9 +3196,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `[
   {
     txid: "16cd9bbc6b62313a22d16671fa559aec6bf581df8b5853d37775c84b0fddfa90",
@@ -3168,9 +3232,9 @@ export const restApiDocsData = [
 ]`
         },
         codeSampleSignet: {
-          esModule: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          commonJS: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
-          curl: [`1wiz18xYmhRX6xStj2b9t1rwWX4GKUgpv`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `[
   {
     txid: "16cd9bbc6b62313a22d16671fa559aec6bf581df8b5853d37775c84b0fddfa90",
@@ -3258,9 +3322,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: [`1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY`],
-          commonJS: [`1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY`],
-          curl: [`1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY`],
+          esModule: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          commonJS: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `[
   {
     txid: "12f96289f8f9cd51ccfe390879a46d7eeb0435d9e0af9297776e6bdf249414ff",
@@ -3376,10 +3440,10 @@ export const restApiDocsData = [
           esModule: ``,
         },
         codeSampleMainnet: {
-          curl: [`1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY`],
+          curl: [`dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv`],
           response: `{
   isvalid: true,
-  address: "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY",
+  address: "dm1q7kfsw4lz35ahqzllkqktzelxzkdwwj9scysupv",
   scriptPubKey: "76a914c825a1ecf2a6830c4401620c3a16f1995057c2ab88ac",
   isscript: false,
   iswitness: false
@@ -3773,9 +3837,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
-          commonJS: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
-          curl: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
           response: `{
   "id": "000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce",
   "height": 363366,
@@ -4192,9 +4256,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          commonJS: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          curl: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
           response: `040000202c04d4c450187d1da9b1bc23ba47d67fe028d22486fd0c00000000000000000059a3a33d4642c799af9f54a4dd351fff9130e6a89d4e251130c60064878616e906b5ea60ce9813173a25caf3`
         },
         codeSampleTestnet: {
@@ -4254,10 +4318,10 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['615615'],
-          commonJS: ['615615'],
-          curl: ['615615'],
-          response: `000000000000000000067bea442af50a91377ac796e63b8d284354feff4042b3`
+          esModule: ['4000'],
+          commonJS: ['4000'],
+          curl: ['4000'],
+          response: `00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600`
         },
         codeSampleTestnet: {
           esModule: ['2100100'],
@@ -4308,7 +4372,7 @@ export const restApiDocsData = [
         codeSampleMainnet: {
           esModule: [],
           commonJS: [],
-          curl: ['1672531200'],
+          curl: ['1772267400'],
           response: `{
   height: 769786,
   hash: "000000000000000000017f6405c2382de84944eb21be9cec0379a735813f137b",
@@ -4318,7 +4382,7 @@ export const restApiDocsData = [
         codeSampleTestnet: {
           esModule: [],
           commonJS: [],
-          curl: ['1672531200'],
+          curl: ['1772267400'],
           response: `{
   height: 2413838,
   hash: "00000000000000082888e2353ea4baaea04d2e0e88f2ee054ad2bbcc1d6a5469",
@@ -4328,7 +4392,7 @@ export const restApiDocsData = [
         codeSampleSignet: {
           esModule: [],
           commonJS: [],
-          curl: ['1672531200'],
+          curl: ['1772267400'],
           response: `{
   height: 123713,
   hash: "0000010c6df8ffe1684ab9d7cfac69836a4538c057fab4571b809120fe486c96",
@@ -4373,9 +4437,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          commonJS: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          curl: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
           response: '',
         },
         codeSampleTestnet: {
@@ -4438,13 +4502,13 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          commonJS: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
-          curl: ['0000000000000000000065bda8f8a88f2e1e00d9a6887a43d640e52a4c7660f2'],
+          esModule: ['000006fbd03462e6e03aa8e05a5fadc4fc7a7adfb23d0f7c8ecf7ceef907242e'],
+          commonJS: ['000006fbd03462e6e03aa8e05a5fadc4fc7a7adfb23d0f7c8ecf7ceef907242e'],
+          curl: ['000006fbd03462e6e03aa8e05a5fadc4fc7a7adfb23d0f7c8ecf7ceef907242e'],
           response: `{
   in_best_chain: true,
-  height: 690557,
-  next_best: "00000000000000000003a59a34c93e39e636c8cd23ead726fdc467fbed0b7c5a"
+  height: 1,
+  next_best: "000004a60ae8e262dd02b7733f012abcb4902c9c6b205aaa4034519d522f41cd"
 }`
         },
         codeSampleTestnet: {
@@ -4649,10 +4713,10 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
-          commonJS: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
-          curl: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
-          response: `0fa6da60e484941f255cbb025c3d6440e5a7e970119e899b4065c7999360e406`
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '4000'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '4000'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '4000'],
+          response: `8482b43e7f75c131b69ba05a812b9f7e17aa25bcf706bca7fd9517c1e5866715`
         },
         codeSampleTestnet: {
           esModule: ['000000000000004a3ff1faff12c446f711c650454ff8af7f41d1e8b2564dd74b', '1'],
@@ -4714,9 +4778,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
-          commonJS: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
-          curl: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce', '218'],
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '218'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '218'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600', '218'],
           response: `[
   "cfe624ccdd8010cf78dbedd1b25e1ff601b470c4d7d90fa9fc8c1bcc5cdc6e0e",
   "a5ef89881bd5103f223a0fa285dfc75f4718974cb792cf85e623a7de05801bc9",
@@ -4808,9 +4872,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
-          commonJS: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
-          curl: ['000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce'],
+          esModule: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          commonJS: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
+          curl: ['00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600'],
           response: `[
   {
     txid: "cfe624ccdd8010cf78dbedd1b25e1ff601b470c4d7d90fa9fc8c1bcc5cdc6e0e",
@@ -4824,7 +4888,7 @@ export const restApiDocsData = [
     status: {
       confirmed: true,
       block_height: 363366,
-      block_hash: "000000000000000015dc777b3ff2611091336355d3f0ee9766a2cf3be8e4b1ce",
+      block_hash: "00000000000001d8c437644c1654e3bfb94532c73be2608b921638f9cae92600",
       block_time: 1435766771
     }
   },
@@ -5379,7 +5443,7 @@ export const restApiDocsData = [
     "coinbase_raw": "044c86041b020602",
     "coinbase_address": null,
     "coinbase_signature": "OP_PUSHBYTES_65 041b0e8c2567c12536aa13357b79a073dc4444acb83c4ec7a0e2f99dd7457516c5817242da796924ca4e99947d087fedf9ce467cb9f7c6287078f801df276fdf84 OP_CHECKSIG",
-    "coinbase_signature_ascii": "\u0004L�\u0004\u001b\u0002\u0006\u0002",
+    "coinbase_signature_ascii": "\u0004L \u0004\u001b\u0002\u0006\u0002",
     "pool_slug": "unknown",
     "orphans": []
   }
@@ -5442,7 +5506,7 @@ export const restApiDocsData = [
     "coinbase_raw": "03a08601000427f1001c046a510100522cfabe6d6d0000000000000000000068692066726f6d20706f6f6c7365727665726aac1eeeed88",
     "coinbase_address": "mtkbaiLiUH3fvGJeSzuN3kUgmJzqinLejJ",
     "coinbase_signature": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 912e2b234f941f30b18afbb4fa46171214bf66c8 OP_EQUALVERIFY OP_CHECKSIG",
-    "coinbase_signature_ascii": "\u0003 �\u0001\u0000\u0004'ñ\u0000\u001c\u0004jQ\u0001\u0000R,ú¾mm\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000hi from poolserverj¬\u001eîí�",
+    "coinbase_signature_ascii": "\u0003  \u0001\u0000\u0004'ñ\u0000\u001c\u0004jQ\u0001\u0000R,ú¾mm\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000hi from poolserverj¬\u001eîí ",
     "pool_slug": "unknown",
     "orphans": []
   }
@@ -5505,7 +5569,7 @@ export const restApiDocsData = [
     "coinbase_raw": "03a08601",
     "coinbase_address": "tb1psfjl80vk0yp3agcq6ylueas29rau00mfq90mhejerpgccg33xhasd9gjyd",
     "coinbase_signature": "OP_PUSHNUM_1 OP_PUSHBYTES_32 8265f3bd9679031ea300d13fccf60a28fbc7bf69015fbbe65918518c223135fb",
-    "coinbase_signature_ascii": "\u0003 �\u0001",
+    "coinbase_signature_ascii": "\u0003  \u0001",
     "pool_slug": "unknown",
     "orphans": []
   }
@@ -5842,20 +5906,19 @@ export const restApiDocsData = [
         codeSampleMainnet: {
           esModule: [],
           commonJS: [],
-          curl: [`slushpool`],
+          curl: [`miningdutch`],
           response: `{
   "pool": {
     "id": 43,
-    "name": "SlushPool",
-    "link": "https://slushpool.com/",
+    "name": "Mining-Dutch",
+    "link": "https://mining-dutch.com/",
     "addresses": [
-      "1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE",
-      "1AqTMY7kmHZxBuLUR5wJjPFUvqGs23sesr"
+      "1J3KUhokRps1joHaqm78wj2PJmEUNs9spR",
     ],
     "regexes": [
-      "/slush/"
+      "/Mining-Dutch/"
     ],
-    "slug": "slushpool"
+    "slug": "Mining-Dutch"
   },
   "blockCount": {
     "all": 679,
@@ -6160,7 +6223,7 @@ export const restApiDocsData = [
         codeSampleMainnet: {
           esModule: [],
           commonJS: [],
-          curl: [`luxor`,`730000`],
+          curl: [`miningdutch`,`45000`],
           response: `[
   {
     "id": "0000000000000000000572c6eb693c51b728593139079c613c8ea0bc6384e362",
@@ -7351,10 +7414,10 @@ export const restApiDocsData = [
         codeSampleMainnet: {
           esModule: [],
           commonJS: [],
-          curl: [`00000000000000000000f218ceda7a5d9c289040b9c3f05ef9f7c2f4930e0123`],
+          curl: [`0000000000000000039cc7e97152c1569b784654e43e975fd72c4486f9711a81`],
           response: `{
   height: 822418,
-  id: "00000000000000000000f218ceda7a5d9c289040b9c3f05ef9f7c2f4930e0123",
+  id: "0000000000000000039cc7e97152c1569b784654e43e975fd72c4486f9711a81",
   timestamp: 1703262962,
   template: [
     {
@@ -8478,11 +8541,11 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `{
-  txid: "15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521",
+  txid: "7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59",
   version: 1,
   locktime: 0,
   vin: [],
@@ -8618,9 +8681,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `010000000536a007284bd52ee826680a7f43536472f1bcce1e76cd76b826b88c5884eddf1f0c0000006b483045022100bcdf40fb3b5ebfa2c158ac8d1a41c03eb3dba4e180b00e81836bafd56d946efd022005cc40e35022b614275c1e485c409599667cbd41f6e5d78f421cb260a020a24f01210255ea3f53ce3ed1ad2c08dfc23b211b15b852afb819492a9a0f3f99e5747cb5f0ffffffffee08cb90c4e84dd7952b2cfad81ed3b088f5b...`
         },
         codeSampleTestnet: {
@@ -8683,9 +8746,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `0300000058f6dd09ac5aea942c01d12e75b351e73f4304cc442741000000000000000000ef0c2fa8517414b742094a020da7eba891b47d660ef66f126ad01e5be99a2fd09ae093558e411618c14240df820700000ce4d15e17594f257b22d1ddf47d07b3b88779a8374fcd515ad883d79726c6027da6abfcbc1341a049b30277d3bf14e4663...`
         },
         codeSampleTestnet: {
@@ -8738,9 +8801,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `{
   block_height: 363348,
   merkle: [
@@ -8861,9 +8924,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521', '3'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521', '3'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521', '3'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59', '3'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59', '3'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59', '3'],
           response: `{
   spent: true,
   txid: "2a1b8ec06d68096911da82b02806c3848c415b0044a0046850c4a97cbffac7b1",
@@ -8976,9 +9039,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `[
   {
     spent: true,
@@ -9112,9 +9175,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: ``
         },
         codeSampleTestnet: {
@@ -9318,9 +9381,9 @@ export const restApiDocsData = [
           `,
         },
         codeSampleMainnet: {
-          esModule: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          commonJS: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
-          curl: ['15e10745f15593a899cef391191bdd3d7c12412cc4696b7bcb669d0feadc8521'],
+          esModule: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          commonJS: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
+          curl: ['7326aebbadc5cd67423cf55436885d62b9e2fca6ef573f1c23f2283282d13b59'],
           response: `{
   confirmed: true,
   block_height: 363348,
@@ -9483,2474 +9546,6 @@ export const restApiDocsData = [
   },
   {
     type: 'category',
-    category: 'lightning',
-    fragment: 'lightning',
-    title: 'Lightning',
-    showConditions: lightningNetworks
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-lightning-network-stats',
-    title: 'GET Network Stats',
-    description: {
-      default: '<p>Returns network-wide stats such as total number of channels and nodes, total capacity, and average/median fee figures.</p><p>Pass one of the following for <code>:interval</code>: <code>latest</code>, <code>24h</code>, <code>3d</code>, <code>1w</code>, <code>1m</code>, <code>3m</code>, <code>6m</code>, <code>1y</code>, <code>2y</code>, <code>3y</code>.</p>'
-    },
-    urlString: '/v1/lightning/statistics/:interval',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/statistics/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`latest`],
-          response: `{
-  "latest": {
-    "id": 163,
-    "added": "2022-08-30T00:00:00.000Z",
-    "channel_count": 81690,
-    "node_count": 15851,
-    "total_capacity": 460820222344,
-    "tor_nodes": 11455,
-    "clearnet_nodes": 2305,
-    "unannounced_nodes": 974,
-    "avg_capacity": 5641085,
-    "avg_fee_rate": 497,
-    "avg_base_fee_mtokens": 915,
-    "med_capacity": 1500000,
-    "med_fee_rate": 40,
-    "med_base_fee_mtokens": 100,
-    "clearnet_tor_nodes": 1117
-  }
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`latest`],
-          response: `{
-  "latest": {
-    "id": 13,
-    "added": "2022-08-30T00:00:00.000Z",
-    "channel_count": 5101,
-    "node_count": 1806,
-    "total_capacity": 43341092977,
-    "tor_nodes": 288,
-    "clearnet_nodes": 736,
-    "unannounced_nodes": 656,
-    "avg_capacity": 8496588,
-    "avg_fee_rate": 354,
-    "avg_base_fee_mtokens": 1183,
-    "med_capacity": 1148313,
-    "med_fee_rate": 1,
-    "med_base_fee_mtokens": 1000,
-    "clearnet_tor_nodes": 126
-  }
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`latest`],
-          response: `{
-  "latest": {
-    "id": 13,
-    "added": "2022-08-30T00:00:00.000Z",
-    "channel_count": 33,
-    "node_count": 24,
-    "total_capacity": 161821884,
-    "tor_nodes": 5,
-    "clearnet_nodes": 11,
-    "unannounced_nodes": 6,
-    "avg_capacity": 4903693,
-    "avg_fee_rate": 38,
-    "avg_base_fee_mtokens": 1061,
-    "med_capacity": 2000000,
-    "med_fee_rate": 1,
-    "med_base_fee_mtokens": 1000,
-    "clearnet_tor_nodes": 2
-  }
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-lightning-nodes-channels',
-    title: 'GET Nodes/Channels',
-    description: {
-      default: '<p>Returns Lightning nodes and channels that match a full-text, case-insensitive search <code>:query</code> across node aliases, node pubkeys, channel IDs, and short channel IDs.</p>'
-    },
-    urlString: '/v1/lightning/search?searchText=:query',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/search?searchText=%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`ACINQ`],
-          response: `{
-  "nodes": [
-    {
-      "public_key": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-      "alias": "ACINQ",
-      "capacity": 35920090247,
-      "channels": 2907
-    },
-    {
-      "public_key": "03d3902b46d6ab9558a76cbf91b27d093c0a3c54e59f33c7eb4bd643dbb3b1b5b0",
-      "alias": "Acinq",
-      "capacity": null,
-      "channels": null
-    }
-  ],
-  "channels": []
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`lnd`],
-          response: `{
-  "nodes": [
-    {
-      "public_key": "02be8f360e57600486b93dd33ea0872a4e14a259924ba4084f27d693a77d151158",
-      "alias": "lndus1.dev.zaphq.io",
-      "capacity": 762968876,
-      "channels": 27
-    },
-    {
-      "public_key": "028c3640c57ffe47eb41db8225968833c5032f297aeba98672d6f7037090d59e3f",
-      "alias": "lndus0.next.zaphq.io",
-      "capacity": 641040063,
-      "channels": 26
-    }
-  ],
-  "channels": []
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`guggero`],
-          response: `{
-  "nodes": [
-    {
-      "public_key": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-      "alias": "guggero",
-      "capacity": 66577093,
-      "channels": 12,
-      "status": 1
-    }
-  ],
-  "channels": []
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-lightning-nodes-country',
-    title: 'GET Nodes in Country',
-    description: {
-      default: '<p>Returns a list of Lightning nodes running on clearnet in the requested <code>:country</code>, where <code>:country</code> is an ISO Alpha-2 country code.</p>'
-    },
-    urlString: '/v1/lightning/nodes/country/:country',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/country/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`ch`],
-          response: `{
-  "country": {
-    "de": "Schweiz",
-    "en": "Switzerland",
-    "es": "Suiza",
-    "fr": "Suisse",
-    "ja": "スイス連邦",
-    "pt-BR": "Suíça",
-    "ru": "Швейцария",
-    "zh-CN": "瑞士"
-  },
-  "nodes": [
-    {
-      "public_key": "033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025",
-      "capacity": 54339697486,
-      "channels": 991,
-      "alias": "bfx-lnd0",
-      "first_seen": 1574813156,
-      "updated_at": 1661814056,
-      "city": {
-        "de": "Zürich",
-        "en": "Zurich",
-        "es": "Zúrich",
-        "fr": "Zurich",
-        "ja": "チューリッヒ",
-        "pt-BR": "Zurique",
-        "ru": "Цюрих",
-        "zh-CN": "苏黎世"
-      },
-      "country": {
-        "de": "Schweiz",
-        "en": "Switzerland",
-        "es": "Suiza",
-        "fr": "Suisse",
-        "ja": "スイス連邦",
-        "pt-BR": "Suíça",
-        "ru": "Швейцария",
-        "zh-CN": "瑞士"
-      },
-      "iso_code": "CH",
-      "subdivision": {
-        "de": "Zürich",
-        "en": "Zurich",
-        "fr": "Zurich"
-      }
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`ch`],
-          response: `{
-  "country": {
-    "de": "Schweiz",
-    "en": "Switzerland",
-    "es": "Suiza",
-    "fr": "Suisse",
-    "ja": "スイス連邦",
-    "pt-BR": "Suíça",
-    "ru": "Швейцария",
-    "zh-CN": "瑞士"
-  },
-  "nodes": [
-    {
-      "public_key": "0200a7f20e51049363cb7f2a0865fe072464d469dca0ac34c954bb3d4b552b6e95",
-      "capacity": 94802991,
-      "channels": 15,
-      "alias": "looptest",
-      "first_seen": 1601298108,
-      "updated_at": 1661857089,
-      "city": {
-        "de": "Thun",
-        "en": "Thun",
-        "es": "Thun",
-        "fr": "Thoune",
-        "ja": "トゥーン",
-        "pt-BR": "Tune",
-        "ru": "Тун",
-        "zh-CN": "图恩"
-      },
-      "country": {
-        "de": "Schweiz",
-        "en": "Switzerland",
-        "es": "Suiza",
-        "fr": "Suisse",
-        "ja": "スイス連邦",
-        "pt-BR": "Suíça",
-        "ru": "Швейцария",
-        "zh-CN": "瑞士"
-      },
-      "iso_code": "CH",
-      "subdivision": {
-        "de": "Bern",
-        "en": "Bern",
-        "fr": "Berne"
-      }
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`us`],
-          response: `{
-  "country": {
-    "de": "Vereinigte Staaten",
-    "en": "United States",
-    "es": "Estados Unidos",
-    "fr": "États Unis",
-    "ja": "アメリカ",
-    "pt-BR": "EUA",
-    "ru": "США",
-    "zh-CN": "美国"
-  },
-  "nodes": [
-    {
-      "public_key": "03f70ac4525c0014bbf380c069ce82d70946d37a56c027a2ed18609a3e60c3b353",
-      "capacity": 2000000,
-      "channels": 1,
-      "alias": "",
-      "first_seen": 1637708194,
-      "updated_at": 0,
-      "city": {
-        "en": "Oak Park",
-        "ru": "Оук-Парк"
-      },
-      "country": {
-        "de": "Vereinigte Staaten",
-        "en": "United States",
-        "es": "Estados Unidos",
-        "fr": "États Unis",
-        "ja": "アメリカ",
-        "pt-BR": "EUA",
-        "ru": "США",
-        "zh-CN": "美国"
-      },
-      "iso_code": "US",
-      "subdivision": {
-        "en": "Illinois",
-        "es": "Illinois",
-        "fr": "Illinois",
-        "ja": "イリノイ州",
-        "pt-BR": "Ilinóis",
-        "ru": "Иллинойс",
-        "zh-CN": "伊利诺伊州"
-      }
-    },
-    {
-      "public_key": "0397b15fd867541c53a3a5e27c021f7acad582684d05d120af572266c92c8a0313",
-      "capacity": 19802,
-      "channels": 1,
-      "alias": "pseudozach",
-      "first_seen": 1637620444,
-      "updated_at": 1637721257,
-      "city": {
-        "de": "Atlanta",
-        "en": "Atlanta",
-        "es": "Atlanta",
-        "fr": "Atlanta",
-        "ja": "アトランタ",
-        "pt-BR": "Atlanta",
-        "ru": "Атланта",
-        "zh-CN": "亚特兰大"
-      },
-      "country": {
-        "de": "Vereinigte Staaten",
-        "en": "United States",
-        "es": "Estados Unidos",
-        "fr": "États Unis",
-        "ja": "アメリカ",
-        "pt-BR": "EUA",
-        "ru": "США",
-        "zh-CN": "美国"
-      },
-      "iso_code": "US",
-      "subdivision": {
-        "en": "Georgia",
-        "es": "Georgia",
-        "fr": "Géorgie",
-        "ja": "ジョージア州",
-        "pt-BR": "Geórgia",
-        "ru": "Джорджия",
-        "zh-CN": "乔治亚"
-      }
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-country-node-stats',
-    title: 'GET Node Stats Per Country',
-    description: {
-      default: '<p>Returns aggregate capacity and number of clearnet nodes per country. Capacity figures are in satoshis.</p>'
-    },
-    urlString: '/v1/lightning/nodes/countries',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/countries`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "name": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    },
-    "iso": "US",
-    "count": 2775,
-    "share": 34.53,
-    "capacity": "372732844657"
-  },
-  {
-    "name": {
-      "de": "Frankreich",
-      "en": "France",
-      "es": "Francia",
-      "fr": "France",
-      "ja": "フランス共和国",
-      "pt-BR": "França",
-      "ru": "Франция",
-      "zh-CN": "法国"
-    },
-    "iso": "FR",
-    "count": 972,
-    "share": 12.09,
-    "capacity": "7740713270"
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "name": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    },
-    "iso": "US",
-    "count": 304,
-    "share": 37.95,
-    "capacity": "23906225936"
-  },
-  {
-    "name": {
-      "de": "Deutschland",
-      "en": "Germany",
-      "es": "Alemania",
-      "fr": "Allemagne",
-      "ja": "ドイツ連邦共和国",
-      "pt-BR": "Alemanha",
-      "ru": "Германия",
-      "zh-CN": "德国"
-    },
-    "iso": "DE",
-    "count": 85,
-    "share": 10.61,
-    "capacity": "1878052329"
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "name": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    },
-    "iso": "US",
-    "count": 4,
-    "share": 36.36,
-    "capacity": "2059317"
-  },
-  {
-    "name": {
-      "de": "Japan",
-      "en": "Japan",
-      "es": "Japón",
-      "fr": "Japon",
-      "ja": "日本",
-      "pt-BR": "Japão",
-      "ru": "Япония",
-      "zh-CN": "日本"
-    },
-    "iso": "JP",
-    "count": 2,
-    "share": 18.18,
-    "capacity": "107710417"
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-isp-nodes',
-    title: 'GET ISP Nodes',
-    description: {
-      default: '<p>Returns a list of nodes hosted by a specified <code>:isp</code>, where <code>:isp</code> is an ISP\'s ASN.</p>'
-    },
-    urlString: '/v1/lightning/nodes/isp/:isp',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/isp/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`16509`],
-          response: `{
-  "isp": "Amazon.com",
-  "nodes": [
-    {
-      "public_key": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-      "capacity": 36010390247,
-      "channels": 2907,
-      "alias": "ACINQ",
-      "first_seen": 1522941222,
-      "updated_at": 1661274935,
-      "city": null,
-      "country": {
-        "de": "Vereinigte Staaten",
-        "en": "United States",
-        "es": "Estados Unidos",
-        "fr": "États Unis",
-        "ja": "アメリカ",
-        "pt-BR": "EUA",
-        "ru": "США",
-        "zh-CN": "美国"
-      },
-      "iso_code": "US",
-      "subdivision": null
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`16509`],
-          response: `{
-  "isp": "Amazon.com",
-  "nodes": [
-    {
-      "public_key": "03933884aaf1d6b108397e5efe5c86bcf2d8ca8d2f700eda99db9214fc2712b134",
-      "capacity": 2041664924,
-      "channels": 70,
-      "alias": "endurance",
-      "first_seen": 1566809576,
-      "updated_at": 1660926529,
-      "city": null,
-      "country": {
-        "de": "Vereinigte Staaten",
-        "en": "United States",
-        "es": "Estados Unidos",
-        "fr": "États Unis",
-        "ja": "アメリカ",
-        "pt-BR": "EUA",
-        "ru": "США",
-        "zh-CN": "美国"
-      },
-      "iso_code": "US",
-      "subdivision": null
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`7684`],
-          response: `{
-  "isp": "SAKURA Internet",
-  "nodes": [
-    {
-      "public_key": "02dadf6c28f3284d591cd2a4189d1530c1ff82c07059ebea150a33ab76e7364b4a",
-      "capacity": 51155987,
-      "channels": 15,
-      "alias": "珠美ノード⚡@wakiyamap",
-      "first_seen": 1612221581,
-      "updated_at": 1662382573,
-      "city": null,
-      "country": {
-        "de": "Japan",
-        "en": "Japan",
-        "es": "Japón",
-        "fr": "Japon",
-        "ja": "日本",
-        "pt-BR": "Japão",
-        "ru": "Япония",
-        "zh-CN": "日本"
-      },
-      "iso_code": "JP",
-      "subdivision": null
-    }
-  ]
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-isp-node-stats',
-    title: 'GET Node Stats Per ISP',
-    description: {
-      default: '<p>Returns aggregate capacity, number of nodes, and number of channels per ISP. Capacity figures are in satoshis.</p>'
-    },
-    urlString: '/v1/lightning/nodes/isp-ranking',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/isp-ranking`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "clearnetCapacity": 417154330493,
-  "torCapacity": 36605381932,
-  "unknownCapacity": 6678700534,
-  "ispRanking": [
-    [
-      "14061",           //ASN
-      "DigitalOcean",    //ISP name
-      43681728521,       //aggregate capacity, in sats
-      5028,              //total number of channels
-      192                //number of nodes
-    ],
-    [
-      "701",
-      "Verizon Internet Services",
-      3047086363,
-      507,
-      55
-    ],
-    [
-      "396982,15169",
-      "Google Cloud",
-      139554933568,
-      2747,
-      78
-    ],
-    ...
-  ]
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "clearnetCapacity": 21714967205,
-  "torCapacity": 1183591190,
-  "unknownCapacity": 965032372,
-  "ispRanking": [
-    [
-      "14080",                  //ASN
-      "Telmex Colombia S.A.",   //ISP Name
-      220063321,                //aggregate capacity, in sats
-      98,                       //total number of channels
-      1                         //number of nodes
-    ],
-    [
-      "16509,14618",
-      "Amazon.com",
-      5590657952,
-      445,
-      41
-    ],
-    ...
-  ]
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "clearnetCapacity": 126914725,
-  "torCapacity": 1000000,
-  "unknownCapacity": 31150000,
-  "ispRanking": [
-    [
-      "1136",
-      "KPN",
-      99878,
-      1,
-      1
-    ],
-    [
-      "24940",
-      "Hetzner Online GmbH",
-      34877093,
-      6,
-      1
-    ],
-    ...
-  ]
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-top-100-nodes',
-    title: 'GET Top 100 Nodes',
-    description: {
-      default: '<p>Returns two lists of the top 100 nodes: one ordered by liquidity (aggregate channel capacity) and the other ordered by connectivity (number of open channels).</p>'
-    },
-    urlString: '/v1/lightning/nodes/rankings',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/rankings`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "topByCapacity": [
-    {
-      "publicKey": "033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025",
-      "alias": "bfx-lnd0",
-      "capacity": 54361697486
-    },
-    {
-      "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-      "alias": "ACINQ",
-      "capacity": 36010516297
-    },
-    ...
-  ],
-  "topByChannels": [
-    {
-      "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-      "alias": "ACINQ",
-      "channels": 2908
-    },
-    {
-      "publicKey": "035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226",
-      "alias": "WalletOfSatoshi.com",
-      "channels": 2771
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "topByCapacity": [
-    {
-      "publicKey": "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-      "alias": "aranguren.org",
-      "capacity": 17155095532
-    },
-    {
-      "publicKey": "0225ff2ae6a3d9722b625072503c2f64f6eddb78d739379d2ee55a16b3b0ed0a17",
-      "alias": "STRANGEIRON",
-      "capacity": 7038263480
-    },
-    ...
-  ],
-  "topByChannels": [
-    {
-      "publicKey": "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-      "alias": "aranguren.org",
-      "channels": 489
-    },
-    {
-      "publicKey": "030425d8babe3ab6dfc065e69dd8b10ce6738c86ea7d634324c913e21620fa5eaf",
-      "alias": "MTest441",
-      "channels": 258
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `{
-  "topByCapacity": [
-    {
-      "publicKey": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-      "alias": "guggero",
-      "capacity": 66577093
-    },
-    {
-      "publicKey": "0271cf3881e6eadad960f47125434342e57e65b98a78afa99f9b4191c02dd7ab3b",
-      "alias": "eclair@wakiyamap",
-      "capacity": 56554430
-    },
-    ...
-  ],
-  "topByChannels": [
-    {
-      "publicKey": "02dadf6c28f3284d591cd2a4189d1530c1ff82c07059ebea150a33ab76e7364b4a",
-      "alias": "珠美ノード⚡@wakiyamap",
-      "channels": 15
-    },
-    {
-      "publicKey": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-      "alias": "guggero",
-      "channels": 12
-    },
-    ...
-  ]
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-top-100-nodes-liquidity',
-    title: 'GET Top 100 Nodes by Liquidity',
-    description: {
-      default: '<p>Returns a list of the top 100 nodes by liquidity (aggregate channel capacity).</p>'
-    },
-    urlString: '/v1/lightning/nodes/rankings/liquidity',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/rankings/liquidity`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025",
-    "alias": "bfx-lnd0",
-    "capacity": 54361697486,
-    "channels": 993,
-    "firstSeen": 1574813156,
-    "updatedAt": 1661814056,
-    "city": {
-      "de": "Zürich",
-      "en": "Zurich",
-      "es": "Zúrich",
-      "fr": "Zurich",
-      "ja": "チューリッヒ",
-      "pt-BR": "Zurique",
-      "ru": "Цюрих",
-      "zh-CN": "苏黎世"
-    },
-    "country": {
-      "de": "Schweiz",
-      "en": "Switzerland",
-      "es": "Suiza",
-      "fr": "Suisse",
-      "ja": "スイス連邦",
-      "pt-BR": "Suíça",
-      "ru": "Швейцария",
-      "zh-CN": "瑞士"
-    }
-  },
-  {
-    "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-    "alias": "ACINQ",
-    "capacity": 36010516297,
-    "channels": 2908,
-    "firstSeen": 1522941222,
-    "updatedAt": 1661274935,
-    "city": null,
-    "country": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-    "alias": "aranguren.org",
-    "capacity": 17155095532,
-    "channels": 489,
-    "firstSeen": 1521457251,
-    "updatedAt": 1662035238,
-    "city": {
-      "de": "Melbourne",
-      "en": "Melbourne",
-      "es": "Melbourne",
-      "fr": "Melbourne",
-      "ja": "メルボルン",
-      "pt-BR": "Melbourne",
-      "ru": "Мельбурн",
-      "zh-CN": "墨尔本"
-    },
-    "country": {
-      "de": "Australien",
-      "en": "Australia",
-      "es": "Australia",
-      "fr": "Australie",
-      "ja": "オーストラリア",
-      "pt-BR": "Austrália",
-      "ru": "Австралия",
-      "zh-CN": "澳大利亚"
-    }
-  },
-  {
-    "publicKey": "0225ff2ae6a3d9722b625072503c2f64f6eddb78d739379d2ee55a16b3b0ed0a17",
-    "alias": "STRANGEIRON",
-    "capacity": 7038263480,
-    "channels": 95,
-    "firstSeen": 1651725065,
-    "updatedAt": 1661958465,
-    "city": {
-      "de": "Melbourne",
-      "en": "Melbourne",
-      "es": "Melbourne",
-      "fr": "Melbourne",
-      "ja": "メルボルン",
-      "pt-BR": "Melbourne",
-      "ru": "Мельбурн",
-      "zh-CN": "墨尔本"
-    },
-    "country": {
-      "de": "Australien",
-      "en": "Australia",
-      "es": "Australia",
-      "fr": "Australie",
-      "ja": "オーストラリア",
-      "pt-BR": "Austrália",
-      "ru": "Австралия",
-      "zh-CN": "澳大利亚"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "alias": "guggero",
-    "capacity": 66577093,
-    "channels": 12,
-    "firstSeen": 1608832520,
-    "updatedAt": 1662440260,
-    "city": null,
-    "country": {
-      "de": "Deutschland",
-      "en": "Germany",
-      "es": "Alemania",
-      "fr": "Allemagne",
-      "ja": "ドイツ連邦共和国",
-      "pt-BR": "Alemanha",
-      "ru": "Германия",
-      "zh-CN": "德国"
-    }
-  },
-  {
-    "publicKey": "0271cf3881e6eadad960f47125434342e57e65b98a78afa99f9b4191c02dd7ab3b",
-    "alias": "eclair@wakiyamap",
-    "capacity": 56554430,
-    "channels": 4,
-    "firstSeen": 1628031165,
-    "updatedAt": 1648064593,
-    "city": {
-      "de": "Ōsaka",
-      "en": "Osaka",
-      "es": "Osaka",
-      "fr": "Osaka",
-      "ja": "大阪市",
-      "pt-BR": "Osaka",
-      "ru": "Осака"
-    },
-    "country": {
-      "de": "Japan",
-      "en": "Japan",
-      "es": "Japón",
-      "fr": "Japon",
-      "ja": "日本",
-      "pt-BR": "Japão",
-      "ru": "Япония",
-      "zh-CN": "日本"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-top-100-nodes-connectivity',
-    title: 'GET Top 100 Nodes by Connectivity',
-    description: {
-      default: '<p>Returns a list of the top 100 nodes by connectivity (number of open channels).</p>'
-    },
-    urlString: '/v1/lightning/nodes/rankings/connectivity',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/rankings/connectivity`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f",
-    "alias": "ACINQ",
-    "channels": 2908,
-    "capacity": 36010516297,
-    "firstSeen": 1522941222,
-    "updatedAt": 1661274935,
-    "city": null,
-    "country": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    }
-  },
-  {
-    "publicKey": "035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226",
-    "alias": "WalletOfSatoshi.com",
-    "channels": 2772,
-    "capacity": 15464503162,
-    "firstSeen": 1601429940,
-    "updatedAt": 1661812116,
-    "city": {
-      "de": "Vancouver",
-      "en": "Vancouver",
-      "es": "Vancouver",
-      "fr": "Vancouver",
-      "ja": "バンクーバー市",
-      "pt-BR": "Vancôver",
-      "ru": "Ванкувер"
-    },
-    "country": {
-      "de": "Kanada",
-      "en": "Canada",
-      "es": "Canadá",
-      "fr": "Canada",
-      "ja": "カナダ",
-      "pt-BR": "Canadá",
-      "ru": "Канада",
-      "zh-CN": "加拿大"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-    "alias": "aranguren.org",
-    "channels": 489,
-    "capacity": 17155095532,
-    "firstSeen": 1521457251,
-    "updatedAt": 1662035238,
-    "city": {
-      "de": "Melbourne",
-      "en": "Melbourne",
-      "es": "Melbourne",
-      "fr": "Melbourne",
-      "ja": "メルボルン",
-      "pt-BR": "Melbourne",
-      "ru": "Мельбурн",
-      "zh-CN": "墨尔本"
-    },
-    "country": {
-      "de": "Australien",
-      "en": "Australia",
-      "es": "Australia",
-      "fr": "Australie",
-      "ja": "オーストラリア",
-      "pt-BR": "Austrália",
-      "ru": "Австралия",
-      "zh-CN": "澳大利亚"
-    }
-  },
-  {
-    "publicKey": "030425d8babe3ab6dfc065e69dd8b10ce6738c86ea7d634324c913e21620fa5eaf",
-    "alias": "MTest441",
-    "channels": 258,
-    "capacity": 4113430492,
-    "firstSeen": 1640955758,
-    "updatedAt": 1662035216,
-    "city": null,
-    "country": null
-  },
-  {
-    "publicKey": "0270685ca81a8e4d4d01beec5781f4cc924684072ae52c507f8ebe9daf0caaab7b",
-    "alias": "0270685ca81a8e4d4d01",
-    "channels": 164,
-    "capacity": 638119030,
-    "firstSeen": 1535613050,
-    "updatedAt": 1662034882,
-    "city": {
-      "de": "Clifton",
-      "en": "Clifton",
-      "ja": "クリフトン",
-      "pt-BR": "Clifton",
-      "ru": "Клифтон",
-      "zh-CN": "克利夫頓"
-    },
-    "country": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "02dadf6c28f3284d591cd2a4189d1530c1ff82c07059ebea150a33ab76e7364b4a",
-    "alias": "珠美ノード⚡@wakiyamap",
-    "channels": 15,
-    "capacity": 51155987,
-    "firstSeen": 1612221581,
-    "updatedAt": 1662382573,
-    "city": null,
-    "country": {
-      "de": "Japan",
-      "en": "Japan",
-      "es": "Japón",
-      "fr": "Japon",
-      "ja": "日本",
-      "pt-BR": "Japão",
-      "ru": "Япония",
-      "zh-CN": "日本"
-    }
-  },
-  {
-    "publicKey": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "alias": "guggero",
-    "channels": 12,
-    "capacity": 66577093,
-    "firstSeen": 1608832520,
-    "updatedAt": 1662440260,
-    "city": null,
-    "country": {
-      "de": "Deutschland",
-      "en": "Germany",
-      "es": "Alemania",
-      "fr": "Allemagne",
-      "ja": "ドイツ連邦共和国",
-      "pt-BR": "Alemanha",
-      "ru": "Германия",
-      "zh-CN": "德国"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-top-100-oldest-nodes',
-    title: 'GET Top 100 Oldest Nodes',
-    description: {
-      default: '<p>Returns a list of the top 100 oldest nodes.</p>'
-    },
-    urlString: '/v1/lightning/nodes/rankings/age',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/rankings/age`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "02d4531a2f2e6e5a9033d37d548cff4834a3898e74c3abe1985b493c42ebbd707d",
-    "alias": "coinfinity.co",
-    "channels": 13,
-    "capacity": 35945717,
-    "firstSeen": 1518001533,
-    "updatedAt": 1661713804,
-    "city": {
-      "de": "Brüssel",
-      "en": "Brussels",
-      "es": "Bruselas",
-      "fr": "Bruxelles",
-      "ja": "ブリュッセル",
-      "pt-BR": "Bruxelas",
-      "ru": "Брюссель",
-      "zh-CN": "布鲁塞尔"
-    },
-    "country": {
-      "de": "Belgien",
-      "en": "Belgium",
-      "es": "Bélgica",
-      "fr": "Belgique",
-      "ja": "ベルギー王国",
-      "pt-BR": "Bélgica",
-      "ru": "Бельгия",
-      "zh-CN": "比利时"
-    }
-  },
-  {
-    "publicKey": "024bd94f0425590434538fd21d4e58982f7e9cfd8f339205a73deb9c0e0341f5bd",
-    "alias": "CL.rompert.com🔵 ",
-    "channels": 2,
-    "capacity": 600000,
-    "firstSeen": 1520596684,
-    "updatedAt": 1603261631,
-    "city": {
-      "de": "Clifton",
-      "en": "Clifton",
-      "ja": "クリフトン",
-      "pt-BR": "Clifton",
-      "ru": "Клифтон",
-      "zh-CN": "克利夫頓"
-    },
-    "country": {
-      "de": "Vereinigte Staaten",
-      "en": "United States",
-      "es": "Estados Unidos",
-      "fr": "États Unis",
-      "ja": "アメリカ",
-      "pt-BR": "EUA",
-      "ru": "США",
-      "zh-CN": "美国"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-    "alias": "aranguren.org",
-    "channels": 489,
-    "capacity": 17155095532,
-    "firstSeen": 1521457251,
-    "updatedAt": 1662035238,
-    "city": {
-      "de": "Melbourne",
-      "en": "Melbourne",
-      "es": "Melbourne",
-      "fr": "Melbourne",
-      "ja": "メルボルン",
-      "pt-BR": "Melbourne",
-      "ru": "Мельбурн",
-      "zh-CN": "墨尔本"
-    },
-    "country": {
-      "de": "Australien",
-      "en": "Australia",
-      "es": "Australia",
-      "fr": "Australie",
-      "ja": "オーストラリア",
-      "pt-BR": "Austrália",
-      "ru": "Австралия",
-      "zh-CN": "澳大利亚"
-    }
-  },
-  {
-    "publicKey": "0277622bf4c497475960bf91bd3c673a4cb4e9b589cebfde9700c197b3989cc1b8",
-    "alias": "CoinGate",
-    "channels": 11,
-    "capacity": 91768515,
-    "firstSeen": 1525964963,
-    "updatedAt": 1661991683,
-    "city": {
-      "de": "Frankfurt am Main",
-      "en": "Frankfurt am Main",
-      "es": "Francfort",
-      "fr": "Francfort-sur-le-Main",
-      "ja": "フランクフルト・アム・マイン",
-      "pt-BR": "Frankfurt am Main",
-      "ru": "Франкфурт",
-      "zh-CN": "法兰克福"
-    },
-    "country": {
-      "de": "Deutschland",
-      "en": "Germany",
-      "es": "Alemania",
-      "fr": "Allemagne",
-      "ja": "ドイツ連邦共和国",
-      "pt-BR": "Alemanha",
-      "ru": "Германия",
-      "zh-CN": "德国"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  {
-    "publicKey": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "alias": "guggero",
-    "channels": 12,
-    "capacity": 66577093,
-    "firstSeen": 1608832520,
-    "updatedAt": 1662440260,
-    "city": null,
-    "country": {
-      "de": "Deutschland",
-      "en": "Germany",
-      "es": "Alemania",
-      "fr": "Allemagne",
-      "ja": "ドイツ連邦共和国",
-      "pt-BR": "Alemanha",
-      "ru": "Германия",
-      "zh-CN": "德国"
-    }
-  },
-  {
-    "publicKey": "03870a4c4c54a9b2e705023d706843ffbac5b0e95e2b80d4b02dc7a9efb5380322",
-    "alias": "03870a4c4c54a9b2e705",
-    "channels": 2,
-    "capacity": 30000000,
-    "firstSeen": 1608832520,
-    "updatedAt": 0,
-    "city": null,
-    "country": null
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-node-stats',
-    title: 'GET Node Stats',
-    description: {
-      default: '<p>Returns details about a node with the given <code>:pubKey</code>.</p>'
-    },
-    urlString: '/v1/lightning/nodes/:pubKey',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`033ac2f9f7ff643c235cc247c521663924aff73b26b38118a6c6821460afcde1b3`],
-          response: `{
-  "public_key": "033ac2f9f7ff643c235cc247c521663924aff73b26b38118a6c6821460afcde1b3",
-  "alias": "Red.de.Rayos",
-  "first_seen": 1521504055,
-  "updated_at": 1661869523,
-  "color": "#68f442",
-  "sockets": "84.44.203.181:9735",
-  "as_number": 8422,
-  "city_id": 2886242,
-  "country_id": 2921044,
-  "subdivision_id": 2861876,
-  "longitude": 6.9489,
-  "latitude": 50.9298,
-  "iso_code": "DE",
-  "as_organization": "NetCologne GmbH",
-  "city": {
-    "de": "Köln",
-    "en": "Cologne",
-    "es": "Colonia",
-    "fr": "Cologne",
-    "ja": "ケルン",
-    "pt-BR": "Colônia",
-    "ru": "Кёльн",
-    "zh-CN": "科隆"
-  },
-  "country": {
-    "de": "Deutschland",
-    "en": "Germany",
-    "es": "Alemania",
-    "fr": "Allemagne",
-    "ja": "ドイツ連邦共和国",
-    "pt-BR": "Alemanha",
-    "ru": "Германия",
-    "zh-CN": "德国"
-  },
-  "subdivision": {
-    "de": "Nordrhein-Westfalen",
-    "en": "North Rhine-Westphalia",
-    "es": "Renania del Norte-Westfalia",
-    "fr": "Rhénanie du Nord-Westphalie",
-    "ru": "Северный Рейн-Вестфалия"
-  },
-  "active_channel_count": 55,
-  "capacity": "31505027",
-  "opened_channel_count": 55,
-  "closed_channel_count": 111
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`03f060953bef5b777dc77e44afa3859d022fc1a77c55138deb232ad7255e869c00`],
-          response: `{
-  "public_key": "03f060953bef5b777dc77e44afa3859d022fc1a77c55138deb232ad7255e869c00",
-  "alias": "Boltz",
-  "first_seen": 1551006126,
-  "updated_at": 1662033208,
-  "color": "#ff9800",
-  "sockets": "35.237.24.136:9735,idz7qlezif6hgmjkpmuelnsssyxea2lwan562a5gla7jmlxsl5cb2cad.onion:9735",
-  "as_number": 396982,
-  "city_id": 4589387,
-  "country_id": 6252001,
-  "subdivision_id": 4597040,
-  "longitude": -79.9746,
-  "latitude": 32.8608,
-  "iso_code": "US",
-  "as_organization": "Google Cloud",
-  "city": {
-    "en": "North Charleston",
-    "ja": "ノースチャールストン",
-    "pt-BR": "North Charleston",
-    "ru": "Норт-Чарлстон",
-    "zh-CN": "北查尔斯顿"
-  },
-  "country": {
-    "de": "Vereinigte Staaten",
-    "en": "United States",
-    "es": "Estados Unidos",
-    "fr": "États Unis",
-    "ja": "アメリカ",
-    "pt-BR": "EUA",
-    "ru": "США",
-    "zh-CN": "美国"
-  },
-  "subdivision": {
-    "en": "South Carolina",
-    "es": "Carolina del Sur",
-    "fr": "Caroline du Sud",
-    "ja": "サウスカロライナ州",
-    "pt-BR": "Carolina do Sul",
-    "ru": "Южная Каролина",
-    "zh-CN": "南卡罗来纳州"
-  },
-  "active_channel_count": 46,
-  "capacity": "111724126",
-  "opened_channel_count": 165,
-  "closed_channel_count": 1
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120`],
-          response: `{
-  "public_key": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-  "alias": "guggero",
-  "first_seen": 1608832520,
-  "updated_at": 1662440260,
-  "color": "#cccccc",
-  "sockets": "88.99.101.67:9735",
-  "as_number": 24940,
-  "city_id": null,
-  "country_id": 2921044,
-  "subdivision_id": null,
-  "longitude": 9.491,
-  "latitude": 51.2993,
-  "iso_code": "DE",
-  "as_organization": "Hetzner Online GmbH",
-  "city": null,
-  "country": {
-    "de": "Deutschland",
-    "en": "Germany",
-    "es": "Alemania",
-    "fr": "Allemagne",
-    "ja": "ドイツ連邦共和国",
-    "pt-BR": "Alemanha",
-    "ru": "Германия",
-    "zh-CN": "德国"
-  },
-  "subdivision": null,
-  "active_channel_count": 12,
-  "capacity": "66577093",
-  "opened_channel_count": 16,
-  "closed_channel_count": 0
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-historical-node-stats',
-    title: 'GET Historical Node Stats',
-    description: {
-      default: '<p>Returns historical stats for a node with the given <code>:pubKey</code>.</p>'
-    },
-    urlString: '/v1/lightning/nodes/:pubKey/statistics',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/nodes/%{1}/statistics`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`033ac2f9f7ff643c235cc247c521663924aff73b26b38118a6c6821460afcde1b3`],
-          response: `[
-  {
-    "added": 1661817600,
-    "capacity": 31505027,
-    "channels": 55
-  },
-  {
-    "added": 1661731200,
-    "capacity": 31505027,
-    "channels": 55
-  },
-  {
-    "added": 1655078400,
-    "capacity": 26487523,
-    "channels": 43
-  },
-  {
-    "added": 1654992000,
-    "capacity": 32692287,
-    "channels": 57
-  },
-  {
-    "added": 1654905600,
-    "capacity": 32692287,
-    "channels": 57
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`0225ff2ae6a3d9722b625072503c2f64f6eddb78d739379d2ee55a16b3b0ed0a17`],
-          response: `[
-  {
-    "added": 1662422400,
-    "capacity": 7038263480,
-    "channels": 95
-  },
-  {
-    "added": 1662336000,
-    "capacity": 7038263480,
-    "channels": 95
-  },
-  {
-    "added": 1662249600,
-    "capacity": 7038263480,
-    "channels": 95
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120`],
-          response: `[
-  {
-    "added": 1662422400,
-    "capacity": 66577093,
-    "channels": 12
-  },
-  {
-    "added": 1662336000,
-    "capacity": 63477093,
-    "channels": 9
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-channel',
-    title: 'GET Channel',
-    description: {
-      default: '<p>Returns info about a Lightning channel with the given <code>:channelId</code>.</p>'
-    },
-    urlString: '/v1/lightning/channels/:channelId',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/channels/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`768457472831193088`],
-          response: `{
-  "id": "768457472831193088",
-  "short_id": "698908x1305x0",
-  "capacity": 16777215,
-  "transaction_id": "9f248ff82f6ff4c112c218438cfde8260623663bc85a360d09a13b9a9b083564",
-  "transaction_vout": 0,
-  "closing_transaction_id": null,
-  "closing_reason": null,
-  "updated_at": "2022-08-25T23:05:40.000Z",
-  "created": "2021-09-04T00:10:42.000Z",
-  "status": 1,
-  "node_left": {
-    "alias": "CoinGate",
-    "public_key": "0242a4ae0c5bef18048fbecf995094b74bfb0f7391418d71ed394784373f41e4f3",
-    "channels": 1,
-    "capacity": 20000,
-    "base_fee_mtokens": 1000,
-    "cltv_delta": 0,
-    "fee_rate": 1,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16609443000,
-    "min_htlc_mtokens": 1000,
-    "updated_at": "2022-08-25T23:05:40.000Z",
-    "longitude": 8.6843,
-    "latitude": 50.1188
-  },
-  "node_right": {
-    "alias": "Blixt Wallet 🟡",
-    "public_key": "0230a5bca558e6741460c13dd34e636da28e52afd91cf93db87ed1b0392a7466eb",
-    "channels": 3,
-    "capacity": 34754430,
-    "base_fee_mtokens": 1000,
-    "cltv_delta": 0,
-    "fee_rate": 180,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16609443000,
-    "min_htlc_mtokens": 1000,
-    "updated_at": "2022-08-25T18:44:00.000Z",
-    "longitude": 9.491,
-    "latitude": 51.2993
-  }
-}`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`2478509215728271360`],
-          response: `{
-  "id": "2478509215728271360",
-  "short_id": "2254191x4x0",
-  "capacity": 16777215,
-  "transaction_id": "6b711b07b019d73ad432f401c01ac6ea253fbe2778388e5a686b5777678556c7",
-  "transaction_vout": 0,
-  "closing_transaction_id": null,
-  "closing_reason": null,
-  "updated_at": "2022-08-31T08:30:42.000Z",
-  "created": "2022-06-05T16:26:31.000Z",
-  "status": 1,
-  "node_left": {
-    "alias": "scarce-city-testnet",
-    "public_key": "0304fa1da67d441b382e3b2142a1980840276d89b6477812da8d26487b5ffa938c",
-    "channels": 15,
-    "capacity": 104876207,
-    "base_fee_mtokens": 1000,
-    "cltv_delta": 0,
-    "fee_rate": 1,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16777215000,
-    "min_htlc_mtokens": 1000,
-    "updated_at": "2022-08-31T08:30:42.000Z",
-    "longitude": -123.1236,
-    "latitude": 49.2526
-  },
-  "node_right": {
-    "alias": "STRANGEIRON",
-    "public_key": "0225ff2ae6a3d9722b625072503c2f64f6eddb78d739379d2ee55a16b3b0ed0a17",
-    "channels": 95,
-    "capacity": 7038263480,
-    "base_fee_mtokens": 0,
-    "cltv_delta": 0,
-    "fee_rate": 10,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16609443000,
-    "min_htlc_mtokens": 1,
-    "updated_at": "2022-08-27T20:22:06.000Z",
-    "longitude": 144.9669,
-    "latitude": -37.8159
-  }
-}`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`58998694435160064`],
-          response: `{
-  "id": "58998694435160064",
-  "short_id": "53659x5x0",
-  "capacity": 16777215,
-  "transaction_id": "cbb18e4b23c2a27736fa5be559fee7efcc855f2dfb1f16b125f686c307513ef3",
-  "transaction_vout": 0,
-  "closing_transaction_id": null,
-  "closing_reason": null,
-  "updated_at": "2022-09-04T10:15:51.000Z",
-  "created": "2021-09-02T07:08:40.000Z",
-  "status": 1,
-  "node_left": {
-    "alias": "STRANGESUCKER-v0.12.0-11-gea4143",
-    "public_key": "03b9e6c1dec203f47efc95d003314d22cbb12a1324de4b091fe7d68f321a56322f",
-    "channels": 4,
-    "capacity": 55778192,
-    "base_fee_mtokens": 0,
-    "cltv_delta": 0,
-    "fee_rate": 0,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16609443000,
-    "min_htlc_mtokens": 1,
-    "updated_at": "2022-09-04T10:15:51.000Z",
-    "longitude": 19.1477,
-    "latitude": 48.7386
-  },
-  "node_right": {
-    "alias": "guggero",
-    "public_key": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "channels": 12,
-    "capacity": 66577093,
-    "base_fee_mtokens": 1000,
-    "cltv_delta": 0,
-    "fee_rate": 1,
-    "is_disabled": 0,
-    "max_htlc_mtokens": 16777215000,
-    "min_htlc_mtokens": 1000,
-    "updated_at": "2022-09-01T22:57:40.000Z",
-    "longitude": 9.491,
-    "latitude": 51.2993
-  }
-}`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-channels-from-txid',
-    title: 'GET Channels from TXID',
-    description: {
-      default: '<p>Returns channels that correspond to the given <code>:txid</code> (multiple transaction IDs can be specified).</p>'
-    },
-    urlString: '/v1/lightning/channels/txids?txId[]=:txid',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/channels/txids?txId[]=%{1}&txId[]=%{2}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`c3173549f502ede6440d5c48ea74af5607d88484c7a912bbef73d430049f8af4`,`d78f0b41a263af3df91fa4171cc2f60c40196aaf8f4bde5d1c8ff4474cfe753b`],
-          response: `[
-  {
-    "inputs": {},
-    "outputs": {
-      "1": {
-        "id": "819296691409584129",
-        "short_id": "745146x287x1",
-        "capacity": 300000000,
-        "transaction_id": "c3173549f502ede6440d5c48ea74af5607d88484c7a912bbef73d430049f8af4",
-        "transaction_vout": 1,
-        "closing_transaction_id": null,
-        "closing_reason": null,
-        "updated_at": "2022-08-25T18:44:07.000Z",
-        "created": "2022-07-16T00:11:33.000Z",
-        "status": 1,
-        "node_left": {
-          "alias": "River Financial 1",
-          "public_key": "03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a",
-          "base_fee_mtokens": 0,
-          "cltv_delta": 0,
-          "fee_rate": 500,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 297000000000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-08-23T17:53:43.000Z"
-        },
-        "node_right": {
-          "alias": "0204a91bb5802ad0a799",
-          "public_key": "0204a91bb5802ad0a799acfd86ef566da03d80cc9e13acb01e680634bf64188a0d",
-          "base_fee_mtokens": 0,
-          "cltv_delta": 0,
-          "fee_rate": 152,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 297000000000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-08-25T18:44:07.000Z"
-        }
-      }
-    }
-  },
-  {
-    "inputs": {},
-    "outputs": {
-      "1": {
-        "id": "814662250034036737",
-        "short_id": "740931x2355x1",
-        "capacity": 300000000,
-        "transaction_id": "d78f0b41a263af3df91fa4171cc2f60c40196aaf8f4bde5d1c8ff4474cfe753b",
-        "transaction_vout": 1,
-        "closing_transaction_id": null,
-        "closing_reason": null,
-        "updated_at": "2022-08-28T18:54:40.000Z",
-        "created": "2022-06-15T16:18:33.000Z",
-        "status": 1,
-        "node_left": {
-          "alias": "bfx-lnd0",
-          "public_key": "033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025",
-          "base_fee_mtokens": 1000,
-          "cltv_delta": 0,
-          "fee_rate": 1,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 297000000000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-08-25T18:44:03.000Z"
-        },
-        "node_right": {
-          "alias": "River Financial 1",
-          "public_key": "03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a",
-          "base_fee_mtokens": 0,
-          "cltv_delta": 0,
-          "fee_rate": 750,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 297000000000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-08-28T18:54:40.000Z"
-        }
-      }
-    }
-  }
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`6b711b07b019d73ad432f401c01ac6ea253fbe2778388e5a686b5777678556c7`],
-          response: `[
-  {
-    "inputs": {},
-    "outputs": {
-      "0": {
-        "id": "2478509215728271360",
-        "short_id": "2254191x4x0",
-        "capacity": 16777215,
-        "transaction_id": "6b711b07b019d73ad432f401c01ac6ea253fbe2778388e5a686b5777678556c7",
-        "transaction_vout": 0,
-        "closing_transaction_id": null,
-        "closing_reason": null,
-        "updated_at": "2022-08-31T08:30:42.000Z",
-        "created": "2022-06-05T16:26:31.000Z",
-        "status": 1,
-        "node_left": {
-          "alias": "scarce-city-testnet",
-          "public_key": "0304fa1da67d441b382e3b2142a1980840276d89b6477812da8d26487b5ffa938c",
-          "base_fee_mtokens": 1000,
-          "cltv_delta": 0,
-          "fee_rate": 1,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 16777215000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-08-31T08:30:42.000Z"
-        },
-        "node_right": {
-          "alias": "STRANGEIRON",
-          "public_key": "0225ff2ae6a3d9722b625072503c2f64f6eddb78d739379d2ee55a16b3b0ed0a17",
-          "base_fee_mtokens": 0,
-          "cltv_delta": 0,
-          "fee_rate": 10,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 16609443000,
-          "min_htlc_mtokens": 1,
-          "updated_at": "2022-08-27T20:22:06.000Z"
-        }
-      }
-    }
-  }
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`cbb18e4b23c2a27736fa5be559fee7efcc855f2dfb1f16b125f686c307513ef3`],
-          response: `[
-  {
-    "inputs": {},
-    "outputs": {
-      "0": {
-        "id": "58998694435160064",
-        "short_id": "53659x5x0",
-        "capacity": 16777215,
-        "transaction_id": "cbb18e4b23c2a27736fa5be559fee7efcc855f2dfb1f16b125f686c307513ef3",
-        "transaction_vout": 0,
-        "closing_transaction_id": null,
-        "closing_reason": null,
-        "updated_at": "2022-09-04T10:15:51.000Z",
-        "created": "2021-09-02T07:08:40.000Z",
-        "status": 1,
-        "node_left": {
-          "alias": "STRANGESUCKER-v0.12.0-11-gea4143",
-          "public_key": "03b9e6c1dec203f47efc95d003314d22cbb12a1324de4b091fe7d68f321a56322f",
-          "base_fee_mtokens": 0,
-          "cltv_delta": 0,
-          "fee_rate": 0,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 16609443000,
-          "min_htlc_mtokens": 1,
-          "updated_at": "2022-09-04T10:15:51.000Z"
-        },
-        "node_right": {
-          "alias": "guggero",
-          "public_key": "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-          "base_fee_mtokens": 1000,
-          "cltv_delta": 0,
-          "fee_rate": 1,
-          "is_disabled": 0,
-          "max_htlc_mtokens": 16777215000,
-          "min_htlc_mtokens": 1000,
-          "updated_at": "2022-09-01T22:57:40.000Z"
-        }
-      }
-    }
-  }
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-channels-from-pubkey',
-    title: 'GET Channels from Node Pubkey',
-    description: {
-      default: '<p>Returns a list of a node\'s channels given its <code>:pubKey</code>. Ten channels are returned at a time. Use <code>:index</code> for paging. <code>:channelStatus</code> can be <code>open</code>, <code>active</code>, or <code>closed</code>.</p>'
-    },
-    urlString: '/v1/lightning/channels?public_key=:pubKey&status=:channelStatus',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/channels?public_key=%{1}&status=%{2}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`026165850492521f4ac8abd9bd8088123446d126f648ca35e60f88177dc149ceb2`,`open`],
-          response: `[
-  {
-    "status": 1,
-    "closing_reason": null,
-    "capacity": 59200000,
-    "short_id": "751361x1324x1",
-    "id": "826130156244172801",
-    "fee_rate": 1,
-    "node": {
-      "alias": "ipayblue.com",
-      "public_key": "032fe854a231aeb2357523ee6ca263ae04ce53eee8a13767ecbb911b69fefd8ace",
-      "channels": 65,
-      "capacity": "856675361"
-    }
-  },
-  {
-    "status": 1,
-    "closing_reason": null,
-    "capacity": 51000000,
-    "short_id": "750792x1586x1",
-    "id": "825504534145138689",
-    "fee_rate": 1,
-    "node": {
-      "alias": "Escher",
-      "public_key": "02b515c74f334dee09821bee299fcbd9668182730c5719b25a8f262b28893198b0",
-      "channels": 50,
-      "capacity": "2202925844"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`0200202c1f23899d03bf3f37c87d348e6847bbd91e407df91a713c7dcf3442738b`, `open`],
-          response: `[
-  {
-    "status": 1,
-    "closing_reason": null,
-    "closing_date": null,
-    "capacity": 8000000,
-    "short_id": "2223130x18x0",
-    "id": "2444357285058838528",
-    "fee_rate": 10,
-    "node": {
-      "alias": "Gilgamesh Lightning Testnet",
-      "public_key": "034997a34858a25dc453a722efc1545d8c7749cbd4587a8d2ef149d257babd8357",
-      "channels": 121,
-      "capacity": "512199932"
-    }
-  },
-  {
-    "status": 0,
-    "closing_reason": null,
-    "closing_date": null,
-    "capacity": 1000000,
-    "short_id": "2223130x19x0",
-    "id": "2444357285058904064",
-    "fee_rate": 0,
-    "node": {
-      "alias": "routing.testnet.lnmarkets.com",
-      "public_key": "03bae2db4b57738c1ec1ffa1c5e5a4423968cc592b3b39cddf7d495e72919d6431",
-      "channels": 22,
-      "capacity": "246940161"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120`, `open`],
-          response: `[
-  {
-    "status": 1,
-    "closing_reason": null,
-    "closing_date": null,
-    "capacity": 16777215,
-    "short_id": "53659x5x0",
-    "id": "58998694435160064",
-    "fee_rate": 1,
-    "node": {
-      "alias": "STRANGESUCKER-v0.12.0-11-gea4143",
-      "public_key": "03b9e6c1dec203f47efc95d003314d22cbb12a1324de4b091fe7d68f321a56322f",
-      "channels": 4,
-      "capacity": "55778192"
-    }
-  },
-  {
-    "status": 1,
-    "closing_reason": null,
-    "closing_date": null,
-    "capacity": 15000000,
-    "short_id": "17498x2x1",
-    "id": "19239254462955521",
-    "fee_rate": 1,
-    "node": {
-      "alias": "03870a4c4c54a9b2e705",
-      "public_key": "03870a4c4c54a9b2e705023d706843ffbac5b0e95e2b80d4b02dc7a9efb5380322",
-      "channels": 2,
-      "capacity": "30000000"
-    }
-  },
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-channel-geodata',
-    title: 'GET Channel Geodata',
-    description: {
-      default: '<p>Returns a list of channels with corresponding node geodata.</p>'
-    },
-    urlString: '/v1/lightning/channels-geo',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/channels-geo`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  [
-    "03120ac28af913889cbc3cb86d7aff12bc0abe939f1fa9fb1980bdff8483197092",
-    "LIGHTNING2",
-    -77.2278,
-    38.9567,
-    "03baa70886d9200af0ffbd3f9e18d96008331c858456b16e3a9b41e735c6208fef",
-    "LIGHTNING",
-    -77.2278,
-    38.9567
-  ],
-  [
-    "033d8656219478701227199cbd6f670335c8d408a92ae88b962c49d4dc0e83e025",
-    "bfx-lnd0",
-    8.5671,
-    47.3682,
-    "028d98b9969fbed53784a36617eb489a59ab6dc9b9d77fcdca9ff55307cd98e3c4",
-    "OpenNode.com",
-    -83.0061,
-    39.9625
-  ],
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  [
-    "038863cf8ab91046230f561cd5b386cbff8309fa02e3f0c3ed161a3aeb64a643b9",
-    "aranguren.org",
-    144.9669,
-    -37.8159,
-    "028c3640c57ffe47eb41db8225968833c5032f297aeba98672d6f7037090d59e3f",
-    "lndus0.next.zaphq.io",
-    -79.9746,
-    32.8608
-  ],
-  [
-    "02be8f360e57600486b93dd33ea0872a4e14a259924ba4084f27d693a77d151158",
-    "lndus1.dev.zaphq.io",
-    -79.9746,
-    32.8608,
-    "0273ec4a4c80e767aca1477592649ad6e709ad31e7435668043a9dceccb3020f35",
-    "lndwr1.dev.zaphq.io",
-    -79.9746,
-    32.8608
-  ],
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [],
-          response: `[
-  [
-    "02dadf6c28f3284d591cd2a4189d1530c1ff82c07059ebea150a33ab76e7364b4a",
-    "珠美ノード⚡@wakiyamap",
-    139.6895,
-    35.6897,
-    "0271cf3881e6eadad960f47125434342e57e65b98a78afa99f9b4191c02dd7ab3b",
-    "eclair@wakiyamap",
-    135.4911,
-    34.7135
-  ],
-  [
-    "03b9e6c1dec203f47efc95d003314d22cbb12a1324de4b091fe7d68f321a56322f",
-    "STRANGESUCKER-v0.12.0-11-gea4143",
-    19.1477,
-    48.7386,
-    "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "guggero",
-    9.491,
-    51.2993
-  ],
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'endpoint',
-    category: 'lightning',
-    httpRequestMethod: 'GET',
-    fragment: 'get-channel-geodata-node',
-    title: 'GET Channel Geodata for Node',
-    description: {
-      default: '<p>Returns a list of channels with corresponding geodata for a node with the given <code>:pubKey</code>.</p>'
-    },
-    urlString: '/v1/lightning/channels-geo/:pubKey',
-    showConditions: lightningNetworks,
-    showJsExamples: showJsExamplesDefaultFalse,
-    codeExample: {
-      default: {
-        codeTemplate: {
-          curl: `/api/v1/lightning/channels-geo/%{1}`,
-          commonJS: ``,
-          esModule: ``
-        },
-        codeSampleMainnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac`],
-          response: `[
-  [
-    "03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac",
-    "Bitrefill",
-    -77.4903,
-    39.0469,
-    "024a2e265cd66066b78a788ae615acdc84b5b0dec9efac36d7ac87513015eaf6ed",
-    "Bitrefill",
-    -6.2591,
-    53.3379
-  ],
-  [
-    "03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac",
-    "Bitrefill",
-    -77.4903,
-    39.0469,
-    "030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f",
-    "Bitrefill Routing",
-    -6.2591,
-    53.3379
-  ],
-  ...
-]`
-        },
-        codeSampleTestnet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`0273ec4a4c80e767aca1477592649ad6e709ad31e7435668043a9dceccb3020f35`],
-          response: `[
-  [
-    "039b1717db1193eb332d3c0bfdcce90a6aab60efa478b60963d3b406a8fc45134a",
-    "testnet.demo.btcpayserver.org",
-    -79.3503,
-    43.7806,
-    "0273ec4a4c80e767aca1477592649ad6e709ad31e7435668043a9dceccb3020f35",
-    "lndwr1.dev.zaphq.io",
-    -79.9746,
-    32.8608
-  ],
-  [
-    "0273ec4a4c80e767aca1477592649ad6e709ad31e7435668043a9dceccb3020f35",
-    "lndwr1.dev.zaphq.io",
-    -79.9746,
-    32.8608,
-    "02c6fbedc6ca81d4db5883f1d01481c8187d5f85075729a658288a6d507f770ada",
-    "HAPPYTOLL",
-    -97.822,
-    37.751
-  ],
-  ...
-]`
-        },
-        codeSampleSignet: {
-          esModule: [],
-          commonJS: [],
-          curl: [`02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120`],
-          response: `[
-  [
-    "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "guggero",
-    9.491,
-    51.2993,
-    "0271cf3881e6eadad960f47125434342e57e65b98a78afa99f9b4191c02dd7ab3b",
-    "eclair@wakiyamap",
-    135.4911,
-    34.7135
-  ],
-  [
-    "02dadf6c28f3284d591cd2a4189d1530c1ff82c07059ebea150a33ab76e7364b4a",
-    "珠美ノード⚡@wakiyamap",
-    139.6895,
-    35.6897,
-    "02ad48db0d1a7f7c3d186ddc57f8e62c49a1234fb829af9ccd3be1a4596bc39120",
-    "guggero",
-    9.491,
-    51.2993
-  ],
-  ...
-]`
-        },
-        codeSampleLiquid: emptyCodeSample,
-        codeSampleLiquidTestnet: emptyCodeSample,
-      }
-    }
-  },
-  {
-    type: 'category',
     category: 'accelerator-public',
     fragment: 'accelerator-public',
     title: 'Accelerator (Public)',
@@ -12062,7 +9657,7 @@ export const restApiDocsData = [
     "btcpayInvoiceId": "4Ww53d7VgSa596jmCFufe7",
     "btcDue": "0.000625",
     "addresses": {
-      "BTC": "bc1qcvqx2kr5mktd7gvym0atrrx0sn27mwv5kkghl3m78kegndm5t8ksvcqpja",
+      "DMD": "bc1qcvqx2kr5mktd7gvym0atrrx0sn27mwv5kkghl3m78kegndm5t8ksvcqpja",
       "BTC_LNURLPAY": null,
       "BTC_LightningLike": "lnbc625u1pngl0wzpp56j7cqghsw2y5q7vdu9shmpxgpzsx4pqra4wcm9vdnvqegutplk2qdxj2pskjepqw3hjqnt9d4cx7mmvypqkxcm9d3jhyct5daezq2z0wfjx2u3qf9zr5grpvd3k2mr9wfshg6t0dckk2ef3xdjkyc3e8ymrxv3nxumkxvf4vvungwfcxqen2dmxxcmngepj8q6kzce5xyengdfjxq6nqvpnx9jkzdnyvdjrxefevgexgcej8yknzdejxqmrjd3jx5mrgdpj9ycqzpuxqrpr5sp58593dzj2uauaj3afa7x47qeam8k9yyqrh9qasj2ssdzstew6qv3q9qxpqysgqj8qshfkxmj0gfkly5xfydysvsx55uhnc6fgpw66uf6hl8leu07454axe2kq0q788yysg8guel2r36d6f75546nkhmdcmec4mmlft8dsq62rnsj"
     }
@@ -12631,212 +10226,6 @@ export const faqData = [
     showConditions: bitcoinNetworks,
     fragment: 'what-is-svb',
     title: 'What is sat/vB?',
-  },
-  {
-    type: 'category',
-    category: 'help',
-    fragment: 'help-stuck-transaction',
-    title: 'Help! My transaction is stuck',
-    showConditions: bitcoinNetworks
-  },
-  {
-    type: 'endpoint',
-    category: 'help',
-    showConditions: bitcoinNetworks,
-    fragment: 'why-is-transaction-stuck-in-mempool',
-    title: 'Why isn\'t my transaction confirming?',
-  },
-  {
-    type: 'endpoint',
-    category: 'help',
-    showConditions: bitcoinNetworks,
-    fragment: 'how-to-get-transaction-confirmed-quickly',
-    title: 'How can I get my transaction confirmed more quickly?',
-  },
-  {
-    type: 'endpoint',
-    category: 'help',
-    showConditions: bitcoinNetworks,
-    fragment: 'how-prevent-stuck-transaction',
-    title: 'How can I prevent a transaction from getting stuck in the future?',
-  },
-  {
-    type: 'category',
-    category: 'using',
-    fragment: 'using-this-website',
-    title: 'Using this website',
-    showConditions: bitcoinNetworks
-  },
-  {
-    type: 'endpoint',
-    category: 'how-to',
-    showConditions: bitcoinNetworks,
-    fragment: 'looking-up-transactions',
-    title: 'How can I look up a transaction?',
-  },
-  {
-    type: 'endpoint',
-    category: 'how-to',
-    showConditions: bitcoinNetworks,
-    fragment: 'looking-up-addresses',
-    title: 'How can I look up an address?',
-  },
-  {
-    type: 'endpoint',
-    category: 'how-to',
-    showConditions: bitcoinNetworks,
-    fragment: 'looking-up-blocks',
-    title: 'How can I look up a block?',
-  },
-  {
-    type: 'endpoint',
-    category: 'how-to',
-    showConditions: bitcoinNetworks,
-    fragment: 'looking-up-fee-estimates',
-    title: 'How can I look up fee estimates?',
-  },
-  {
-    type: 'endpoint',
-    category: 'how-to',
-    showConditions: bitcoinNetworks,
-    fragment: 'looking-up-historical-trends',
-    title: 'How can I explore historical trends?',
-  },
-  {
-    type: 'category',
-    category: 'advanced',
-    fragment: 'advanced',
-    title: 'Advanced',
-    showConditions: bitcoinNetworks
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'what-is-full-mempool',
-    title: 'What does it mean for the mempool to be "full"?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'how-big-is-mempool-used-by-mempool-space',
-    title: 'How big is the mempool used by mempool.space?',
-    options: { officialOnly: true },
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'what-is-memory-usage',
-    title: 'What is memory usage?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'why-empty-blocks',
-    title: 'Why are there empty blocks?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'why-block-timestamps-dont-always-increase',
-    title: 'Why don\'t block timestamps always increase?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'why-dont-fee-ranges-match',
-    title: 'Why doesn\'t the fee range shown for a block match the feerates of transactions within the block?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    options: { auditOnly: true },
-    fragment: 'how-do-block-audits-work',
-    title: 'How do block audits work?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    options: { auditOnly: true },
-    fragment: 'what-is-block-health',
-    title: 'What is block health?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'how-do-mempool-goggles-work',
-    title: 'How do Mempool Goggles™ work?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'what-are-sigops',
-    title: 'What are sigops?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'what-is-adjusted-vsize',
-    title: 'What is adjusted vsize?',
-  },
-  {
-    type: 'endpoint',
-    category: 'advanced',
-    showConditions: bitcoinNetworks,
-    fragment: 'why-do-the-projected-block-fee-ranges-overlap',
-    title: 'Why do the projected block fee ranges overlap?',
-  },
-  {
-    type: 'category',
-    category: 'self-hosting',
-    fragment: 'self-hosting',
-    title: 'Self-Hosting',
-    showConditions: bitcoinNetworks
-  },
-  {
-    type: 'endpoint',
-    category: 'self-hosting',
-    showConditions: bitcoinNetworks,
-    fragment: 'who-runs-this-website',
-    title: 'Who runs this website?',
-  },
-  {
-    type: 'endpoint',
-    category: 'self-hosting',
-    showConditions: bitcoinNetworks,
-    fragment: 'host-my-own-instance-raspberry-pi',
-    title: 'How can I host my own instance on a Raspberry Pi?',
-  },
-  {
-    type: 'endpoint',
-    category: 'self-hosting',
-    showConditions: bitcoinNetworks,
-    fragment: 'host-my-own-instance-server',
-    title: 'How can I host a Mempool instance on my own server?',
-  },
-  {
-    type: 'endpoint',
-    category: 'self-hosting',
-    showConditions: bitcoinNetworks,
-    fragment: 'install-mempool-with-docker',
-    title: 'Can I install Mempool using Docker?',
-  },
-  {
-    type: 'endpoint',
-    category: 'self-hosting',
-    showConditions: bitcoinNetworks,
-    fragment: 'address-lookup-issues',
-    title: 'Why do I get an error for certain address lookups on my Mempool instance?',
   }
 ];
 

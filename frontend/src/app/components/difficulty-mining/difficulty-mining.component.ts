@@ -19,6 +19,9 @@ interface EpochProgress {
   adjustedTimeAvg: number;
 }
 
+const HALVING_INTERVAL = 300_000; // DebitMyData
+const BLOCK_TIME_SECONDS = 150;   // DebitMyData
+
 @Component({
   selector: 'app-difficulty-mining',
   templateUrl: './difficulty-mining.component.html',
@@ -26,6 +29,7 @@ interface EpochProgress {
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class DifficultyMiningComponent implements OnInit {
   isLoadingWebSocket$: Observable<boolean>;
   difficultyEpoch$: Observable<EpochProgress>;
@@ -70,9 +74,14 @@ export class DifficultyMiningComponent implements OnInit {
           colorPreviousAdjustments = 'var(--transparent-fg)';
         }
 
-        this.blocksUntilHalving = 210000 - (maxHeight % 210000);
-        this.timeUntilHalving = new Date().getTime() + (this.blocksUntilHalving * 600000);
-        this.now = new Date().getTime();
+        //this.blocksUntilHalving = 210000 - (maxHeight % 210000);
+        //this.timeUntilHalving = new Date().getTime() + (this.blocksUntilHalving * 600000);
+        //this.now = new Date().getTime();
+        this.blocksUntilHalving =
+          HALVING_INTERVAL - (maxHeight % HALVING_INTERVAL);
+        this.timeUntilHalving =
+          Date.now() + (this.blocksUntilHalving * BLOCK_TIME_SECONDS * 1000);
+        this.now = Date.now();
 
         const data = {
           base: `${da.progressPercent.toFixed(2)}%`,

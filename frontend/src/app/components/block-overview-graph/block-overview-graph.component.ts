@@ -9,7 +9,7 @@ import { Price } from '@app/services/price.service';
 import { StateService } from '@app/services/state.service';
 import { ThemeService } from '@app/services/theme.service';
 import { Subscription } from 'rxjs';
-import { defaultColorFunction, setOpacity, defaultAuditColors, defaultColors, ageColorFunction, contrastColorFunction, contrastAuditColors, contrastColors } from '@components/block-overview-graph/utils';
+import { defaultColorFunction, setOpacity, defaultAuditColors, defaultColors, ageColorFunction, contrastColorFunction, contrastAuditColors, contrastColors, dmdDarkColors } from '@components/block-overview-graph/utils';
 import { ActiveFilter, FilterMode, toFlags } from '@app/shared/filters.utils';
 import { detectWebGL } from '@app/shared/graphs.utils';
 
@@ -676,7 +676,8 @@ export class BlockOverviewGraphComponent implements AfterViewInit, OnDestroy, On
       }
       if (matches) {
         if (this.loadedTheme !== 'contrast' && this.loadedTheme !== 'bukele') {
-          return (gradient === 'age') ? ageColorFunction(tx, defaultColors.fee, defaultAuditColors, this.relativeTime || (Date.now() / 1000)) : defaultColorFunction(tx, defaultColors.fee, defaultAuditColors, this.relativeTime || (Date.now() / 1000));
+          const palette = this.loadedTheme === 'dark' ? dmdDarkColors : defaultColors;
+          return (gradient === 'age') ? ageColorFunction(tx, palette.fee, defaultAuditColors, this.relativeTime || (Date.now() / 1000)) : defaultColorFunction(tx, palette.fee, defaultAuditColors, this.relativeTime || (Date.now() / 1000));
         } else {
           return (gradient === 'age') ? ageColorFunction(tx, contrastColors.fee, contrastAuditColors, this.relativeTime || (Date.now() / 1000)) : contrastColorFunction(tx, contrastColors.fee, contrastAuditColors, this.relativeTime || (Date.now() / 1000));
         }
@@ -684,7 +685,7 @@ export class BlockOverviewGraphComponent implements AfterViewInit, OnDestroy, On
         if (this.loadedTheme !== 'contrast' && this.loadedTheme !== 'bukele') {
           return (gradient === 'age') ? { r: 1, g: 1, b: 1, a: 0.05 } : defaultColorFunction(
             tx,
-            defaultColors.unmatchedfee,
+            (this.loadedTheme === 'dark' ? dmdDarkColors : defaultColors).unmatchedfee,
             unmatchedAuditColors,
             this.relativeTime || (Date.now() / 1000)
           );

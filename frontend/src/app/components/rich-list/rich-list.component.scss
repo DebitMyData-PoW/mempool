@@ -1,0 +1,285 @@
+.card-header {
+  border-bottom: 0;
+  font-size: 18px;
+  @media (min-width: 465px) {
+    font-size: 20px;
+  }
+}
+
+.address-cell {
+  min-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  a {
+    color: var(--link-color, #ff9900);
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@media (max-width: 1140px) {
+  .address-cell {
+    max-width: 120px; // narrower for mobile
+    display: inline-block;
+  }
+}
+
+.full-container {
+  padding: 0px 15px;
+  width: 100%;
+  height: calc(100% - 140px);
+  padding-bottom: 20px;
+  @media (max-width: 992px) {
+    height: calc(100% - 190px);
+  }
+  @media (max-width: 575px) {
+    height: calc(100% - 230px);
+  }
+}
+
+/* --- Chart --- */
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 25px;
+  max-height: 400px;
+  @media (max-width: 767.98px) {
+    max-height: 260px;
+    transform: scale(0.95);
+    transform-origin: top center;
+  }
+  @media (min-width: 768px) {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+}
+
+.chart-widget {
+  width: 100%;
+  height: 100%;
+  @media (max-width: 767px) {
+    max-height: 240px;
+  }
+  @media (max-width: 485px) {
+    max-height: 200px;
+  }
+}
+
+.loadingGraphs {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 15px);
+  z-index: 99;
+}
+
+.skeleton-loader {
+  width: 100%;
+  display: block;
+  max-width: 80px;
+  margin: 15px auto 3px;
+}
+
+/* --- Richlist Table --- */
+.richlist-table {
+  th {
+    font-size: 0.95rem;
+    color: var(--title-fg);
+  }
+  td {
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+  td.balance-cell {
+    font-family: monospace;
+    font-weight: 600;
+    text-align: right;
+  }
+}
+
+/* --- Summary Section --- */
+.richlist-summary {
+  min-height: 56px;
+  display: block;
+  margin: 15px 0;
+
+  td.text-success {
+    color: #00c853 !important;
+    font-weight: 600;
+  }
+
+  @media (min-width: 485px) {
+    display: flex;
+    flex-direction: row;
+  }
+
+  h5 {
+    margin-bottom: 5px;
+  }
+
+  .item {
+    max-width: 200px;
+    width: 50%;
+    display: inline-block;
+    margin: 0 auto 20px;
+
+    @media (min-width: 485px) {
+      width: 25%;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      color: var(--title-fg);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .card-text {
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* --- Mobile Optimizations --- */
+@media (max-width: 1139.98px) {
+  table.pools-table {
+    font-size: 12px;
+  }
+
+  table.pools-table th,
+  table.pools-table td {
+    padding: 2px 1px !important;
+  }
+
+  .address-cell a {
+    display: inline-block;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.balance-cell,
+  td[col-lg-3],
+  td[col-3] {
+    font-size: 12px;
+    text-align: right;
+    word-break: break-word;
+  }
+
+  td.text-success {
+    font-size: 12px;
+    min-width: 60px;
+    white-space: nowrap;
+  }
+
+table.pools-table {
+  font-size: 11px;
+
+  th,
+  td {
+    padding: 2px 1px !important;
+    line-height: 1.2;
+  }
+
+  .owner-cell,
+  .percent-cell {
+    display: table-cell !important;
+    font-size: 10px;
+    white-space: nowrap;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .address-cell a {
+    font-size: 11px;
+    max-width: 110px;
+  }
+
+  td.text-success {
+    font-size: 11px;
+  }
+}
+
+}
+
+@media (max-width: 430px) {
+  .address-cell {
+    max-width: 90px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.85rem;
+  }
+
+  td.balance-cell {
+    font-size: 11px;
+  }
+
+  td.text-success {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  table.pools-table {
+    font-size: 11px;
+    table-layout: fixed;
+
+    th,
+    td {
+      padding: 2px 1px !important;
+      line-height: 1.2;
+    }
+
+    .address-cell {
+      min-width: 80px !important;
+      max-width: 80px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 10px;
+    }
+
+    .address-cell a {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .owner-cell {
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 10px;
+    }
+
+    .percent-cell {
+      max-width: 55px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 10px;
+    }
+
+    td.col-lg-3,
+    td.col-lg-2 {
+      padding-left: 2px !important;
+      padding-right: 2px !important;
+    }
+
+    td.text-success {
+      font-size: 10px;
+    }
+  }
+}

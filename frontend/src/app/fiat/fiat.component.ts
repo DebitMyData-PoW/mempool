@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef, O
 import { Observable, Subscription } from 'rxjs';
 import { Price } from '@app/services/price.service';
 import { StateService } from '@app/services/state.service';
+import { SHOW_FIAT } from '@app/app.constants';
 
 @Component({
   selector: 'app-fiat',
@@ -12,11 +13,12 @@ import { StateService } from '@app/services/state.service';
 })
 export class FiatComponent implements OnInit, OnDestroy {
   conversions$: Observable<any>;
+  showFiat = SHOW_FIAT;
   currencySubscription: Subscription;
   currency: string;
 
   @Input() value: number;
-  @Input() digitsInfo = '1.2-2';
+  @Input() digitsInfo = '1.2-6';
   @Input() blockConversion: Price;
   @Input() colorClass = 'green-color';
 

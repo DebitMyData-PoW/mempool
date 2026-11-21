@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { StorageService } from '@app/services/storage.service';
 import { StateService } from '@app/services/state.service';
+import { SHOW_FIAT } from '@app/app.constants';
 
 @Component({
   selector: 'app-amount-selector',
@@ -12,7 +13,8 @@ import { StateService } from '@app/services/state.service';
 })
 export class AmountSelectorComponent implements OnInit {
   amountForm: UntypedFormGroup;
-  modes = ['btc', 'sats', 'fiat'];
+  showFiat = SHOW_FIAT;
+  modes = SHOW_FIAT ? ['btc', 'sats', 'fiat'] : ['btc', 'sats'];
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -25,7 +27,7 @@ export class AmountSelectorComponent implements OnInit {
       mode: ['btc']
     });
     this.stateService.viewAmountMode$.subscribe((mode) => {
-      this.amountForm.get('mode')?.setValue(mode);
+      this.amountForm.get('mode')?.setValue(mode === 'fiat' && !this.showFiat ? 'btc' : mode);
     });
   }
 

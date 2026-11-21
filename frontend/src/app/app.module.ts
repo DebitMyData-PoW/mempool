@@ -30,6 +30,7 @@ import { CapAddressPipe } from '@app/shared/pipes/cap-address-pipe/cap-address-p
 import { AppPreloadingStrategy } from '@app/app.preloading-strategy';
 import { ServicesApiServices } from '@app/services/services-api.service';
 import { DatePipe } from '@angular/common';
+import { MasterPageModule } from '@app/master-page.module';
 
 const providers = [
   ElectrsApiService,
