@@ -7,6 +7,8 @@ import mempool from '../mempool';
 import { TransactionExtended } from '../../mempool.interfaces';
 import transactionUtils from '../transaction-utils';
 import { Common } from '../common';
+import axios from 'axios';
+import config from '../../config';
 
 class BitcoinApi implements AbstractBitcoinApi {
   private rawMempoolCache: IBitcoinApi.RawMempool | null = null;
@@ -202,6 +204,29 @@ class BitcoinApi implements AbstractBitcoinApi {
       }
     }
     return Object.keys(found);
+  }
+
+  /** @asyncUnsafe */
+  async $getCirculatingSupply(): Promise<number> {
+    const info = await this.bitcoindClient.getTxOutSetInfo();
+    return info.total_amount;
+  }
+
+  // DebitMyData rich list: served by the richlist-indexer service (MEMPOOL.RICHLIST_API)
+  /** @asyncUnsafe */
+  async $getRichList(limit: number = 100): Promise<any> {
+    const { data } = await axios.get(`${this.richListApi()}/api/richlist`, { params: { limit }, timeout: 15000 });
+    return data;
+  }
+
+  /** @asyncUnsafe */
+  async $getRichListSummary(): Promise<any> {
+    const { data } = await axios.get(`${this.richListApi()}/api/richlist/summary`, { timeout: 15000 });
+    return data;
+  }
+
+  private richListApi(): string {
+    return (config.MEMPOOL.RICHLIST_API || 'http://127.0.0.1:8081').replace(/\/+$/, '');
   }
 
   $sendRawTransaction(rawTransaction: string): Promise<string> {

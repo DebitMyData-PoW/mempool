@@ -99,6 +99,19 @@ class DatabaseMigration {
     return;
   }
 
+private getCreateExchangesTableQuery(): string {
+  return `CREATE TABLE IF NOT EXISTS exchanges (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name TEXT NOT NULL,
+    addresses JSON,
+    link TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`;
+}
+
+
+
   /**
    * Create all missing tables
    * @asyncUnsafe
@@ -110,6 +123,8 @@ class DatabaseMigration {
 
     await this.$executeQuery(this.getCreateElementsTableQuery(), await this.$checkIfTableExists('elements_pegs'));
     await this.$executeQuery(this.getCreateStatisticsQuery(), await this.$checkIfTableExists('statistics'));
+    await this.$executeQuery(this.getCreateExchangesTableQuery(), await this.$checkIfTableExists('exchanges'));
+
     if (databaseSchemaVersion < 2 && this.statisticsAddedIndexed === false) {
       await this.$executeQuery(`CREATE INDEX added ON statistics (added);`);
       await this.updateToSchemaVersion(2);

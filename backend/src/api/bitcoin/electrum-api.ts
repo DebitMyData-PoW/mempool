@@ -259,6 +259,19 @@ class BitcoindElectrsApi extends BitcoinApi implements AbstractBitcoinApi {
     return addrScripthash!.match(/.{2}/g)!.reverse().join('');
   }
 
+  $getCirculatingSupply(): Promise<number> {
+    return Promise.reject(new Error('Circulating supply is not supported in ElectrsApi'));
+  }
+
+  $getRichList(limit: number): Promise<any> {
+    return Promise.reject(new Error('Richlist is not supported in ElectrsApi'));
+  }
+
+  $getRichListSummary(): Promise<any> {
+    return Promise.reject(new Error('Richlist is not supported in ElectrsApi'));
+  }
+
+
 }
 
 export default BitcoindElectrsApi;

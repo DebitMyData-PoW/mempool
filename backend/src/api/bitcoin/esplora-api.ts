@@ -568,6 +568,18 @@ class ElectrsApi implements AbstractBitcoinApi {
     return this.failoverRouter.$get<IEsploraApi.AddressTxSummary[]>('/address/' + address + '/txs/summary');
   }
 
+  $getCirculatingSupply(): Promise<number> {
+    return Promise.reject(new Error('Circulating supply is not supported in ElectrsApi'));
+  }
+
+  $getRichList(limit: number): Promise<any> {
+    return Promise.reject(new Error('Richlist is not supported in EsploraApi'));
+  }
+
+  $getRichListSummary(): Promise<any> {
+    return Promise.reject(new Error('Richlist is not supported in EsploraApi'));
+  }
+
   public startHealthChecks(): void {
     this.failoverRouter.startHealthChecks();
   }

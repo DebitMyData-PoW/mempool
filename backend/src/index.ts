@@ -49,6 +49,8 @@ import aboutRoutes from './api/about.routes';
 import mempoolBlocks from './api/mempool-blocks';
 import walletApi from './api/services/wallets';
 import stratumApi from './api/services/stratum';
+import exchangesUpdater from './tasks/exchanges-updater';
+import exchangeRoutes from './api/exchange/exchange-routes';
 
 class Server {
   private wss: WebSocket.Server | undefined;
@@ -163,6 +165,7 @@ class Server {
     this.setUpWebsocketHandling();
 
     await poolsUpdater.updatePoolsJson(); // Needs to be done before loading the disk cache because we sometimes wipe it
+    await exchangesUpdater.updateExchangesJson();
     if (config.DATABASE.ENABLED === true && config.MEMPOOL.ENABLED && ['mainnet', 'testnet', 'signet', 'testnet4', 'regtest'].includes(config.MEMPOOL.NETWORK) && !poolsUpdater.currentSha) {
       logger.err(`Failed to retreive pools-v2.json sha, cannot run block indexing. Please make sure you've set valid urls in your mempool-config.json::MEMPOOL::POOLS_JSON_URL and mempool-config.json::MEMPOOL::POOLS_JSON_TREE_UR, aborting now`);
       return process.exit(1);
@@ -236,6 +239,7 @@ class Server {
     }
 
     void poolsUpdater.$startService();
+    void exchangesUpdater.$startService();
   }
 
   /** @asyncSafe */
@@ -377,6 +381,10 @@ class Server {
     if (!config.MEMPOOL.OFFICIAL) {
       aboutRoutes.initRoutes(this.app);
     }
+
+    // DebitMyData: exchange address tags (GET /api/v1/exchanges, GET /api/v1/exchange/:slug)
+    this.app.use(config.MEMPOOL.API_URL_PREFIX + 'exchange', exchangeRoutes);
+    this.app.use(config.MEMPOOL.API_URL_PREFIX + 'exchanges', exchangeRoutes);
   }
 
   healthCheck(): void {

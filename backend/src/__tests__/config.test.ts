@@ -23,7 +23,7 @@ describe('Mempool Backend Config', () => {
         UNIX_SOCKET_PATH: '',
         SPAWN_CLUSTER_PROCS: 0,
         API_URL_PREFIX: '/api/v1/',
-        AUTOMATIC_POOLS_UPDATE: false,
+        AUTOMATIC_POOLS_UPDATE: true,
         POLL_RATE_MS: 2000,
         CACHE_DIR: './cache',
         CACHE_ENABLED: true,
@@ -41,7 +41,11 @@ describe('Mempool Backend Config', () => {
         STDOUT_LOG_MIN_PRIORITY: 'debug',
         POOLS_JSON_TREE_URL: 'https://api.github.com/repos/mempool/mining-pools/git/trees/master',
         POOLS_JSON_URL: 'https://raw.githubusercontent.com/mempool/mining-pools/master/pools-v2.json',
-        POOLS_UPDATE_DELAY: 604800,
+        POOLS_UPDATE_DELAY: 600,
+        AUTOMATIC_EXCHANGES_UPDATE: true,
+        EXCHANGES_JSON_URL: 'https://raw.githubusercontent.com/DebitMyData-PoW/exchanges/main/exchanges.json',
+        EXCHANGES_JSON_TREE_URL: 'https://api.github.com/repos/DebitMyData-PoW/exchanges/git/trees/main',
+        EXCHANGES_UPDATE_DELAY: 600,
         AUDIT: false,
         RUST_GBT: true,
         LIMIT_GBT: false,
@@ -51,7 +55,8 @@ describe('Mempool Backend Config', () => {
         MAX_PUSH_TX_SIZE_WEIGHT: 400000,
         ALLOW_UNREACHABLE: true,
         PRICE_UPDATES_PER_HOUR: 1,
-        MAX_TRACKED_ADDRESSES: 1
+        MAX_TRACKED_ADDRESSES: 1,
+        DIFFICULTY_ADJUSTMENT: 'bitcoin',
       });
 
       expect(config.ELECTRUM).toStrictEqual({ HOST: '127.0.0.1', PORT: 3306, TLS_ENABLED: true });
@@ -69,7 +74,7 @@ describe('Mempool Backend Config', () => {
 
       expect(config.CORE_RPC).toStrictEqual({
         HOST: '127.0.0.1',
-        PORT: 8332,
+        PORT: 18557,
         USERNAME: 'mempool',
         PASSWORD: 'mempool',
         TIMEOUT: 60000,
@@ -80,7 +85,7 @@ describe('Mempool Backend Config', () => {
 
       expect(config.SECOND_CORE_RPC).toStrictEqual({
         HOST: '127.0.0.1',
-        PORT: 8332,
+        PORT: 18557,
         USERNAME: 'mempool',
         PASSWORD: 'mempool',
         TIMEOUT: 60000,
@@ -158,6 +163,7 @@ describe('Mempool Backend Config', () => {
         ENABLED: true,
         PAID: false,
         API_KEY: '',
+        FEED_URL: 'https://debitmydatamempool.wdgt.workers.dev/',
       });
 
       expect(config.STRATUM).toStrictEqual({

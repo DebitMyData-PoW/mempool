@@ -1,14 +1,7 @@
-import * as fs from 'fs';
-import path from 'path';
 import config from '../config';
 import logger from '../logger';
 import PricesRepository, { ApiPrice, MAX_PRICES } from '../repositories/PricesRepository';
-import BitfinexApi from './price-feeds/bitfinex-api';
-import BitflyerApi from './price-feeds/bitflyer-api';
-import CoinbaseApi from './price-feeds/coinbase-api';
-import GeminiApi from './price-feeds/gemini-api';
-import KrakenApi from './price-feeds/kraken-api';
-import FreeCurrencyApi from './price-feeds/free-currency-api';
+import WorkerApi from './price-feeds/worker-api';
 
 export interface PriceFeed {
   name: string;
@@ -67,13 +60,8 @@ class PriceUpdater {
     this.latestPrices = this.getEmptyPricesObj();
     this.latestGoodPrices = this.getEmptyPricesObj();
 
-    this.feeds.push(new BitflyerApi()); // Does not have historical endpoint
-    this.feeds.push(new KrakenApi());
-    this.feeds.push(new CoinbaseApi());
-    this.feeds.push(new BitfinexApi());
-    this.feeds.push(new GeminiApi());
-
-    this.currencyConversionFeed = new FreeCurrencyApi();
+    // DebitMyData: one price feed (the DebitMyData price worker), no currency conversion feed
+    this.feeds.push(new WorkerApi(config.FIAT_PRICE.FEED_URL));
     this.setCyclePosition();
   }
 
@@ -179,7 +167,7 @@ class PriceUpdater {
       }
 
     } catch (e: any) {
-      logger.err(`Cannot save BTC prices in db. Reason: ${e instanceof Error ? e.message : e}`, logger.tags.mining);
+      logger.err(`Cannot save DMD prices in db. Reason: ${e instanceof Error ? e.message : e}`, logger.tags.mining);
     }
 
     this.running = false;
@@ -212,7 +200,7 @@ class PriceUpdater {
   }
 
   /**
-   * Fetch last BTC price from exchanges, average them, and save it in the database once every hour
+   * Fetch last DMD price from exchanges, average them, and save it in the database once every hour
    * @asyncUnsafe
    */
   private async $updatePrice(): Promise<void> {
@@ -247,14 +235,14 @@ class PriceUpdater {
             if (price > -1 && price < MAX_PRICES[currency]) {
               prices.push(price);
             }
-            logger.debug(`${feed.name} BTC/${currency} price: ${price}`, logger.tags.mining);
+            logger.debug(`${feed.name} DMD/${currency} price: ${price}`, logger.tags.mining);
           } catch (e) {
-            logger.debug(`Could not fetch BTC/${currency} price at ${feed.name}. Reason: ${(e instanceof Error ? e.message : e)}`, logger.tags.mining);
+            logger.debug(`Could not fetch DMD/${currency} price at ${feed.name}. Reason: ${(e instanceof Error ? e.message : e)}`, logger.tags.mining);
           }
         }
       }
       if (prices.length === 1) {
-        logger.debug(`Only ${prices.length} feed available for BTC/${currency} price`, logger.tags.mining);
+        logger.debug(`Only ${prices.length} feed available for DMD/${currency} price`, logger.tags.mining);
       }
 
       // Compute average price, non weighted
@@ -262,7 +250,7 @@ class PriceUpdater {
       if (prices.length === 0) {
         this.setLatestPrice(currency, -1);
       } else {
-        this.setLatestPrice(currency, Math.round(getMedian(prices)));
+        this.setLatestPrice(currency, parseFloat(getMedian(prices).toFixed(8))); // DMD prices need decimals
       }
     }
 
@@ -292,9 +280,9 @@ class PriceUpdater {
     }
 
     if (this.latestPrices.USD === -1) {
-      logger.warn(`No BTC price available, falling back to latest known price: ${JSON.stringify(this.latestGoodPrices)}`);
+      logger.warn(`No DMD price available, falling back to latest known price: ${JSON.stringify(this.latestGoodPrices)}`);
     } else {
-      logger.info(`Latest BTC fiat averaged price: ${JSON.stringify(this.latestGoodPrices)}`);
+      logger.info(`Latest DMD fiat averaged price: ${JSON.stringify(this.latestGoodPrices)}`);
     }
 
     if (this.ratesChangedCallback && this.latestGoodPrices.USD > 0) {
@@ -303,42 +291,13 @@ class PriceUpdater {
   }
 
   /**
-   * Called once by the database migration to initialize historical prices data (weekly)
-   * We use MtGox weekly price from July 19, 2010 to September 30, 2013
-   * We use Kraken weekly price from October 3, 2013 up to last month
-   * We use Kraken hourly price for the past month
+   * Called once by the database migration to initialize historical prices data
+   * DebitMyData: only the recent prices the price feeds can give
    *
    * @asyncUnsafe
    */
   private async $insertHistoricalPrices(): Promise<void> {
-    const existingPriceTimes = await PricesRepository.$getPricesTimes();
-
-    // Insert MtGox weekly prices
-    const pricesJson: any[] = JSON.parse(fs.readFileSync(path.join(__dirname, 'mtgox-weekly.json')).toString());
-    const prices = this.getEmptyPricesObj();
-    let insertedCount: number = 0;
-    for (const price of pricesJson) {
-      if (existingPriceTimes.includes(price['ct'])) {
-        continue;
-      }
-
-      // From 1380758400 we will use Kraken price as it follows closely MtGox, but was not affected as much
-      // by the MtGox exchange collapse a few months later
-      if (price['ct'] > 1380758400) {
-        break;
-      }
-      prices.USD = price['c'];
-      await PricesRepository.$savePrices(price['ct'], prices);
-      ++insertedCount;
-    }
-    if (insertedCount > 0) {
-      logger.notice(`Inserted ${insertedCount} MtGox USD weekly price history into db`, logger.tags.mining);
-    } else {
-      logger.debug(`Inserted ${insertedCount} MtGox USD weekly price history into db`, logger.tags.mining);
-    }
-
-    // Insert Kraken weekly prices
-    await new KrakenApi().$insertHistoricalPrice();
+    // DebitMyData: no MtGox or Kraken weekly history. Those are Bitcoin prices from before DMD existed.
 
     // Insert missing recent hourly prices
     await this.$insertMissingRecentPrices('day');
@@ -422,6 +381,10 @@ class PriceUpdater {
    * @asyncUnsafe
    */
   private async $insertMissingAdditionalPrices(): Promise<void> {
+    if (!this.currencyConversionFeed) {
+      this.additionalCurrenciesHistoryInserted = true;
+      return;
+    }
     this.lastFailedHistoricalRun = 0;
     const priceTimesToFill = await PricesRepository.$getPricesTimesWithMissingFields();
     if (priceTimesToFill.length === 0) {

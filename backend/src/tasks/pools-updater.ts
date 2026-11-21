@@ -166,12 +166,20 @@ class PoolsUpdater {
       httpsAgent?: https.Agent;
     };
     const setDelay = (secs: number = 1): Promise<void> => new Promise(resolve => setTimeout(() => resolve(), secs * 1000));
+
+    const headers: any = {
+      'User-Agent': (config.MEMPOOL.USER_AGENT === 'mempool')
+        ? `mempool/v${backendInfo.getBackendInfo().version}`
+        : `${config.MEMPOOL.USER_AGENT}`
+    };
+    if (config.MEMPOOL.GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${config.MEMPOOL.GITHUB_TOKEN}`;
+    }
     const axiosOptions: axiosOptions = {
-      headers: {
-        'User-Agent': (config.MEMPOOL.USER_AGENT === 'mempool') ? `mempool/v${backendInfo.getBackendInfo().version}` : `${config.MEMPOOL.USER_AGENT}`
-      },
+      headers,
       timeout: config.SOCKS5PROXY.ENABLED ? 30000 : 10000
     };
+
     let retry = 0;
 
     while (retry < config.MEMPOOL.EXTERNAL_MAX_RETRY) {

@@ -87,7 +87,7 @@ class PoolsParser {
         if (poolDB.name !== pool.name) {
           // Pool has been renamed
           const newSlug = pool.name.replace(/[^a-z0-9]/gi, '').toLowerCase();
-          logger.warn(`Renaming ${poolDB.name} mining pool to ${pool.name}. Slug has been updated. Maybe you want to make a redirection from 'https://mempool.space/mining/pool/${poolDB.slug}' to 'https://mempool.space/mining/pool/${newSlug}`);
+          logger.warn(`Renaming ${poolDB.name} mining pool to ${pool.name}. Slug has been updated. Maybe you want to make a redirection from 'https://mempool.debitmydata.io/mining/pool/${poolDB.slug}' to 'https://mempool.debitmydata.io/mining/pool/${newSlug}`);
           await PoolsRepository.$renameMiningPool(poolDB.id, newSlug, pool.name);
           clearCache = true;
         }
@@ -195,7 +195,7 @@ class PoolsParser {
    * @asyncUnsafe
    */
   private async $reindexBlocksForPool(poolId: number): Promise<void> {
-    let firstKnownBlockPool = 130635; // https://mempool.space/block/0000000000000a067d94ff753eec72830f1205ad3a4c216a08a80c832e551a52
+    let firstKnownBlockPool = 29954; // https://mempool.debitmydata.io/block/000000000000005d4f7c7f1e6b83528bbcab5ebfbb98a2d78bf8919cdcee39ae
     if (config.MEMPOOL.NETWORK === 'testnet') {
       firstKnownBlockPool = 21106; // https://mempool.space/testnet/block/0000000070b701a5b6a1b965f6a38e0472e70b2bb31b973e4638dec400877581
     } else if (['signet', 'testnet4', 'regtest'].includes(config.MEMPOOL.NETWORK)) {

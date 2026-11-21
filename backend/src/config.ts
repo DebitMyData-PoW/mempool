@@ -29,10 +29,15 @@ interface IConfig {
     EXTERNAL_RETRY_INTERVAL: number;
     USER_AGENT: string;
     STDOUT_LOG_MIN_PRIORITY: 'emerg' | 'alert' | 'crit' | 'err' | 'warn' | 'notice' | 'info' | 'debug';
+    GITHUB_TOKEN?: string;
     AUTOMATIC_POOLS_UPDATE: boolean;
+    AUTOMATIC_EXCHANGES_UPDATE: boolean;
     POOLS_JSON_URL: string,
     POOLS_JSON_TREE_URL: string,
     POOLS_UPDATE_DELAY: number,
+    EXCHANGES_JSON_URL: string,
+    EXCHANGES_JSON_TREE_URL: string,
+    EXCHANGES_UPDATE_DELAY: number,
     AUDIT: boolean;
     RUST_GBT: boolean;
     LIMIT_GBT: boolean;
@@ -43,6 +48,8 @@ interface IConfig {
     ALLOW_UNREACHABLE: boolean;
     PRICE_UPDATES_PER_HOUR: number;
     MAX_TRACKED_ADDRESSES: number;
+    RICHLIST_API?: string;
+    DIFFICULTY_ADJUSTMENT?: 'bitcoin' | 'lwma';
   };
   ESPLORA: {
     REST_API_URL: string;
@@ -161,6 +168,7 @@ interface IConfig {
     ENABLED: boolean;
     PAID: boolean;
     API_KEY: string;
+    FEED_URL: string;
   },
   WALLETS: {
     ENABLED: boolean;
@@ -200,10 +208,14 @@ const defaults: IConfig = {
     'EXTERNAL_RETRY_INTERVAL': 0,
     'USER_AGENT': 'mempool',
     'STDOUT_LOG_MIN_PRIORITY': 'debug',
-    'AUTOMATIC_POOLS_UPDATE': false,
+    'AUTOMATIC_POOLS_UPDATE': true,
     'POOLS_JSON_URL': 'https://raw.githubusercontent.com/mempool/mining-pools/master/pools-v2.json',
     'POOLS_JSON_TREE_URL': 'https://api.github.com/repos/mempool/mining-pools/git/trees/master',
-    'POOLS_UPDATE_DELAY': 604800, // in seconds, default is one week
+    'POOLS_UPDATE_DELAY': 600, // in seconds (10 minutes)
+    'AUTOMATIC_EXCHANGES_UPDATE': true,
+    "EXCHANGES_JSON_URL": "https://raw.githubusercontent.com/DebitMyData-PoW/exchanges/main/exchanges.json",
+    "EXCHANGES_JSON_TREE_URL": "https://api.github.com/repos/DebitMyData-PoW/exchanges/git/trees/main",
+    "EXCHANGES_UPDATE_DELAY": 600,
     'AUDIT': false,
     'RUST_GBT': true,
     'LIMIT_GBT': false,
@@ -214,6 +226,7 @@ const defaults: IConfig = {
     'ALLOW_UNREACHABLE': true,
     'PRICE_UPDATES_PER_HOUR': 1,
     'MAX_TRACKED_ADDRESSES': 1,
+    'DIFFICULTY_ADJUSTMENT': 'bitcoin',
   },
   'ESPLORA': {
     'REST_API_URL': 'http://127.0.0.1:3000',
@@ -232,7 +245,7 @@ const defaults: IConfig = {
   },
   'CORE_RPC': {
     'HOST': '127.0.0.1',
-    'PORT': 8332,
+    'PORT': 18557,
     'USERNAME': 'mempool',
     'PASSWORD': 'mempool',
     'TIMEOUT': 60000,
@@ -242,7 +255,7 @@ const defaults: IConfig = {
   },
   'SECOND_CORE_RPC': {
     'HOST': '127.0.0.1',
-    'PORT': 8332,
+    'PORT': 18557,
     'USERNAME': 'mempool',
     'PASSWORD': 'mempool',
     'TIMEOUT': 60000,
@@ -332,6 +345,7 @@ const defaults: IConfig = {
     'ENABLED': true,
     'PAID': false,
     'API_KEY': '',
+    'FEED_URL': 'https://debitmydatamempool.wdgt.workers.dev/', // DebitMyData price worker
   },
   'WALLETS': {
     'ENABLED': false,

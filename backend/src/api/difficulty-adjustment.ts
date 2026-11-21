@@ -15,6 +15,9 @@ export interface DifficultyAdjustment {
   adjustedTimeAvg;               // Expected block interval with hashrate implied over last 504 blocks
   timeOffset: number;            // (Testnet) Time since last block (cap @ 20min) in ms
   expectedBlocks: number;         // Block count
+  difficulty_adjustment?: 'bitcoin' | 'lwma';
+  adjusts_every_block?: boolean;
+  nextBlockTime?: number;
 }
 
 /**
@@ -88,10 +91,56 @@ export function calcDifficultyAdjustment(
   network: string,
   latestBlockTimestamp: number,
 ): DifficultyAdjustment {
+  // DebitMyData: MEMPOOL.DIFFICULTY_ADJUSTMENT = 'lwma' (difficulty changes every block, 150-second
+  // blocks). 'bitcoin' keeps mempool's Bitcoin calculation (2016-block epochs, 600-second blocks).
+  const isBitcoinEpoch = config.MEMPOOL.DIFFICULTY_ADJUSTMENT !== 'lwma';
   const EPOCH_BLOCK_LENGTH = 2016; // Bitcoin mainnet
-  const BLOCK_SECONDS_TARGET = 600; // Bitcoin mainnet
+  const BLOCK_SECONDS_TARGET = isBitcoinEpoch ? 600 : 150; // Bitcoin mainnet : DebitMyData mainnet
   const TESTNET_MAX_BLOCK_SECONDS = 1200; // Bitcoin testnet
 
+  // ✅ LWMA: per-block adjustment, show last change using bits difference
+  if (!isBitcoinEpoch) {
+    const diffSeconds = Math.max(1, nowSeconds - latestBlockTimestamp); // time since the last block
+    const timeAvgMs = diffSeconds * 1000;
+    const nextBlockTime = Date.now() + timeAvgMs;
+
+    const clamp = (v: number) => Math.max(-75, Math.min(300, v));
+    const effectiveSeconds = Math.max(diffSeconds, BLOCK_SECONDS_TARGET);
+    const estimateChange = ((BLOCK_SECONDS_TARGET / effectiveSeconds) - 1) * 100;
+
+    let prevChange = 0;
+    try {
+      const blocksCache = blocks.getBlocks();
+      const tip = blocksCache[blocksCache.length - 1];
+      const prev = blocksCache[blocksCache.length - 2];
+      // Only if both blocks exist and contain bits
+      if (tip?.bits != null && prev?.bits != null) {
+        prevChange = calcBitsDifference(prev.bits, tip.bits);
+      }
+    } catch (e) {
+      // keep prevChange = 0 if anything goes wrong
+    }
+
+    return {
+      difficulty_adjustment: 'lwma',
+      adjusts_every_block: true,
+      progressPercent: 100,
+      difficultyChange: clamp(estimateChange),
+      previousRetarget: prevChange,
+      remainingBlocks: 1,
+      remainingTime: timeAvgMs,
+      previousTime: latestBlockTimestamp,
+      nextRetargetHeight: blockHeight + 1,
+      estimatedRetargetDate: nextBlockTime,
+      timeAvg: timeAvgMs,
+      adjustedTimeAvg: timeAvgMs,
+      timeOffset: timeAvgMs,
+      expectedBlocks: 1,
+      nextBlockTime,
+    };
+  }
+
+  // Bitcoin epoch calculation
   const diffSeconds = Math.max(0, nowSeconds - DATime);
   const blocksInEpoch = (blockHeight >= 0) ? blockHeight % EPOCH_BLOCK_LENGTH : 0;
   const progressPercent = (blockHeight >= 0) ? blocksInEpoch / EPOCH_BLOCK_LENGTH * 100 : 100;

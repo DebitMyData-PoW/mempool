@@ -23,6 +23,7 @@ import { calculateMempoolTxCpfp } from '../cpfp';
 import { handleError } from '../../utils/api';
 import poolsUpdater from '../../tasks/pools-updater';
 import chainTips from '../chain-tips';
+import { bitcoinCoreApi } from './bitcoin-api-factory';
 
 const TXID_REGEX = /^[a-f0-9]{64}$/i;
 const BLOCK_HASH_REGEX = /^[a-f0-9]{64}$/i;
@@ -35,6 +36,9 @@ class BitcoinRoutes {
       .get(config.MEMPOOL.API_URL_PREFIX + 'transaction-times', this.getTransactionTimes)
       .get(config.MEMPOOL.API_URL_PREFIX + 'cpfp/:txId', this.$getCpfpInfo)
       .get(config.MEMPOOL.API_URL_PREFIX + 'difficulty-adjustment', this.getDifficultyChange)
+      .get(config.MEMPOOL.API_URL_PREFIX + 'circulating-supply', this.getCirculatingSupply)
+      .get(config.MEMPOOL.API_URL_PREFIX + 'richlist', this.getRichList)
+      .get(config.MEMPOOL.API_URL_PREFIX + 'richlist/summary', this.getRichListSummary)
       .get(config.MEMPOOL.API_URL_PREFIX + 'fees/recommended', this.getRecommendedFees)
       .get(config.MEMPOOL.API_URL_PREFIX + 'fees/precise', this.getPreciseRecommendedFees)
       .get(config.MEMPOOL.API_URL_PREFIX + 'fees/mempool-blocks', this.getMempoolBlocks)
@@ -102,6 +106,34 @@ class BitcoinRoutes {
       }
   }
 
+  private async getCirculatingSupply(req: Request, res: Response) {
+    try {
+      const supply = await bitcoinCoreApi.$getCirculatingSupply();
+      res.setHeader('content-type', 'text/plain');
+      res.send(supply.toFixed(8));
+    } catch (e) {
+      res.status(500).send('Failed to get circulating supply');
+    }
+  }
+
+  private async getRichList(req: Request, res: Response) {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
+      const data = await bitcoinCoreApi.$getRichList(limit);
+      res.json(data);
+    } catch (e) {
+      handleError(req, res, 500, 'Failed to get rich list');
+    }
+  }
+
+  private async getRichListSummary(req: Request, res: Response) {
+    try {
+      const data = await bitcoinCoreApi.$getRichListSummary();
+      res.json(data);
+    } catch (e) {
+      handleError(req, res, 500, 'Failed to get rich list summary');
+    }
+  }
 
   private getInitData(req: Request, res: Response) {
     try {
