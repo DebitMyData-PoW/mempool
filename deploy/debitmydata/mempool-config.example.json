@@ -1,0 +1,104 @@
+{
+  "MEMPOOL": {
+    "OFFICIAL": false,
+    "NETWORK": "mainnet",
+    "BACKEND": "electrum",
+    "ENABLED": true,
+    "HTTP_PORT": 8999,
+    "SPAWN_CLUSTER_PROCS": 0,
+    "POLL_RATE_MS": 2000,
+    "CACHE_DIR": "./cache",
+    "CACHE_ENABLED": true,
+    "CLEAR_PROTECTION_MINUTES": 20,
+    "RECOMMENDED_FEE_PERCENTILE": 50,
+    "BLOCK_WEIGHT_UNITS": 5000,
+    "INITIAL_BLOCKS_AMOUNT": 8,
+    "MEMPOOL_BLOCKS_AMOUNT": 8,
+    "INDEXING_BLOCKS_AMOUNT": 100000,
+    "BLOCKS_SUMMARIES_INDEXING": true,
+    "GOGGLES_INDEXING": false,
+    "USE_SECOND_NODE_FOR_MINFEE": false,
+    "EXTERNAL_ASSETS": [],
+    "EXTERNAL_MAX_RETRY": 1,
+    "EXTERNAL_RETRY_INTERVAL": 0,
+    "USER_AGENT": "mempool",
+    "STDOUT_LOG_MIN_PRIORITY": "debug",
+    "GITHUB_TOKEN": "",
+    "AUTOMATIC_POOLS_UPDATE": true,
+    "POOLS_JSON_URL": "https://raw.githubusercontent.com/DebitMyData-PoW/mining-pools/master/pools-v2.json",
+    "POOLS_JSON_TREE_URL": "https://api.github.com/repos/DebitMyData-PoW/mining-pools/git/trees/master",
+    "POOLS_UPDATE_DELAY": 600,
+    "AUTOMATIC_EXCHANGES_UPDATE": true,
+    "EXCHANGES_JSON_URL": "https://raw.githubusercontent.com/DebitMyData-PoW/exchanges/main/exchanges.json",
+    "EXCHANGES_JSON_TREE_URL": "https://api.github.com/repos/DebitMyData-PoW/exchanges/git/trees/main",
+    "EXCHANGES_UPDATE_DELAY": 600,
+    "AUDIT": false,
+    "RUST_GBT": true,
+    "LIMIT_GBT": false,
+    "CPFP_INDEXING": false,
+    "DISK_CACHE_BLOCK_INTERVAL": 6,
+    "MAX_PUSH_TX_SIZE_WEIGHT": 4000000,
+    "ALLOW_UNREACHABLE": true,
+    "PRICE_UPDATES_PER_HOUR": 12,
+    "MAX_TRACKED_ADDRESSES": 100,
+    "UNIX_SOCKET_PATH": "",
+    "RICHLIST_API": "http://127.0.0.1:8081",
+    "DIFFICULTY_ADJUSTMENT": "lwma"
+  },
+  "CORE_RPC": {
+    "HOST": "__NODE_RPC_HOST__",
+    "PORT": 18557,
+    "USERNAME": "__NODE_RPC_USERNAME__",
+    "PASSWORD": "__NODE_RPC_PASSWORD__",
+    "TIMEOUT": 60000,
+    "COOKIE": false,
+    "COOKIE_PATH": "/root/.debitmydata/.cookie",
+    "DEBUG_LOG_PATH": "/root/.debitmydata/debug.log"
+  },
+  "ELECTRUM": {
+    "HOST": "__ELECTRUM_HOST__",
+    "PORT": 50002,
+    "TLS_ENABLED": true
+  },
+  "DATABASE": {
+    "ENABLED": true,
+    "HOST": "127.0.0.1",
+    "PORT": 3306,
+    "DATABASE": "mempool",
+    "USERNAME": "__DB_USERNAME__",
+    "PASSWORD": "__DB_PASSWORD__",
+    "TIMEOUT": 180000,
+    "PID_DIR": ""
+  },
+  "SYSLOG": {
+    "ENABLED": false,
+    "HOST": "127.0.0.1",
+    "PORT": 514,
+    "MIN_PRIORITY": "info",
+    "FACILITY": "local7"
+  },
+  "STATISTICS": {
+    "ENABLED": true,
+    "TX_PER_SECOND_SAMPLE_PERIOD": 150
+  },
+  "MAXMIND": {
+    "ENABLED": false,
+    "GEOLITE2_CITY": "/usr/local/share/GeoIP/GeoLite2-City.mmdb",
+    "GEOLITE2_ASN": "/usr/local/share/GeoIP/GeoLite2-ASN.mmdb",
+    "GEOIP2_ISP": "/usr/local/share/GeoIP/GeoIP2-ISP.mmdb"
+  },
+  "EXTERNAL_DATA_SERVER": {
+    "MEMPOOL_API": "https://mempool.debitmydata.io/api/v1",
+    "MEMPOOL_ONION": "http://ygoazhg2he5hhmiyx55qabdg24ly73gp4ir45z3mrlbe4mze4eossoyd.onion/api/v1"
+  },
+  "MEMPOOL_SERVICES": {
+    "API": "https://mempool.debitmydata.io/api/v1/services",
+    "ACCELERATIONS": false
+  },
+  "FIAT_PRICE": {
+    "ENABLED": true,
+    "PAID": true,
+    "API_KEY": "",
+    "FEED_URL": "https://debitmydatamempool.wdgt.workers.dev/"
+  }
+}

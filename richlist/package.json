@@ -1,0 +1,16 @@
+{
+  "name": "debitmydata-richlist-indexer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DebitMyData rich list: indexes address balances from the node and serves the top addresses to the mempool backend",
+  "license": "AGPL-3.0",
+  "main": "richlist-indexer.js",
+  "scripts": {
+    "start": "node richlist-indexer.js"
+  },
+  "dependencies": {
+    "axios": "1.13.5",
+    "express": "~4.22.1",
+    "sqlite3": "^5.1.7"
+  }
+}
