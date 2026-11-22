@@ -185,6 +185,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "src/dmd-aurora.scss",
               "node_modules/@fortawesome/fontawesome-svg-core/styles.css"
             ],
             "vendorChunk": true,

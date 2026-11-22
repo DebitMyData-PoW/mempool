@@ -1,0 +1,87 @@
+/* The DebitMyData mempool explorer in DebitMyData's "Aurora" design, the same as debitmydata.io,
+   the pool, the stats site and id.debitmydata.io: Sora headlines, Inter text, a soft red glow at
+   the top, a floating glass top bar, rounded cards, gradient buttons. Loaded after styles.scss
+   (angular.json), it changes the colours, fonts and shapes only.
+   Fonts: SIL Open Font License (resources/fonts/OFL-Sora.txt, OFL-Inter.txt, OFL-JetBrainsMono.txt). */
+@font-face{font-family:Sora;font-style:normal;font-weight:100 800;font-display:swap;src:url(/resources/fonts/sora-wght.woff2) format("woff2")}
+@font-face{font-family:Inter;font-style:normal;font-weight:100 900;font-display:swap;src:url(/resources/fonts/inter-wght.woff2) format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:100 800;font-display:swap;src:url(/resources/fonts/jetbrains-mono-wght.woff2) format("woff2")}
+:root:root{--font:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:Sora,Inter,system-ui,sans-serif;
+--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--font-family-sans-serif:var(--font);--btn-r:999px;--red2:#ff5a36;
+--bg:#fff;--active-bg:#fff;--hover-bg:rgb(224 17 43 / .04);--fg:#13111a;--nav-bg:rgb(255 255 255 / .78);--title-fg:#13111a;--box-bg:rgb(255 255 255 / .82);
+--stat-box-bg:rgb(19 17 26 / .03);--alert-bg:rgb(224 17 43 / .08);--navbar-bg:#fff;--transparent-fg:rgb(19 17 26 / .55);--fade-out-box-bg-start:rgb(255 255 255 / 0);
+--fade-out-box-bg-end:#fff;--primary:#e0112b;--tertiary:#e0112b;--info:#e0112b;--link-color:#d10f28;--link-hover-color:#ff5a36;--icon:#d10f28;
+--skeleton-bg:rgb(19 17 26 / .06);--skeleton-bg-light:rgb(19 17 26 / .03);--green:#16a34a;--red:#d10f28;--grey:#6e6a78;--tooltip-grey:#4a4654;--orange:#ff5a36;
+--search-button:#e0112b;--search-button-border:#e0112b;--search-button-focus:#ff5a36;--block-empty:#d8d2dc;--block-top:#e7e2ea;--block-side:#c2bac9;
+--dmd-red:#e0112b;--dmd-red-hover:#c20d24;--dmd-red-deep:#13111a;--dmd-red-brand:#d10f28;--dmd-red-text:#d10f28;--dmd-pink:rgb(224 17 43 / .08);--dmd-pink-line:rgb(224 17 43 / .25);
+--dmd-line:rgb(19 17 26 / .09);--dmd-muted:#6e6a78;--dmd-body:#4a4654;--dmd-shadow:0 1px 2px rgb(40 10 20 / .04),0 24px 48px -28px rgb(80 10 20 / .28);
+--dmd-bar-shadow:none;--dmd-bar-shadow-up:0 -1px 0 rgb(19 17 26 / .09);--dmd-input-bg:#fff;--dmd-input-line:rgb(19 17 26 / .16);--dmd-row-line:rgb(19 17 26 / .06);
+--dmd-stripe:rgb(19 17 26 / .025);--dmd-card-head:rgb(19 17 26 / .025);--dmd-progress-bg:rgb(19 17 26 / .07);--dmd-code-bg:rgb(19 17 26 / .05);--dmd-code-fg:#13111a;
+--foot-bg:transparent;--glow1:rgb(255 90 54 / .2);--glow2:rgb(224 17 43 / .13);--glow3:rgb(255 170 160 / .22)}
+html[data-theme="dark"]:root{--bg:#15131b;--active-bg:#0b0a0f;--hover-bg:rgb(255 51 72 / .06);--fg:#f7f5fa;--nav-bg:rgb(21 19 27 / .72);--title-fg:#f7f5fa;
+--box-bg:rgb(255 255 255 / .045);--stat-box-bg:rgb(255 255 255 / .03);--alert-bg:rgb(255 51 72 / .13);--navbar-bg:#15131b;--transparent-fg:rgb(247 245 250 / .6);
+--fade-out-box-bg-start:rgb(21 19 27 / 0);--fade-out-box-bg-end:#15131b;--primary:#ff3348;--tertiary:#ff3348;--info:#ff3348;--link-color:#ff5a6b;
+--link-hover-color:#ff7a45;--icon:#ff5a6b;--skeleton-bg:rgb(255 255 255 / .06);--skeleton-bg-light:rgb(255 255 255 / .09);--green:#4ade80;--red:#ff5a6b;
+--grey:#8f8a9b;--tooltip-grey:#bdb8c8;--orange:#ff7a45;--search-button:#ff3348;--search-button-border:#ff3348;--search-button-focus:#ff7a45;
+--block-empty:#2a2632;--block-top:#363140;--block-side:#1f1c26;--dmd-red:#ff3348;--dmd-red-hover:#ff5a6b;--dmd-red-deep:#f7f5fa;--dmd-red-brand:#ff5a6b;
+--dmd-red-text:#ff5a6b;--dmd-pink:rgb(255 51 72 / .13);--dmd-pink-line:rgb(255 51 72 / .35);--dmd-line:rgb(255 255 255 / .085);--dmd-muted:#8f8a9b;--dmd-body:#bdb8c8;
+--dmd-shadow:0 1px 2px rgb(0 0 0 / .3),0 24px 48px -28px rgb(0 0 0 / .8);--dmd-bar-shadow-up:0 -1px 0 rgb(255 255 255 / .085);--dmd-input-bg:#15131b;
+--dmd-input-line:rgb(255 255 255 / .16);--dmd-row-line:rgb(255 255 255 / .06);--dmd-stripe:rgb(255 255 255 / .02);--dmd-card-head:rgb(255 255 255 / .03);
+--dmd-progress-bg:rgb(255 255 255 / .08);--dmd-code-bg:rgb(255 255 255 / .07);--dmd-code-fg:#ffc2c9;--glow1:rgb(255 51 72 / .22);--glow2:rgb(160 40 255 / .12);--glow3:rgb(255 122 69 / .11)}
+body{position:relative;overflow-x:clip}
+body::before{content:"";position:absolute;inset:-280px 0 auto;height:1100px;z-index:0;pointer-events:none;
+background:radial-gradient(38% 40% at 24% 30%,var(--glow1),transparent 70%),radial-gradient(34% 36% at 76% 22%,var(--glow2),transparent 70%),
+radial-gradient(30% 30% at 50% 62%,var(--glow3),transparent 70%);filter:blur(24px)}
+app-root{position:relative;z-index:1;display:block}
+h1,h2,h3,.card-title{font-family:var(--display)!important}
+header.sticky-header{padding:12px 16px 0}
+header .navbar.dmd-topbar{max-width:1240px;margin:0 auto;border:1px solid var(--dmd-line)!important;border-radius:999px;background:var(--nav-bg)!important;
+box-shadow:0 10px 30px -18px rgb(20 10 20 / .35)!important;min-height:60px!important}
+@media (min-width:992px){header .navbar.dmd-topbar{backdrop-filter:saturate(1.5) blur(18px);-webkit-backdrop-filter:saturate(1.5) blur(18px)}}
+header .navbar-brand{font-family:var(--display);font-weight:600!important;letter-spacing:-.02em}
+header .navbar-brand img{width:30px!important;height:30px!important}
+header .dmd-tag{background:var(--dmd-pink)!important;border:0!important;color:var(--dmd-red-text)!important;border-radius:99px!important}
+header li.nav-item .nav-link{color:var(--dmd-body)!important;font-weight:500!important}
+header li.nav-item:hover .nav-link{background:var(--hover-bg)!important;color:var(--fg)!important}
+header li.nav-item.active .nav-link,header li.nav-item.active:hover .nav-link{background:linear-gradient(135deg,var(--dmd-red),var(--red2))!important;color:#fff!important;box-shadow:0 8px 20px -10px var(--dmd-red)!important}
+.card,.box{border-radius:22px!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.card-title{font-weight:600!important}
+.main-title{font-weight:600!important;color:var(--dmd-muted)!important}
+.btn-primary,.btn-primary:not(:disabled){background:linear-gradient(135deg,var(--dmd-red),var(--red2))!important;border:0!important;box-shadow:0 10px 22px -12px var(--dmd-red)}
+.btn-group-toggle .btn.btn-primary,.btn-group-toggle .btn.btn-primary:not(:disabled){background:transparent!important;color:var(--dmd-red-text)!important;box-shadow:none!important}
+.btn-group-toggle .btn.btn-primary.active{background:linear-gradient(135deg,var(--dmd-red),var(--red2))!important;color:#fff!important}
+.progress-bar{background:linear-gradient(90deg,var(--dmd-red),var(--red2))!important}
+@media (max-width:991.98px){header.sticky-header{padding:8px 10px 0}header .navbar.dmd-topbar{border-radius:26px}}
+body{font-family:var(--font)!important;-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.025em}
+.mono,code,pre,.txid,.block-hash,.address-link,.tx-link{font-family:var(--mono)}
+/* top bar */
+.sticky-header{background:transparent!important}
+/* sections and cards */
+.card-title{text-transform:none!important;letter-spacing:-.01em!important;font-size:1rem!important}
+.main-title{letter-spacing:.1em!important}
+.table th{letter-spacing:.06em}
+.btn{border-radius:var(--btn-r)}
+.form-control,.custom-select{border-radius:var(--btn-r)!important}
+.badge{border-radius:99px}
+/* footer: neutral */
+footer.dmd-footer{background:var(--foot-bg)!important;color:var(--dmd-muted)!important;border-top:1px solid var(--dmd-line)}
+footer.dmd-footer .dmd-head{color:var(--fg)!important}
+footer.dmd-footer a{color:var(--dmd-muted)!important}
+footer.dmd-footer a:hover{color:var(--dmd-red-text)!important}
+footer.dmd-footer .dmd-brand,footer.dmd-footer .dmd-brand span{color:var(--fg)!important}
+footer.dmd-footer a.dmd-get-app{background:transparent!important;color:var(--fg)!important;border:1px solid var(--dmd-input-line)!important}
+footer.dmd-footer .dmd-legal{border-top-color:var(--dmd-line)!important}
+footer.dmd-footer .custom-select,footer.dmd-footer select{background-color:var(--box-bg)!important;color:var(--fg)!important;border:1px solid var(--dmd-input-line)!important}
+@media (max-width:991.98px){header .navbar.dmd-topbar{background:var(--navbar-bg)!important}}
+footer.dmd-footer .dmd-brand small{opacity:1!important;background:var(--dmd-pink)!important;border:0!important;color:var(--dmd-red-text)!important;border-radius:99px!important}
+
+/* phones: the bottom menu has no blur there, so it gets a solid background */
+@media (max-width:991.98px){:root:root{--nav-bg:var(--navbar-bg)}html[data-theme="dark"]:root{--nav-bg:var(--navbar-bg)}}
+
+/* scrolled down, the page fades out under the floating bar instead of showing above it
+   (browsers with scroll-driven animations; the others keep the bar as it is) */
+header.sticky-header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
+background:linear-gradient(var(--active-bg) 55%,transparent)}
+@supports (animation-timeline:scroll()){header.sticky-header::before{animation:dmd-bar-fade linear both;animation-timeline:scroll(root);animation-range:0 60px}}
+@keyframes dmd-bar-fade{to{opacity:1}}
