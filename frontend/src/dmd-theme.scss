@@ -238,6 +238,10 @@ html:not([data-theme="dark"]) {
   .bitcoin-block .fee-span, .mempool-block .fee-span {
     color: #6b4500 !important;
   }
+  /* the units after the figures (DMD, B, kB): mempool makes them white inside the blocks */
+  .bitcoin-block .symbol, .mempool-block .symbol {
+    color: var(--dmd-body) !important;
+  }
 }
 input:focus-visible {
   outline: none !important;
