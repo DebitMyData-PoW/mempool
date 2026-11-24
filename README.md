@@ -9,6 +9,8 @@ It is built on [mempool](https://github.com/mempool/mempool) (release v3.3.2), t
 explorer behind mempool.space, adapted to DebitMyData. This branch, `debitmydata`, holds the
 DebitMyData explorer; `master` follows the mempool project.
 
+![The DebitMyData Explorer dashboard, in the dark and light themes](docs/images/explorer-preview.webp)
+
 ## What it shows
 
 - **The chain live**: new blocks and the next blocks forming from the waiting transactions, with
