@@ -1,9 +1,9 @@
 [Unit]
-Description=DebitMyData Explorer backend (mempool v3.3)
+Description=DebitMyData Explorer backend
 After=network.target mariadb.service
 
 [Service]
-WorkingDirectory=/root/mempool-v3/backend
+WorkingDirectory=/opt/mempool/backend
 ExecStart=/usr/bin/npm run start
 Restart=always
 RestartSec=10

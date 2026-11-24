@@ -1,0 +1,18 @@
+[Unit]
+Description=DebitMyData rich list indexer
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+WorkingDirectory=/opt/mempool/richlist
+ExecStart=/usr/bin/node /opt/mempool/richlist/richlist-indexer.js
+Restart=always
+RestartSec=5
+User=root
+# The node RPC settings are read from /opt/mempool/backend/mempool-config.json (CORE_RPC).
+# Optional: Environment=RICHLIST_PORT=8081 RICHLIST_BIND=127.0.0.1 RICHLIST_DB=/opt/mempool/richlist/richlist.db
+StandardOutput=append:/var/log/richlist-indexer.log
+StandardError=append:/var/log/richlist-indexer-error.log
+
+[Install]
+WantedBy=multi-user.target
