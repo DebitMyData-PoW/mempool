@@ -230,6 +230,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .bitcoin-block .fee-span, .mempool-block .fee-span {
   color: #ffd98a !important;
 }
+/* Light theme: the cubes are light grey, so their text is dark, and the fee range a dark amber */
+html:not([data-theme="dark"]) {
+  .bitcoin-block .block-body, .mempool-block .block-body {
+    color: var(--fg);
+  }
+  .bitcoin-block .fee-span, .mempool-block .fee-span {
+    color: #6b4500 !important;
+  }
+}
 input:focus-visible {
   outline: none !important;
 }
